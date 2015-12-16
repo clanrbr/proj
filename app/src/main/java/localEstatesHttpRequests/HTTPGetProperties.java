@@ -17,7 +17,7 @@ import Utils.HelpFunctions;
 public class HTTPGetProperties extends AsyncTask<String, Void, String> {
     private Exception exception;
 
-    private SimpleArrayMap<String, String> mHeaders = new SimpleArrayMap<>();
+    private SimpleArrayMap<String, String> mHeaders = new SimpleArrayMap<String,String>();
     private String responseBody;
 
     @Override

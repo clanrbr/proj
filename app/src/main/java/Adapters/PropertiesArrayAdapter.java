@@ -57,7 +57,7 @@ public class PropertiesArrayAdapter extends ArrayAdapter<JSONObject> {
         try {
             JSONArray pictureArray=property.getJSONArray("pictures");
             if ( pictureArray!=null  ) {
-                Picasso.with(context).load(pictureArray.get(0).toString()).into(bigImage);
+                Picasso.with(context).load(pictureArray.get(0).toString()).placeholder(R.drawable.noproperty).error(R.drawable.noproperty).into(bigImage);
 //                new ImageLoad(pictureArray.get(0).toString(), bigImage).execute();
             } else {
 

@@ -62,6 +62,7 @@ public class StartActivity extends AppCompatActivity {
                     adapterProperties = new PropertiesArrayAdapter(StartActivity.this,
                             R.layout.property_single_item, advertsJsonArray);
                     listView.setAdapter(adapterProperties);
+                    listView.setDivider(null);
 
                 } else {
                     Log.e("HEREHERE", "EMPTY");
