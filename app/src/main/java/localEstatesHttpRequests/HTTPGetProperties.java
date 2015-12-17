@@ -2,14 +2,13 @@ package localEstatesHttpRequests;
 
 import android.os.AsyncTask;
 import android.support.v4.util.SimpleArrayMap;
-import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import Utils.HelpFunctions;
+import utils.HelpFunctions;
 
 /**
  * Created by Ado on 11/30/2015.

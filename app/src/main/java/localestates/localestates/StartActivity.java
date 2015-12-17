@@ -1,5 +1,6 @@
 package localestates.localestates;
 
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import java.util.Iterator;
 
 import Adapters.PropertiesArrayAdapter;
 import localEstatesHttpRequests.HTTPGetProperties;
+import utils.RobotoTextView;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -29,6 +31,10 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
 
         listView = (ListView) findViewById(R.id.listView);
+
+
+//        Typeface.createFromAsset(this.getAssets(), "fonts/Roboto-Black.ttf");
+//        this.getAssets().open("fonts/Roboto-Black.ttf");
 
         HTTPGetProperties getProperty = new HTTPGetProperties()
         {

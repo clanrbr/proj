@@ -22,6 +22,7 @@ import java.util.List;
 
 import localEstatesHttpRequests.ImageLoad;
 import localestates.localestates.R;
+import utils.RobotoTextView;
 
 /**
  * Created by Ado on 11/30/2015.
@@ -52,6 +53,7 @@ public class PropertiesArrayAdapter extends ArrayAdapter<JSONObject> {
         Log.e("HEREHERE", property.toString());
         TextView propertyTitle = (TextView) convertView.findViewById(R.id.propertyTitle);
         TextView propertyPrice = (TextView) convertView.findViewById(R.id.propertyPrice);
+//        TextView propertyPrice = (TextView) convertView.findViewById(R.id.propertyPrice);
         ImageView bigImage = (ImageView) convertView.findViewById(R.id.bigImage);
 
         try {
