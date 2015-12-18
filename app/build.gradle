@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "localestates.localestates"
-        minSdkVersion 8
+        minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -24,5 +24,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.johnkil.android-robototextview:robototextview:2.4.3'
+    compile 'com.balysv:material-ripple:1.0.2'
     //    compile 'com.github.johnkil.android-robototextview:robototextview:2.4.3'
 }

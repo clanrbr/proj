@@ -1,12 +1,21 @@
 package localestates.localestates;
 
+import android.app.ActionBar;
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Build;
+//import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,7 +28,7 @@ import Adapters.PropertiesArrayAdapter;
 import localEstatesHttpRequests.HTTPGetProperties;
 import utils.RobotoTextView;
 
-public class StartActivity extends AppCompatActivity {
+public class StartActivity extends Activity {
 
     private ArrayList<JSONObject> advertsJsonArray = new ArrayList<JSONObject>();
     private PropertiesArrayAdapter adapterProperties;
@@ -29,12 +38,16 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
+//        if (Build.VERSION.SDK_INT >= 11) {
+//            setTheme(android.R.style.Theme_Holo_NoActionBar);
+//        } else {
+//            setTheme(android.R.style.Theme_Black_NoTitleBar);
+//        }
 
         listView = (ListView) findViewById(R.id.listView);
-
-
-//        Typeface.createFromAsset(this.getAssets(), "fonts/Roboto-Black.ttf");
-//        this.getAssets().open("fonts/Roboto-Black.ttf");
 
         HTTPGetProperties getProperty = new HTTPGetProperties()
         {
