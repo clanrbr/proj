@@ -3,7 +3,9 @@ package localestates.localestates;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 //import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,11 +36,51 @@ public class StartActivity extends Activity {
     private ArrayList<JSONObject> advertsJsonArray = new ArrayList<JSONObject>();
     private PropertiesArrayAdapter adapterProperties;
     private ListView listView;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        ImageView menuItemSearch = (ImageView) findViewById(R.id.searchActionBar);
+        ImageView menuItemFavourite = (ImageView) findViewById(R.id.favouriteActionBar);
+        ImageView menuItemNotification = (ImageView) findViewById(R.id.notificationActionBar);
+        ImageView menuItemHome = (ImageView) findViewById(R.id.homeActionBar);
+
+
+        menuItemHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+
+        menuItemFavourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        menuItemNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        menuItemSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StartActivity.this, SearchActivity.class);
+                finish();
+                startActivity(intent);
+            }
+        });
+
 //        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
@@ -49,21 +92,21 @@ public class StartActivity extends Activity {
 
         listView = (ListView) findViewById(R.id.listView);
 
-        HTTPGetProperties getProperty = new HTTPGetProperties()
-        {
+        HTTPGetProperties getProperty = new HTTPGetProperties() {
             @Override
             protected void onPostExecute(String result) {
-                if (result!=null) {
+                if (result != null) {
                     Log.e("HEREHERE", "OT TUK LI GO PRINTI?");
-                    Log.e("HEREHERE",result);
+                    Log.e("HEREHERE", result);
                     try {
                         JSONObject json = new JSONObject(result);
                         Iterator<String> itCodesets = json.keys();
 
-                        JSONArray jsonArray = json.getJSONArray("adverts");;
+                        JSONArray jsonArray = json.getJSONArray("adverts");
+                        ;
                         if (jsonArray != null) {
-                            for (int i=0;i<jsonArray.length();i++){
-                                if ( jsonArray.getJSONObject(i)!=null ) {
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                if (jsonArray.getJSONObject(i) != null) {
 //                                    Log.e("HEREHERE", jsonArray.getJSONObject(i).toString());
                                     advertsJsonArray.add(jsonArray.getJSONObject(i));
                                 }
@@ -112,5 +155,17 @@ public class StartActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
     }
 }

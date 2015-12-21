@@ -1,9 +1,15 @@
 package utils;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.widget.ImageView;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import localestates.localestates.SearchActivity;
 
 /**
  * Created by Ado on 11/30/2015.
