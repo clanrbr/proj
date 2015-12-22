@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/LocalEstates1.iml" filepath="$PROJECT_DIR$/LocalEstates1.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/localEstate.iml" filepath="$PROJECT_DIR$/localEstate.iml" />
     </modules>
   </component>
 </project>
-
