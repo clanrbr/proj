@@ -1,48 +1,36 @@
 package localestates.localestates;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.Build;
-//import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Iterator;
-
 import Adapters.PropertiesArrayAdapter;
-import localEstatesHttpRequests.HTTPGetProperties;
-import utils.RobotoTextView;
+import fragments.CheckAndRadioBoxesFragment;
+import fragments.MainPageFragment;
 
-public class StartActivity extends Activity {
+public class StartActivity extends ActionBarActivity {
 
     private ArrayList<JSONObject> advertsJsonArray = new ArrayList<JSONObject>();
     private PropertiesArrayAdapter adapterProperties;
     private ListView listView;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (android.os.Build.VERSION.SDK_INT>=21) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(getResources().getColor(R.color.main_color_700));
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
@@ -75,64 +63,69 @@ public class StartActivity extends Activity {
         menuItemSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StartActivity.this, SearchActivity.class);
-                finish();
-                startActivity(intent);
+                Fragment fragment = new CheckAndRadioBoxesFragment();
+//                android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//                ft.add(R.id.fragment_container, fragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack("search").commit();
+//                Intent intent = new Intent(StartActivity.this, SearchActivity.class);
+////                finish();
+//                startActivity(intent);
             }
         });
 
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+//        Fragment fragment = new CheckAndRadioBoxesFragment();
+        Fragment fragment = new MainPageFragment();
+        if (savedInstanceState == null) {
+            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).addToBackStack("mainPage").commit();
+//            ft.replace(R.id.fragment_container,fragment).commit();
+        }
 
 
-//        if (Build.VERSION.SDK_INT >= 11) {
-//            setTheme(android.R.style.Theme_Holo_NoActionBar);
-//        } else {
-//            setTheme(android.R.style.Theme_Black_NoTitleBar);
-//        }
-
-        listView = (ListView) findViewById(R.id.listView);
-
-        HTTPGetProperties getProperty = new HTTPGetProperties() {
-            @Override
-            protected void onPostExecute(String result) {
-                if (result != null) {
-                    Log.e("HEREHERE", "OT TUK LI GO PRINTI?");
-                    Log.e("HEREHERE", result);
-                    try {
-                        JSONObject json = new JSONObject(result);
-                        Iterator<String> itCodesets = json.keys();
-
-                        JSONArray jsonArray = json.getJSONArray("adverts");
-                        ;
-                        if (jsonArray != null) {
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                if (jsonArray.getJSONObject(i) != null) {
-//                                    Log.e("HEREHERE", jsonArray.getJSONObject(i).toString());
-                                    advertsJsonArray.add(jsonArray.getJSONObject(i));
-                                }
-                            }
-                        }
-
-//                        while (itCodesets.hasNext()) {
-//                            Log.e("HEREHERE", itCodesets.next());
+//        listView = (ListView) findViewById(R.id.listView);
+//
+//        HTTPGetProperties getProperty = new HTTPGetProperties() {
+//            @Override
+//            protected void onPostExecute(String result) {
+//                if (result != null) {
+//                    Log.e("HEREHERE", "OT TUK LI GO PRINTI?");
+//                    Log.e("HEREHERE", result);
+//                    try {
+//                        JSONObject json = new JSONObject(result);
+//                        Iterator<String> itCodesets = json.keys();
+//
+//                        JSONArray jsonArray = json.getJSONArray("adverts");
+//                        ;
+//                        if (jsonArray != null) {
+//                            for (int i = 0; i < jsonArray.length(); i++) {
+//                                if (jsonArray.getJSONObject(i) != null) {
+////                                    Log.e("HEREHERE", jsonArray.getJSONObject(i).toString());
+//                                    advertsJsonArray.add(jsonArray.getJSONObject(i));
+//                                }
+//                            }
 //                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    adapterProperties = new PropertiesArrayAdapter(StartActivity.this,
-                            R.layout.property_single_item, advertsJsonArray);
-                    listView.setAdapter(adapterProperties);
-                    listView.setDivider(null);
-
-                } else {
-                    Log.e("HEREHERE", "EMPTY");
-                }
-            }
-        };
-
-        getProperty.execute("http://api.imot.bg/mobile_api/search");
+//
+////                        while (itCodesets.hasNext()) {
+////                            Log.e("HEREHERE", itCodesets.next());
+////                        }
+//
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    adapterProperties = new PropertiesArrayAdapter(StartActivity.this,
+//                            R.layout.property_single_item, advertsJsonArray);
+//                    listView.setAdapter(adapterProperties);
+//                    listView.setDivider(null);
+//
+//                } else {
+//                    Log.e("HEREHERE", "EMPTY");
+//                }
+//            }
+//        };
+//
+//        getProperty.execute("http://api.imot.bg/mobile_api/search");
     }
 
     @Override

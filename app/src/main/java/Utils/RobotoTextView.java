@@ -17,28 +17,23 @@ public class RobotoTextView extends TextView {
 
     public RobotoTextView(Context context) {
         super(context);
-        Log.e("HEREHERE", "1");
         if (isInEditMode()) return;
         parseAttributes(null);
     }
 
     public RobotoTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Log.e("HEREHERE","2");
         if (isInEditMode()) return;
         parseAttributes(attrs);
     }
 
     public RobotoTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        Log.e("HEREHERE","3");
         if (isInEditMode()) return;
         parseAttributes(attrs);
     }
 
     private void parseAttributes(AttributeSet attrs) {
-        Log.e("HEREHERE",attrs.toString());
-        Log.e("HEREHERE","4");
         int typeface;
         if (attrs == null) { //Not created from xml
             typeface = Roboto.ROBOTO_REGULAR;
@@ -51,17 +46,14 @@ public class RobotoTextView extends TextView {
     }
 
     public void setRobotoTypeface(int typeface) {
-        Log.e("HEREHERE","5");
         setTypeface(getRoboto(typeface));
     }
 
     private Typeface getRoboto(int typeface) {
-        Log.e("HEREHERE","6");
         return getRoboto(getContext(), typeface);
     }
 
     public static Typeface getRoboto(Context context, int typeface) {
-        Log.e("HEREHERE","7");
         switch (typeface) {
             case Roboto.ROBOTO_BLACK:
                 if (Roboto.sRobotoBlack == null) {

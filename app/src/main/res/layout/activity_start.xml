@@ -7,66 +7,63 @@
     tools:context=".StartActivity">
 
     <include layout="@layout/navbar_custom" />
-    <!--<android.support.v7.widget.Toolbar-->
-        <!--android:id="@+id/my_toolbar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="?attr/actionBarSize"-->
-        <!--android:background="?attr/colorPrimary"-->
-        <!--android:elevation="4dp"-->
-        <!--android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
-        <!--custom:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>-->
 
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </FrameLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="10dp">
+    <!--<LinearLayout-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:layout_marginBottom="10dp">-->
 
-        <utils.MaterialRippleLayout
-            style="@style/RippleStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            custom:rippleColor="@color/main_color_grey_400" >
+        <!--<utils.MaterialRippleLayout-->
+            <!--style="@style/RippleStyle"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--custom:rippleColor="@color/main_color_grey_400" >-->
 
-            <utils.RobotoTextView
-                android:id="@+id/sell"
-                style="@style/ButtonStyle.RaisedEmpty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                android:background="@color/main_color_500"
-                android:minWidth="112dp"
-                android:text="Продай"
-                android:textColor="#fff" />
-        </utils.MaterialRippleLayout>
+            <!--<utils.RobotoTextView-->
+                <!--android:id="@+id/sell"-->
+                <!--style="@style/ButtonStyle.RaisedEmpty"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="0dp"-->
+                <!--android:background="@color/main_color_500"-->
+                <!--android:minWidth="112dp"-->
+                <!--android:text="Продай"-->
+                <!--android:textColor="#fff" />-->
+        <!--</utils.MaterialRippleLayout>-->
 
-        <utils.MaterialRippleLayout
-            style="@style/RippleStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            custom:rippleColor="@color/main_color_grey_400" >
+        <!--<utils.MaterialRippleLayout-->
+            <!--style="@style/RippleStyle"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--custom:rippleColor="@color/main_color_grey_400" >-->
 
-            <utils.RobotoTextView
-                android:id="@+id/login"
-                style="@style/ButtonStyle.RaisedEmpty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                android:background="@color/main_color_500"
-                android:minWidth="112dp"
-                android:text="Търси"
-                android:textColor="#fff" />
-        </utils.MaterialRippleLayout>
-    </LinearLayout>
+            <!--<utils.RobotoTextView-->
+                <!--android:id="@+id/login"-->
+                <!--style="@style/ButtonStyle.RaisedEmpty"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="0dp"-->
+                <!--android:background="@color/main_color_500"-->
+                <!--android:minWidth="112dp"-->
+                <!--android:text="Търси"-->
+                <!--android:textColor="#fff" />-->
+        <!--</utils.MaterialRippleLayout>-->
+    <!--</LinearLayout>-->
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-    </ListView>
+    <!--<ListView-->
+        <!--android:id="@+id/listView"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="match_parent">-->
+    <!--</ListView>-->
 
 </LinearLayout>

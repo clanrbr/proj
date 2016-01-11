@@ -50,7 +50,7 @@ public class PropertiesArrayAdapter extends ArrayAdapter<JSONObject> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.property_single_item, parent, false);
         }
 
-        Log.e("HEREHERE", property.toString());
+//        Log.e("HEREHERE", property.toString());
         TextView propertyTitle = (TextView) convertView.findViewById(R.id.propertyTitle);
         TextView propertyPrice = (TextView) convertView.findViewById(R.id.propertyPrice);
 //        TextView propertyPrice = (TextView) convertView.findViewById(R.id.propertyPrice);
@@ -61,8 +61,6 @@ public class PropertiesArrayAdapter extends ArrayAdapter<JSONObject> {
             if ( pictureArray!=null  ) {
                 Picasso.with(context).load(pictureArray.get(0).toString()).placeholder(R.drawable.noproperty).error(R.drawable.noproperty).into(bigImage);
 //                new ImageLoad(pictureArray.get(0).toString(), bigImage).execute();
-            } else {
-
             }
         } catch (JSONException e) {
             e.printStackTrace();

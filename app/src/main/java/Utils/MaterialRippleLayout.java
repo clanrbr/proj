@@ -35,6 +35,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Property;
 import android.util.TypedValue;
 import android.view.GestureDetector;
@@ -126,6 +127,7 @@ public class MaterialRippleLayout extends FrameLayout {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MaterialRippleLayout);
         rippleColor = a.getColor(R.styleable.MaterialRippleLayout_rippleColor, DEFAULT_COLOR);
+//        rippleColor = a.getColor(DEFAULT_COLOR, DEFAULT_COLOR);
         rippleDiameter = a.getDimensionPixelSize(
                 R.styleable.MaterialRippleLayout_rippleDimension,
                 (int) dpToPx(getResources(), DEFAULT_DIAMETER_DP)
