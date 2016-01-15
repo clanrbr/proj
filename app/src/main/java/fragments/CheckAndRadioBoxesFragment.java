@@ -1119,7 +1119,7 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
                                     @Override
                                     protected void onPostExecute(String result) {
                                         if (result != null) {
-                                            Log.e("HEREHERE", "THIS RESULT");
+                                            Log.e("HEREHERE", "THIS RESULT FROM HERE");
                                             Log.e("HEREHERE", result);
                                             try {
                                                 JSONArray  jsonArray = new JSONArray(result);
