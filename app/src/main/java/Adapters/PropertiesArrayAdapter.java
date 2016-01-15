@@ -1,7 +1,6 @@
-package Adapters;
+package adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +13,10 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
-import localEstatesHttpRequests.ImageLoad;
 import localestates.localestates.R;
-import utils.RobotoTextView;
 
 /**
  * Created by Ado on 11/30/2015.

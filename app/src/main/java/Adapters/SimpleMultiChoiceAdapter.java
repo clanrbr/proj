@@ -1,4 +1,4 @@
-package Adapters;
+package adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,12 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import fragments.CheckAndRadioBoxesFragment;
 import localestates.localestates.R;
-import utils.HelpFunctions;
 
 /**
  * Created by Ado on 1/6/2016.

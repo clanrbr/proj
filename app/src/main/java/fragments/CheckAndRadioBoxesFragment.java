@@ -28,20 +28,14 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import Adapters.PropertiesArrayAdapter;
-import Adapters.PropertyTypeAdapter;
-import Adapters.SimpleMultiChoiceAdapter;
+import adapters.PropertyTypeAdapter;
+import adapters.SimpleMultiChoiceAdapter;
 import localEstatesHttpRequests.HTTPGetProperties;
 import localestates.localestates.R;
-import localestates.localestates.SearchActivity;
 import utils.HelpFunctions;
-import utils.MultiSelectSpinner1;
-import utils.MultiSelectionSpinner;
 //import com.csform.android.uiapptemplate.util.ImageUtil;
 
 public class CheckAndRadioBoxesFragment extends Fragment implements
@@ -109,6 +103,11 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
     private ArrayList<String> landPermanentUsageArray;
     public ArrayList<String> landPermanentUsageSelectedValue;
     private TextView landPermanentUsageProperty;
+
+    // Land Category
+    private ArrayList<String> landCategoryArray;
+    public ArrayList<String> landCategorySelectedValue;
+    private TextView landCategoryProperty;
 
     private Spinner sortResult;
     private ArrayAdapter<CharSequence> sortAdapter;
@@ -1108,14 +1107,115 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
                                 getTel.execute(urlBuildPhone);
 
                             } else if (groupNumber==6) {
+                                landPermanentUsageProperty = (TextView) optionView.findViewById(R.id.land_permanent_usage);
+                                // get Land Permanent Usage
+                                HTTPGetProperties getLandPermanentUsage = new HTTPGetProperties() {
+                                        @Override
+                                        protected void onPostExecute(String result) {
+                                            if (result != null) {
+                                                Log.e("HEREHERE", "THIS RESULT FROM HERE");
+                                                Log.e("HEREHERE", result);
+                                                try {
+                                                    JSONArray  jsonArray = new JSONArray(result);
+                                                    Log.e("HEREHERE",jsonArray.toString());
+                                                    landPermanentUsageArray = new ArrayList<String>();
+                                                    for(int i = 0, count = jsonArray.length(); i< count; i++) {
+                                                        try {
+                                                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                                            if ( jsonObject!=null && (jsonObject.getString("value").length()>0) ) {
+                                                                landPermanentUsageArray.add(jsonObject.getString("value"));
+                                                            }
+                                                        }
+                                                        catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+
+                                                    landPermanentUsageProperty.setOnClickListener(new OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            final Dialog dialogSimple = new Dialog(getActivity());
+                                                            LayoutInflater li = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                                            dialogSimple.setTitle("Начин на трайно ползване:");
+                                                            dialogSimple.setCancelable(false);
+
+                                                            View vi = li.inflate(R.layout.listview_popup, null, false);
+                                                            String textlandPermanentUsageFieldValue = (String) landPermanentUsageProperty.getText();
+                                                            if ( (textlandPermanentUsageFieldValue.length()>0) && (textlandPermanentUsageFieldValue.contains(",")) ) {
+                                                                landPermanentUsageSelectedValue = new ArrayList<String>();
+                                                                String[] parts = textlandPermanentUsageFieldValue.split(",");
+                                                                if ( parts.length>0 ) {
+                                                                    for ( int i=0;i<parts.length;i++) {
+                                                                        landPermanentUsageSelectedValue.add(parts[i]);
+                                                                    }
+                                                                } else {
+                                                                    landPermanentUsageSelectedValue.add(textlandPermanentUsageFieldValue);
+                                                                }
+                                                            } else if ( (textlandPermanentUsageFieldValue.length()>0) && ( !textlandPermanentUsageFieldValue.equals("Всички") ) )  {
+                                                                landPermanentUsageSelectedValue= new ArrayList<String>();
+                                                                landPermanentUsageSelectedValue.add(textlandPermanentUsageFieldValue);
+                                                            } else {
+                                                                landPermanentUsageSelectedValue= new ArrayList<String>();
+                                                            }
+
+                                                            final SimpleMultiChoiceAdapter adapterlandPermanentUsageProperties = new SimpleMultiChoiceAdapter(getActivity(), R.layout.propertytype_single_item, landPermanentUsageArray,landPermanentUsageSelectedValue);
+                                                            ListView listViewPopup = (ListView) vi.findViewById(R.id.listViewPropertyType);
+                                                            listViewPopup.setAdapter(adapterlandPermanentUsageProperties);
+                                                            dialogSimple.setContentView(vi);
+                                                            dialogSimple.show();
+
+                                                            Button saveButton = (Button) vi.findViewById(R.id.savePopupButton);
+                                                            saveButton.setOnClickListener(new View.OnClickListener() {
+
+                                                                @Override
+                                                                public void onClick(View v) {
+                                                                    landPermanentUsageSelectedValue=adapterlandPermanentUsageProperties.returnSelectedFields();
+                                                                    if (landPermanentUsageSelectedValue!=null) {
+                                                                        Log.e("HEREHERE","Click Event "+landPermanentUsageSelectedValue.toString());
+                                                                        String valueCheckBox="";
+                                                                        for (int i=0;i<landPermanentUsageSelectedValue.size();i++) {
+                                                                            valueCheckBox+=landPermanentUsageSelectedValue.get(i)+",";
+                                                                        }
+
+                                                                        if (valueCheckBox.length()>0) {
+                                                                            valueCheckBox = valueCheckBox.substring(0, valueCheckBox.length()-1);
+                                                                        } else {
+                                                                            valueCheckBox="Всички";
+                                                                        }
+                                                                        landPermanentUsageProperty.setText(valueCheckBox);
+                                                                    } else {
+                                                                        landPermanentUsageProperty.setText("Всички");
+                                                                    }
+                                                                    dialogSimple.hide();
+                                                                }
+                                                            });
+
+                                                            Button closeButton = (Button) vi.findViewById(R.id.closePopupButton);
+                                                            closeButton.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v) {
+                                                                    adapterlandPermanentUsageProperties.clearSelectedFields();
+                                                                    dialogSimple.hide();
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            } else {
+                                                Log.e("HEREHERE", "EMPTY");
+                                            }
+                                        }
+                                    };
+                                    String urlLandPermanentUsage="http://api.imot.bg/mobile_api/dictionary/land_permanent_usage";
+                                    getLandPermanentUsage.execute(urlLandPermanentUsage);
 
 
-
-
-
-                            landPermanentUsageProperty = (TextView) optionView.findViewById(R.id.land_permanent_usage);
-                            // get Land Permanent Usage
-                            HTTPGetProperties getLandPermanentUsage = new HTTPGetProperties() {
+                                landCategoryProperty = (TextView) optionView.findViewById(R.id.land_category);
+                                // get Land Category
+                                HTTPGetProperties getLandCategory = new HTTPGetProperties() {
                                     @Override
                                     protected void onPostExecute(String result) {
                                         if (result != null) {
@@ -1124,12 +1224,12 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
                                             try {
                                                 JSONArray  jsonArray = new JSONArray(result);
                                                 Log.e("HEREHERE",jsonArray.toString());
-                                                landPermanentUsageArray = new ArrayList<String>();
+                                                landCategoryArray = new ArrayList<String>();
                                                 for(int i = 0, count = jsonArray.length(); i< count; i++) {
                                                     try {
                                                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                                                         if ( jsonObject!=null && (jsonObject.getString("value").length()>0) ) {
-                                                            landPermanentUsageArray.add(jsonObject.getString("value"));
+                                                            landCategoryArray.add(jsonObject.getString("value"));
                                                         }
                                                     }
                                                     catch (JSONException e) {
@@ -1137,7 +1237,7 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
                                                     }
                                                 }
 
-                                                landPermanentUsageProperty.setOnClickListener(new OnClickListener() {
+                                                landCategoryProperty.setOnClickListener(new OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
                                                         final Dialog dialogSimple = new Dialog(getActivity());
@@ -1146,27 +1246,27 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
                                                         dialogSimple.setCancelable(false);
 
                                                         View vi = li.inflate(R.layout.listview_popup, null, false);
-                                                        String textlandPermanentUsageFieldValue = (String) landPermanentUsageProperty.getText();
-                                                        if ( (textlandPermanentUsageFieldValue.length()>0) && (textlandPermanentUsageFieldValue.contains(",")) ) {
-                                                            landPermanentUsageSelectedValue = new ArrayList<String>();
-                                                            String[] parts = textlandPermanentUsageFieldValue.split(",");
+                                                        String textlandCategoryFieldValue = (String) landCategoryProperty.getText();
+                                                        if ( (textlandCategoryFieldValue.length()>0) && (textlandCategoryFieldValue.contains(",")) ) {
+                                                            landCategorySelectedValue = new ArrayList<String>();
+                                                            String[] parts = textlandCategoryFieldValue.split(",");
                                                             if ( parts.length>0 ) {
                                                                 for ( int i=0;i<parts.length;i++) {
-                                                                    landPermanentUsageSelectedValue.add(parts[i]);
+                                                                    landCategorySelectedValue.add(parts[i]);
                                                                 }
                                                             } else {
-                                                                landPermanentUsageSelectedValue.add(textlandPermanentUsageFieldValue);
+                                                                landCategorySelectedValue.add(textlandCategoryFieldValue);
                                                             }
-                                                        } else if ( (textlandPermanentUsageFieldValue.length()>0) && ( !textlandPermanentUsageFieldValue.equals("Всички") ) )  {
-                                                            landPermanentUsageSelectedValue= new ArrayList<String>();
-                                                            landPermanentUsageSelectedValue.add(textlandPermanentUsageFieldValue);
+                                                        } else if ( (textlandCategoryFieldValue.length()>0) && ( !textlandCategoryFieldValue.equals("Всички") ) )  {
+                                                            landCategorySelectedValue= new ArrayList<String>();
+                                                            landCategorySelectedValue.add(textlandCategoryFieldValue);
                                                         } else {
-                                                            landPermanentUsageSelectedValue= new ArrayList<String>();
+                                                            landCategorySelectedValue= new ArrayList<String>();
                                                         }
 
-                                                        final SimpleMultiChoiceAdapter adapterlandPermanentUsageProperties = new SimpleMultiChoiceAdapter(getActivity(), R.layout.propertytype_single_item, landPermanentUsageArray,landPermanentUsageSelectedValue);
+                                                        final SimpleMultiChoiceAdapter adapterlandCategoryProperties = new SimpleMultiChoiceAdapter(getActivity(), R.layout.propertytype_single_item, landCategoryArray,landCategorySelectedValue);
                                                         ListView listViewPopup = (ListView) vi.findViewById(R.id.listViewPropertyType);
-                                                        listViewPopup.setAdapter(adapterlandPermanentUsageProperties);
+                                                        listViewPopup.setAdapter(adapterlandCategoryProperties);
                                                         dialogSimple.setContentView(vi);
                                                         dialogSimple.show();
 
@@ -1175,12 +1275,12 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
 
                                                             @Override
                                                             public void onClick(View v) {
-                                                                landPermanentUsageSelectedValue=adapterlandPermanentUsageProperties.returnSelectedFields();
-                                                                if (landPermanentUsageSelectedValue!=null) {
-                                                                    Log.e("HEREHERE","Click Event "+landPermanentUsageSelectedValue.toString());
+                                                                landCategorySelectedValue=adapterlandCategoryProperties.returnSelectedFields();
+                                                                if (landCategorySelectedValue!=null) {
+                                                                    Log.e("HEREHERE","Click Event "+landCategorySelectedValue.toString());
                                                                     String valueCheckBox="";
-                                                                    for (int i=0;i<landPermanentUsageSelectedValue.size();i++) {
-                                                                        valueCheckBox+=landPermanentUsageSelectedValue.get(i)+",";
+                                                                    for (int i=0;i<landCategorySelectedValue.size();i++) {
+                                                                        valueCheckBox+=landCategorySelectedValue.get(i)+",";
                                                                     }
 
                                                                     if (valueCheckBox.length()>0) {
@@ -1188,9 +1288,9 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
                                                                     } else {
                                                                         valueCheckBox="Всички";
                                                                     }
-                                                                    landPermanentUsageProperty.setText(valueCheckBox);
+                                                                    landCategoryProperty.setText(valueCheckBox);
                                                                 } else {
-                                                                    landPermanentUsageProperty.setText("Всички");
+                                                                    landCategoryProperty.setText("Всички");
                                                                 }
                                                                 dialogSimple.hide();
                                                             }
@@ -1200,7 +1300,7 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
                                                         closeButton.setOnClickListener(new View.OnClickListener() {
                                                             @Override
                                                             public void onClick(View v) {
-                                                                adapterlandPermanentUsageProperties.clearSelectedFields();
+                                                                adapterlandCategoryProperties.clearSelectedFields();
                                                                 dialogSimple.hide();
                                                             }
                                                         });
@@ -1215,8 +1315,8 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
                                         }
                                     }
                                 };
-                                String urlLandPermanentUsage="http://api.imot.bg/mobile_api/dictionary/land_permanent_usage";
-                                getLandPermanentUsage.execute(urlLandPermanentUsage);
+                                String urlLandCategory="http://api.imot.bg/mobile_api/dictionary/land_category";
+                                getLandCategory.execute(urlLandCategory);
                             } else {
 
                             }

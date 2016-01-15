@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import org.json.JSONObject;
 import java.util.ArrayList;
-import Adapters.PropertiesArrayAdapter;
+import adapters.PropertiesArrayAdapter;
 import fragments.CheckAndRadioBoxesFragment;
 import fragments.MainPageFragment;
 
