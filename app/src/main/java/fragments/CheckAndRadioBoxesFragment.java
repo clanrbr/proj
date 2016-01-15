@@ -30,6 +30,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 
 import adapters.PropertyTypeAdapter;
 import adapters.SimpleMultiChoiceAdapter;
@@ -115,6 +118,12 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
     public static ArrayList<String> currentboxSelectedValue;
     public ArrayList<String> extriSelectedValue;
     public ArrayList<String> buildTypeSelectedValue;
+    private int groupNumber;
+    private ArrayList<String> propertyTypes;
+
+
+    private TextView searchAdvancedButton;
+    private TextView clearButton;
 
     public static CheckAndRadioBoxesFragment newInstance() {
         return new CheckAndRadioBoxesFragment();
@@ -132,6 +141,10 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
         secondTownSpinner = (Spinner) rootView.findViewById(R.id.second_town_spinner);
         sortResult = (Spinner) rootView.findViewById(R.id.sortResult);
         moreSearchOptions = (RelativeLayout) rootView.findViewById(R.id.moreSearchOptions);
+
+
+        searchAdvancedButton = (TextView) rootView.findViewById(R.id.searchAdvancedButton);
+        clearButton = (TextView) rootView.findViewById(R.id.clearButton);
 
 //        listViewPropertyType = (ListView) rootView.findViewById(R.id.listViewPropertyType);
 
@@ -236,7 +249,7 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
             public void onClick(View v) {
                 currentboxSelectedValue=checkboxSelectedValue;
 
-                ArrayList<String> propertyTypes = new ArrayList<String>();
+                propertyTypes = new ArrayList<String>();
                 propertyTypes.add("ВСИЧКИ");
                 propertyTypes.add("1-СТАЕН");
                 propertyTypes.add("2-СТАЕН");
@@ -284,7 +297,7 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
                 saveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int groupNumber=0;
+                        groupNumber=0;
                         checkboxSelectedValue=currentboxSelectedValue;
                         String valueCheckBox="";
                         for (int i=0;i<checkboxSelectedValue.size();i++) {
@@ -1212,7 +1225,6 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
                                     String urlLandPermanentUsage="http://api.imot.bg/mobile_api/dictionary/land_permanent_usage";
                                     getLandPermanentUsage.execute(urlLandPermanentUsage);
 
-
                                 landCategoryProperty = (TextView) optionView.findViewById(R.id.land_category);
                                 // get Land Category
                                 HTTPGetProperties getLandCategory = new HTTPGetProperties() {
@@ -1346,6 +1358,51 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
         sortAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.sortValues, android.R.layout.simple_spinner_item);
         sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortResult.setAdapter(sortAdapter);
+
+
+        searchAdvancedButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<HashMap<String,String>> values= new ArrayList<HashMap<String, String>>();
+
+                values.add(HelpFunctions.generateHashForSearch("rub",typeAdvert));
+                values.add(HelpFunctions.generateHashForSearch("price_min",priceFrom));
+                values.add(HelpFunctions.generateHashForSearch("price_max",priceTo));
+                values.add(HelpFunctions.generateHashForSearch("kv_min",areaFrom));
+                values.add(HelpFunctions.generateHashForSearch("kv_max",areaTo));
+                ArrayList<String> arrayValue = new ArrayList<String>();
+                Collections.addAll(arrayValue, getResources().getStringArray(R.array.sortValues));
+                values.add(HelpFunctions.generateHashForSearch("sort",sortResult, arrayValue));
+                values.add(HelpFunctions.generateHashForSearch("type_home",choosePropertyType));
+                values.add(HelpFunctions.generateHashForSearch("extri",extriProperty));
+
+                if ( groupNumber==1 ) {
+
+//                    values.add(HelpFunctions.generateHashForSearch("floor_from",floorFromSpinner,floorArray));
+//                    values.add(HelpFunctions.generateHashForSearch("floor_to",floorToSpinner,floorArray));
+
+                } else if ( groupNumber==2 ) {
+
+                } else if ( groupNumber==3 ) {
+
+                } else if ( groupNumber==4 ) {
+
+                } else if ( groupNumber==5 ) {
+
+                } else if ( groupNumber==6 ) {
+
+                }
+            }
+        });
+
+        clearButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
 
         return rootView;
     }

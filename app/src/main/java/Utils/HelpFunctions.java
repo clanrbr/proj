@@ -3,13 +3,18 @@ package utils;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import localestates.localestates.R;
 import localestates.localestates.SearchActivity;
@@ -44,7 +49,6 @@ public class HelpFunctions {
                 case "АТЕЛИЕ, ТАВАН":
                     match=1;
                     break;
-
 
                 case "ОФИС":
                     match=2;
@@ -155,6 +159,71 @@ public class HelpFunctions {
             }
         }
     }
+
+    public static HashMap<String, String> generateHashForSearch(String searchName, int value) {
+        HashMap<String, String> result;
+        if ( value>0 ) {
+            result = new HashMap<String,String>();
+            result.put(searchName,String.valueOf(value));
+        } else {
+            result=null;
+        }
+
+        return result;
+    }
+
+    public static HashMap<String, String> generateHashForSearch(String searchName, TextView field) {
+        HashMap<String, String> result;
+        if ( field.getText().toString()!="" ) {
+            result = new HashMap<String,String>();
+            result.put(searchName,field.getText().toString());
+        } else {
+            result=null;
+        }
+
+        return result;
+    }
+
+    public static HashMap<String, String> generateHashForSearch(String searchName, EditText field) {
+        HashMap<String, String> result;
+        if ( field.getText().toString()!="" ) {
+            result = new HashMap<String,String>();
+            result.put(searchName,field.getText().toString());
+        } else {
+            result=null;
+        }
+
+        return result;
+    }
+
+    public static HashMap<String, String> generateHashForSearch(String searchName, Spinner field,ArrayList<String> values) {
+        HashMap<String, String> result;
+        int position = field.getSelectedItemPosition();
+        if ( values.get(position).toString()!="" ) {
+            result = new HashMap<String,String>();
+            result.put(searchName,values.get(position).toString());
+        } else {
+            result=null;
+        }
+
+        return result;
+    }
+
+//    public static HashMap<String, String> generateHashForSearch(String searchName, TextView field, ArrayList values) {
+//        HashMap<String, String> result;
+//        if ( field.getText().toString()!="Всички" ) {
+//            result = new HashMap<String,String>();
+//            if ( field.getText().toString().contains(",") ) {
+//                result.put(searchName,field.getText().toString());
+//            } else {
+//                result.put(searchName,field.getText().toString());
+//            }
+//        } else {
+//            result=null;
+//        }
+//
+//        return result;
+//    }
 
 
 //    public static String getString(InputStream stream) throws IOException {

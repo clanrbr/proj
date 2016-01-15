@@ -366,7 +366,7 @@
                 app:rippleColor="@color/main_color_grey_400" >
 
                 <utils.RobotoTextView
-                    android:id="@+id/sell"
+                    android:id="@+id/clearButton"
                     style="@style/ButtonStyle.RaisedEmpty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -384,7 +384,7 @@
                 app:rippleColor="@color/main_color_grey_400" >
 
                 <utils.RobotoTextView
-                    android:id="@+id/login"
+                    android:id="@+id/searchAdvancedButton"
                     style="@style/ButtonStyle.RaisedEmpty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
