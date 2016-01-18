@@ -13,8 +13,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 import localestates.localestates.R;
 import localestates.localestates.SearchActivity;
@@ -196,7 +201,15 @@ public class HelpFunctions {
         return result;
     }
 
-    public static HashMap<String, String> generateHashForSearch(String searchName, Spinner field,ArrayList<String> values) {
+    public static HashMap<String, String> generateHashForSearch(String searchName, Spinner field) {
+        HashMap<String, String> result;
+        int position = field.getSelectedItemPosition();
+        result = new HashMap<String,String>();
+        result.put(searchName,String.valueOf(position));
+        return result;
+    }
+
+    public static HashMap<String, String> generateHashForSearch(String searchName, Spinner field,ArrayList<CharSequence> values) {
         HashMap<String, String> result;
         int position = field.getSelectedItemPosition();
         if ( values.get(position).toString()!="" ) {
@@ -207,6 +220,44 @@ public class HelpFunctions {
         }
 
         return result;
+    }
+
+    public static String convertToUrl(ArrayList<HashMap<String,String>> values) {
+        String buildUrl="";
+        for (int y=0;y<values.size();y++) {
+            HashMap<String,String> hashMapValues=values.get(y);
+            if (hashMapValues!=null) {
+                for (Map.Entry me : hashMapValues.entrySet()) {
+                    if ( (me.getValue()!=null) && (me.getValue()!="") ) {
+                        String encodedValue=me.getValue().toString();
+                        if (me.getValue().toString().contains(",")) {
+                            String[] parts = encodedValue.split(",");
+                            for ( int i=0;i<parts.length;i++) {
+                                try {
+                                    buildUrl+=me.getKey().toString()+"="+ URLEncoder.encode(parts[i], "UTF-8")+"&";
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } else {
+                            try {
+                                encodedValue=URLEncoder.encode(encodedValue, "UTF-8");
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            buildUrl+=me.getKey().toString()+"="+encodedValue+"&";
+                        }
+                    }
+                }
+            }
+
+        }
+        if ( buildUrl!="" ) {
+            buildUrl="?"+buildUrl;
+            buildUrl = buildUrl.substring(0, buildUrl.length()-1);
+        }
+
+        return buildUrl;
     }
 
 //    public static HashMap<String, String> generateHashForSearch(String searchName, TextView field, ArrayList values) {

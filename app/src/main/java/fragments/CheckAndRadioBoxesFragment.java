@@ -1364,7 +1364,6 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 ArrayList<HashMap<String,String>> values= new ArrayList<HashMap<String, String>>();
-
                 values.add(HelpFunctions.generateHashForSearch("rub",typeAdvert));
                 values.add(HelpFunctions.generateHashForSearch("price_min",priceFrom));
                 values.add(HelpFunctions.generateHashForSearch("price_max",priceTo));
@@ -1372,15 +1371,18 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
                 values.add(HelpFunctions.generateHashForSearch("kv_max",areaTo));
                 ArrayList<String> arrayValue = new ArrayList<String>();
                 Collections.addAll(arrayValue, getResources().getStringArray(R.array.sortValues));
-                values.add(HelpFunctions.generateHashForSearch("sort",sortResult, arrayValue));
+                values.add(HelpFunctions.generateHashForSearch("sort",sortResult));
                 values.add(HelpFunctions.generateHashForSearch("type_home",choosePropertyType));
                 values.add(HelpFunctions.generateHashForSearch("extri",extriProperty));
 
                 if ( groupNumber==1 ) {
-
-//                    values.add(HelpFunctions.generateHashForSearch("floor_from",floorFromSpinner,floorArray));
-//                    values.add(HelpFunctions.generateHashForSearch("floor_to",floorToSpinner,floorArray));
-
+                    values.add(HelpFunctions.generateHashForSearch("floor_from",floorFromSpinner));
+                    values.add(HelpFunctions.generateHashForSearch("floor_to",floorToSpinner));
+                    values.add(HelpFunctions.generateHashForSearch("type_build",buildTypeProperty));
+                    values.add(HelpFunctions.generateHashForSearch("year_from",yearFrom));
+                    values.add(HelpFunctions.generateHashForSearch("year_to",yearTo));
+                    values.add(HelpFunctions.generateHashForSearch("tec",tecSpinner,tecArray));
+                    values.add(HelpFunctions.generateHashForSearch("phone",phoneSpinner,phoneArray));
                 } else if ( groupNumber==2 ) {
 
                 } else if ( groupNumber==3 ) {
@@ -1392,6 +1394,10 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
                 } else if ( groupNumber==6 ) {
 
                 }
+
+
+                String test=HelpFunctions.convertToUrl(values);
+                Log.e("HEREHERE",test);
             }
         });
 
