@@ -379,7 +379,6 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                             } else {
                                 moreSearchOptions.removeAllViews();
                                 optionView = getLayoutInflater().inflate(R.layout.search_options_group_1, null);
-//                                optionView = layoutInflater.inflate(R.layout.search_options_group_1, null);
                             }
                             moreSearchOptions.addView(optionView);
 
