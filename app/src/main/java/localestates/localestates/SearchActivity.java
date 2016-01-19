@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import adapters.SectionPageAdapter;
 import fragments.CheckAndRadioBoxesFragment;
+import fragments.SearchResultFragment;
 
 /**
  * Created by macbook on 12/21/15.
@@ -35,7 +36,11 @@ public class SearchActivity extends FragmentActivity {
         Fragment fragment = new CheckAndRadioBoxesFragment();
         if (savedInstanceState == null) {
             android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.fragment_container, fragment).commit();
+            if (ft.isEmpty()) {
+                ft.add(R.id.fragment_container, fragment).commit();
+            } else {
+                ft.replace(R.id.fragment_container, fragment, "AdvanceSearchFragment").commit();
+            }
         }
     }
 

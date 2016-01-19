@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import fragments.CheckAndRadioBoxesFragment;
+import localestates.localestates.AdvanceSearchActivity;
 import localestates.localestates.R;
 import utils.HelpFunctions;
 
@@ -61,11 +62,11 @@ public class PropertyTypeAdapter extends ArrayAdapter<String> {
 
         propertyTypeCheckbox = (TextView) convertView.findViewById(R.id.fragment_property_type_checkbox);
 
-        if ( CheckAndRadioBoxesFragment.currentboxSelectedValue.indexOf(type)>-1 ) {
+        if ( AdvanceSearchActivity.currentboxSelectedValue.indexOf(type)>-1 ) {
             propertyTypeCheckbox.setText(context.getString(R.string.material_icon_checked_full));
         } else {
             propertyTypeCheckbox.setText(context.getString(R.string.material_icon_check_empty));
-            convertView.setEnabled(HelpFunctions.checkGroupOfPropertyType(type,CheckAndRadioBoxesFragment.currentboxSelectedValue));
+            convertView.setEnabled(HelpFunctions.checkGroupOfPropertyType(type,AdvanceSearchActivity.currentboxSelectedValue));
         }
 
         propertyTypeWholeLane = (LinearLayout) convertView.findViewById(R.id.whole_lane);
@@ -78,21 +79,21 @@ public class PropertyTypeAdapter extends ArrayAdapter<String> {
                     TextView  propertyTitle = (TextView) parent.findViewById(R.id.type_of_property_single_line);
 
                     if ( position==0) {
-                        CheckAndRadioBoxesFragment.currentboxSelectedValue=new ArrayList<String>();
+                        AdvanceSearchActivity.currentboxSelectedValue=new ArrayList<String>();
                     }
 
                     if ( parent.isEnabled() ) {
-                        if ( CheckAndRadioBoxesFragment.currentboxSelectedValue.indexOf(propertyTitle.getText())>-1 ) {
+                        if ( AdvanceSearchActivity.currentboxSelectedValue.indexOf(propertyTitle.getText())>-1 ) {
                             propertyTypeCheckbox.setText(context.getString(R.string.material_icon_check_empty));
-                            CheckAndRadioBoxesFragment.currentboxSelectedValue.remove(propertyTitle.getText());
+                            AdvanceSearchActivity.currentboxSelectedValue.remove(propertyTitle.getText());
                         } else {
                             propertyTypeCheckbox.setText(context.getString(R.string.material_icon_checked_full));
-                            CheckAndRadioBoxesFragment.currentboxSelectedValue.add(propertyTitle.getText().toString());
+                            AdvanceSearchActivity.currentboxSelectedValue.add(propertyTitle.getText().toString());
                         }
                     } else {
                         if ( propertyTypeCheckbox.getText()==context.getString(R.string.material_icon_checked_full) ) {
                             propertyTypeCheckbox.setText(context.getString(R.string.material_icon_check_empty));
-                            CheckAndRadioBoxesFragment.currentboxSelectedValue.remove(propertyTitle.getText());
+                            AdvanceSearchActivity.currentboxSelectedValue.remove(propertyTitle.getText());
                         }
                     }
 

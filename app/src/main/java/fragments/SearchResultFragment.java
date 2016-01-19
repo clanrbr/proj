@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import localestates.localestates.R;
 
-public class SaleSearchFragment extends Fragment {
+public class SearchResultFragment extends Fragment {
     public static final String ARG_OBJECT = "object";
 
     @Override

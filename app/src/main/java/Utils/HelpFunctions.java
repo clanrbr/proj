@@ -178,45 +178,47 @@ public class HelpFunctions {
     }
 
     public static HashMap<String, String> generateHashForSearch(String searchName, TextView field) {
-        HashMap<String, String> result;
-        if ( field.getText().toString()!="" ) {
-            result = new HashMap<String,String>();
-            result.put(searchName,field.getText().toString());
-        } else {
-            result=null;
+        HashMap<String, String> result=null;
+        if (field!=null) {
+            if ( field.getText().toString()!="" ) {
+                result = new HashMap<String,String>();
+                result.put(searchName,field.getText().toString());
+            }
         }
 
         return result;
     }
 
     public static HashMap<String, String> generateHashForSearch(String searchName, EditText field) {
-        HashMap<String, String> result;
-        if ( field.getText().toString()!="" ) {
-            result = new HashMap<String,String>();
-            result.put(searchName,field.getText().toString());
-        } else {
-            result=null;
+        HashMap<String, String> result=null;
+        if (field!=null) {
+            if (field.getText().toString() != "") {
+                result = new HashMap<String, String>();
+                result.put(searchName, field.getText().toString());
+            }
         }
 
         return result;
     }
 
     public static HashMap<String, String> generateHashForSearch(String searchName, Spinner field) {
-        HashMap<String, String> result;
-        int position = field.getSelectedItemPosition();
-        result = new HashMap<String,String>();
-        result.put(searchName,String.valueOf(position));
+        HashMap<String, String> result=null;
+        if (field!=null) {
+            int position = field.getSelectedItemPosition();
+            result = new HashMap<String,String>();
+            result.put(searchName,String.valueOf(position));
+        }
         return result;
     }
 
     public static HashMap<String, String> generateHashForSearch(String searchName, Spinner field,ArrayList<CharSequence> values) {
-        HashMap<String, String> result;
-        int position = field.getSelectedItemPosition();
-        if ( values.get(position).toString()!="" ) {
-            result = new HashMap<String,String>();
-            result.put(searchName,values.get(position).toString());
-        } else {
-            result=null;
+        HashMap<String, String> result=null;
+        if (field!=null) {
+            int position = field.getSelectedItemPosition();
+            if ( values.get(position).toString()!="" ) {
+                result = new HashMap<String,String>();
+                result.put(searchName,values.get(position).toString());
+            }
         }
 
         return result;
@@ -250,11 +252,10 @@ public class HelpFunctions {
                     }
                 }
             }
-
         }
         if ( buildUrl!="" ) {
             buildUrl="?"+buildUrl;
-            buildUrl = buildUrl.substring(0, buildUrl.length()-1);
+            buildUrl = ConstantsImportant.imotApiUrlSearch+buildUrl.substring(0, buildUrl.length()-1);
         }
 
         return buildUrl;

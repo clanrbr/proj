@@ -19,7 +19,7 @@ import localestates.localestates.R;
 /**
  * Created by Ado on 12/23/2015.
  */
-public class MainPageFragment extends Fragment{
+public class MainPageFragment extends Fragment {
 
     private ArrayList<JSONObject> advertsJsonArray = new ArrayList<JSONObject>();
     private PropertiesArrayAdapter adapterProperties;
@@ -29,7 +29,6 @@ public class MainPageFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-//        Log.e("HEREHERE","GOESHERE");
         View rootView = inflater.inflate(R.layout.fragment_main_page, null);
 
         listView = (ListView) rootView.findViewById(R.id.listView);
@@ -38,26 +37,18 @@ public class MainPageFragment extends Fragment{
             @Override
             protected void onPostExecute(String result) {
                 if (result != null) {
-//                    Log.e("HEREHERE", "OT TUK LI GO PRINTI?");
-//                    Log.e("HEREHERE", result);
                     try {
                         JSONObject json = new JSONObject(result);
-//                        Iterator<String> itCodesets = json.keys();
 
                         JSONArray jsonArray = json.getJSONArray("adverts");
                         ;
                         if (jsonArray != null) {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 if (jsonArray.getJSONObject(i) != null) {
-//                                    Log.e("HEREHERE", jsonArray.getJSONObject(i).toString());
                                     advertsJsonArray.add(jsonArray.getJSONObject(i));
                                 }
                             }
                         }
-
-//                        while (itCodesets.hasNext()) {
-//                            Log.e("HEREHERE", itCodesets.next());
-//                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
