@@ -27,6 +27,7 @@ public class MakeASearchHttpRequest extends AsyncTask<String, Void, String> {
     private ArrayList<JSONObject> advertsJsonArray;
     private String advertsNumber;
     private String advertsSearchText;
+    private String arrayList;
     private SimpleArrayMap<String, String> mHeaders = new SimpleArrayMap<String,String>();
     private String responseBody;
     public AsyncResponse delegate = null;
@@ -58,6 +59,7 @@ public class MakeASearchHttpRequest extends AsyncTask<String, Void, String> {
             if ( response==200 ) {
                 is = conn.getInputStream();
                 String contentAsString = readIt(is);
+                Log.e("HEREHERE",contentAsString);
                 return contentAsString;
             } else {
                 return null;
@@ -74,23 +76,35 @@ public class MakeASearchHttpRequest extends AsyncTask<String, Void, String> {
             advertsJsonArray = new ArrayList<JSONObject>();
             try {
                 JSONObject json = new JSONObject(result);
-                advertsNumber=json.getString("search_text");
-                advertsSearchText=json.getString("adverts_count");
-                JSONArray jsonArray = json.getJSONArray("adverts");
-                if (jsonArray != null) {
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        if (jsonArray.getJSONObject(i) != null) {
-                            advertsJsonArray.add(jsonArray.getJSONObject(i));
-                        }
-                    }
+                if (json.has("adverts") ) {
+                    arrayList=json.getString("adverts");
                 }
+                if (json.has("adverts_count") ) {
+                    advertsNumber=json.getString("adverts_count");
+                }
+                if (json.has("search_text") ) {
+                    advertsSearchText=json.getString("search_text");
+                }
+//
+                Log.e("HEREHERE","TUKA KAK E?");
+//                Log.e("HEREHERE",arrayList);
+//                JSONArray jsonArray = json.getJSONArray("adverts");
+//                if (jsonArray != null) {
+//                    for (int i = 0; i < jsonArray.length(); i++) {
+//                        if (jsonArray.getJSONObject(i) != null) {
+//                            advertsJsonArray.add(jsonArray.getJSONObject(i));
+//                        }
+//                    }
+//                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        } else {
+            Log.e("HEREHERE","vryshta null tuk");
         }
 
-        delegate.processFinish(advertsJsonArray,advertsNumber,advertsSearchText);
+        delegate.processFinish(arrayList,advertsNumber,advertsSearchText);
 
     }
 }

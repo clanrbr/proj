@@ -1,12 +1,11 @@
 package localestates.localestates;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -125,7 +124,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_advancesearch);
+        setContentView(R.layout.activity_advance_search);
 
         ImageView menuItemSearch = (ImageView) findViewById(R.id.searchActionBar);
         ImageView menuItemFavourite = (ImageView) findViewById(R.id.favouriteActionBar);
@@ -1400,6 +1399,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             public void onClick(View v) {
                 searchValues= new ArrayList<HashMap<String, String>>();
                 searchValues.add(HelpFunctions.generateHashForSearch("rub",typeAdvert));
+                searchValues.add(HelpFunctions.generateHashForSearch("page",1));
                 searchValues.add(HelpFunctions.generateHashForSearch("price_min",priceFrom));
                 searchValues.add(HelpFunctions.generateHashForSearch("price_max",priceTo));
                 searchValues.add(HelpFunctions.generateHashForSearch("kv_min",areaFrom));
@@ -1443,16 +1443,23 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             }
         });
 
+        Intent myIntent = getIntent();
+        if (myIntent.hasExtra("results")) {
 
-
-
+        }
 
 
     }
 
     @Override
-    public void processFinish(ArrayList<JSONObject> output, String numberOfAdverts, String searchText) {
-
+    public void processFinish(String output, String numberOfAdverts, String searchText) {
+        Log.e("GOES HERE","GOESHERE");
+        Intent searchResultIntent = new Intent(AdvanceSearchActivity.this,SearchResultActivity.class);
+        searchResultIntent.putExtra("results",output);
+        searchResultIntent.putExtra("results_text",searchText);
+        searchResultIntent.putExtra("results_numberOfAdverts",numberOfAdverts);
+        searchResultIntent.putExtra("searchValues",searchValues);
+        startActivity(searchResultIntent);
     }
 
     @Override

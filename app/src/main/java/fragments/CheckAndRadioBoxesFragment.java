@@ -1487,14 +1487,14 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
     }
 
     @Override
-    public void processFinish(ArrayList<JSONObject> output,String numberOfAdverts,String searchText) {
+    public void processFinish(String output,String numberOfAdverts,String searchText) {
         Log.e("GOES HERE","GOESHERE");
-        advertsJsonArray = output;
-        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-        if ( ft.isEmpty() ) {
-            ft.add(R.id.fragment_container, new SearchResultFragment(), "SearchFragment").commit();
-        } else {
-            ft.replace(R.id.fragment_container, new SearchResultFragment(), "SearchFragment").commit();
-        }
+//        advertsJsonArray = outputut;
+//        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        if ( ft.isEmpty() ) {
+//            ft.add(R.id.fragment_container, new SearchResultFragment(), "SearchFragment").commit();
+//        } else {
+//            ft.replace(R.id.fragment_container, new SearchResultFragment(), "SearchFragment").commit();
+//        }
     }
 }
