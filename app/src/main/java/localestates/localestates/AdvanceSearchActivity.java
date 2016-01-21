@@ -701,7 +701,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                                                         e.printStackTrace();
                                                     }
                                                 }
-                                                phoneAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, phoneArray);
+                                                phoneAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, phoneArray);
                                                 phoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                                 phoneSpinner.setAdapter(phoneAdapter);
                                             } catch (JSONException e) {

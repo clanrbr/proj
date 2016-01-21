@@ -73,14 +73,14 @@
       <file leaf-file-name="AdvanceSearchActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvanceSearchActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.037162162">
-              <caret line="175" column="29" selection-start-line="175" selection-start-column="29" selection-end-line="175" selection-end-column="29" />
+            <state vertical-scroll-proportion="0.050675675">
+              <caret line="703" column="80" selection-start-line="703" selection-start-column="80" selection-end-line="703" selection-end-column="80" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1579#1591#0" expanded="true" />
                 <element signature="e#6446#6779#0" expanded="true" />
                 <element signature="e#6778#6779#0" expanded="true" />
-                <element signature="e#95580#95588#0" expanded="true" />
+                <element signature="e#95568#95576#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2088,7 +2088,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4499151" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4499151" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293718" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -2470,14 +2470,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvanceSearchActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.037162162">
-          <caret line="175" column="29" selection-start-line="175" selection-start-column="29" selection-end-line="175" selection-end-column="29" />
+        <state vertical-scroll-proportion="0.050675675">
+          <caret line="703" column="80" selection-start-line="703" selection-start-column="80" selection-end-line="703" selection-end-column="80" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1579#1591#0" expanded="true" />
             <element signature="e#6446#6779#0" expanded="true" />
             <element signature="e#6778#6779#0" expanded="true" />
-            <element signature="e#95580#95588#0" expanded="true" />
+            <element signature="e#95568#95576#0" expanded="true" />
           </folding>
         </state>
       </provider>
