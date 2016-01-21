@@ -58,7 +58,6 @@
                         android:layout_height="wrap_content"
                         android:text="@string/sell_text"
                         android:buttonTint="@color/cpb_green"
-                        android:checked="true"
                         android:enabled="true"
                         />
                     <RadioButton

@@ -24,7 +24,7 @@
             custom:rippleColor="@color/main_color_grey_400" >
 
             <utils.RobotoTextView
-                android:id="@+id/sell"
+                android:id="@+id/editSearchButton"
                 style="@style/ButtonStyle.RaisedEmpty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

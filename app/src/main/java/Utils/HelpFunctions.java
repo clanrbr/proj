@@ -211,6 +211,17 @@ public class HelpFunctions {
         return result;
     }
 
+    public static HashMap<String, String> generateHashForSearch(String searchName, Spinner field,int param) {
+        HashMap<String, String> result=null;
+        if (field!=null) {
+            int position = field.getSelectedItemPosition();
+            position++;
+            result = new HashMap<String,String>();
+            result.put(searchName,String.valueOf(position));
+        }
+        return result;
+    }
+
     public static HashMap<String, String> generateHashForSearch(String searchName, Spinner field,ArrayList<CharSequence> values) {
         HashMap<String, String> result=null;
         if (field!=null) {

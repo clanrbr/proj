@@ -41,6 +41,7 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
     private ListView listView;
     private PropertiesArrayAdapter adapterProperties;
     private TextView resultTextView;
+    private TextView editSearchButton;
     private ArrayList<HashMap<String,String>> searchValues;
     private MakeASearchHttpRequest asyncTask;
 
@@ -87,6 +88,17 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
             public void onClick(View v) {
                 Intent searchIntent = new Intent(getBaseContext(), AdvanceSearchActivity.class);
                 startActivity(searchIntent);
+            }
+        });
+
+        editSearchButton = (TextView) findViewById(R.id.editSearchButton);
+        editSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent advanceSearchResultIntent = new Intent(SearchResultActivity.this,AdvanceSearchActivity.class);
+                advanceSearchResultIntent.putExtra("searchValues",searchValues);
+                finish();
+                startActivity(advanceSearchResultIntent);
             }
         });
 
@@ -140,14 +152,18 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
             listView.setOnScrollListener(new InfiniteScrollListener(startFromElement) {
                 @Override
                 public void loadMore(int page, int totalItemsCount) {
-                    Log.e("HEREHERE","LOADING MORE");
-                    Log.e("HEREHERE",String.valueOf(totalItemsCount));
-                    Log.e("HEREHERE",String.valueOf(page));
-                    if (searchValues!=null) {
-                        searchValues.get(1).put("page", String.valueOf(Integer.parseInt(searchValues.get(1).get("page")) + 1) );
-                        String searchUrl = HelpFunctions.convertToUrl(searchValues);
-                        Log.e("HEREHERE",searchUrl);
-                        asyncTask.execute(searchUrl);
+                    if ( totalItemsCount<Integer.parseInt(numberOfAdverts) ) {
+                        if (searchValues!=null) {
+                            Log.e("HEREHERE","LOADING MORE");
+                            Log.e("HEREHERE",String.valueOf(totalItemsCount));
+                            Log.e("HEREHERE",String.valueOf(page));
+                            searchValues.get(1).put("page", String.valueOf(Integer.parseInt(searchValues.get(1).get("page")) + 1) );
+                            String searchUrl = HelpFunctions.convertToUrl(searchValues);
+                            Log.e("HEREHERE",searchUrl);
+                            asyncTask.execute(searchUrl);
+                        }
+                    } else {
+                        Log.e("HEREHERE","noMoreToload");
                     }
                 }
             });
@@ -161,13 +177,11 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
 
     @Override
     public void processFinish(String output, String numberOfAdverts, String searchText) {
-        Log.e("GOES HERE","GOESHERE MORE");
-
         if (output!=null) {
             ArrayList<JSONObject> moreResults = new ArrayList<>();
             JSONArray jsonArray = null;
             try {
-                jsonArray = new JSONArray(results);
+                jsonArray = new JSONArray(output);
                 if (jsonArray != null) {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         if (jsonArray.getJSONObject(i) != null) {
@@ -180,13 +194,12 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
             }
             if ( (moreResults!=null) && (moreResults.size()>0)  ) {
                 results.addAll(moreResults);
+
                 adapterProperties.notifyDataSetChanged();
 
                 asyncTask = new MakeASearchHttpRequest();
                 asyncTask.delegate = this;
             }
-        } else {
-            Log.e("HEREHERE","NULL");
         }
 
     }

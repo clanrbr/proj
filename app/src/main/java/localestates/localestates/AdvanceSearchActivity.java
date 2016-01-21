@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -50,6 +51,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
     private ArrayList<JSONObject> advertsJsonArray = new ArrayList<JSONObject>();
     private MakeASearchHttpRequest asyncTask = new MakeASearchHttpRequest();
     private ArrayList<HashMap<String,String>> searchValues;
+    private ArrayList<HashMap<String, String>> searchValuesEdit;
 
     private EditText priceFrom;
     private EditText priceTo;
@@ -124,6 +126,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setContentView(R.layout.activity_advance_search);
 
         ImageView menuItemSearch = (ImageView) findViewById(R.id.searchActionBar);
@@ -158,11 +161,28 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             }
         });
 
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            searchValuesEdit=null;
+        } else {
+            searchValuesEdit = (ArrayList<HashMap<String, String>>) extras.getSerializable("searchValues");
+        }
+
         checkboxSelectedValue=new ArrayList<>();
         currentboxSelectedValue=new ArrayList<>();
         asyncTask.delegate = this;
 
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        if ( searchValuesEdit!=null ) {
+            Integer rubValue =  Integer.parseInt(searchValuesEdit.get(0).get("rub"));
+            if (rubValue==1) {
+                radioGroup.check(R.id.sell_radio_button);
+            } else {
+                radioGroup.check(R.id.rent_radio_button);
+            }
+        } else {
+            radioGroup.check(R.id.sell_radio_button);
+        }
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -1406,7 +1426,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                 searchValues.add(HelpFunctions.generateHashForSearch("kv_max",areaTo));
                 ArrayList<String> arrayValue = new ArrayList<String>();
                 Collections.addAll(arrayValue, getResources().getStringArray(R.array.sortValues));
-                searchValues.add(HelpFunctions.generateHashForSearch("sort",sortResult));
+                searchValues.add(HelpFunctions.generateHashForSearch("sort",sortResult,1));
                 searchValues.add(HelpFunctions.generateHashForSearch("type_home",choosePropertyType));
                 searchValues.add(HelpFunctions.generateHashForSearch("extri",extriProperty));
 
@@ -1447,18 +1467,16 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         if (myIntent.hasExtra("results")) {
 
         }
-
-
     }
 
     @Override
     public void processFinish(String output, String numberOfAdverts, String searchText) {
-        Log.e("GOES HERE","GOESHERE");
         Intent searchResultIntent = new Intent(AdvanceSearchActivity.this,SearchResultActivity.class);
         searchResultIntent.putExtra("results",output);
         searchResultIntent.putExtra("results_text",searchText);
         searchResultIntent.putExtra("results_numberOfAdverts",numberOfAdverts);
         searchResultIntent.putExtra("searchValues",searchValues);
+        finish();
         startActivity(searchResultIntent);
     }
 
