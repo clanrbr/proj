@@ -31,20 +31,13 @@ public class SimpleMultiChoiceAdapter extends ArrayAdapter<String> {
                                ArrayList<String> data,ArrayList<String> selectedStartValues) {
         super(context, resource, data);
         this.context=context;
-//        this.textView = textViewResourceId;
         this.data = data;
 
-//        if ( selectedStartValues!=null ) {
-//            Log.e("HEREHERE","CONSTRUCTOR "+selectedStartValues.toString());
-//        } else {
-//            Log.e("HEREHERE","CONSTRUCTOR IS EMPTY ");
-//        }
 
         this.selectedValues=selectedStartValues;
         if (this.selectedValues==null) {
             this.selectedValues=new ArrayList<String>();
         }
-//        checkboxSelected=new ArrayList<String>();
     }
 
     public void updateResults() {

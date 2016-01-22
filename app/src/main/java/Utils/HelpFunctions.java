@@ -189,6 +189,24 @@ public class HelpFunctions {
         return result;
     }
 
+    public static HashMap<String, String> generateHashForSearch(String searchName, TextView field,ArrayList<String> values) {
+        HashMap<String, String> result=null;
+        if (field!=null) {
+            if ( field.getText().toString()!="" ) {
+                String valuesNumbers=field.getText().toString();
+                for(int i=0;i<values.size();i++) {
+                    if ( valuesNumbers.contains(values.get(i).toString()) ) {
+                        valuesNumbers=valuesNumbers.replace(values.get(i).toString(),String.valueOf(i));
+                    }
+                }
+                result = new HashMap<String,String>();
+                result.put(searchName,valuesNumbers);
+            }
+        }
+
+        return result;
+    }
+
     public static HashMap<String, String> generateHashForSearch(String searchName, EditText field) {
         HashMap<String, String> result=null;
         if (field!=null) {
@@ -222,13 +240,16 @@ public class HelpFunctions {
         return result;
     }
 
-    public static HashMap<String, String> generateHashForSearch(String searchName, Spinner field,ArrayList<CharSequence> values) {
+    public static HashMap<String, String> generateHashForSearch(String searchName, Spinner field,ArrayList<CharSequence> values, ArrayList<String> valuesString) {
         HashMap<String, String> result=null;
         if (field!=null) {
             int position = field.getSelectedItemPosition();
-            if ( values.get(position).toString()!="" ) {
+            if ( (values!=null) && (values.get(position).toString()!="") && (!values.get(position).toString().contains("Всички")) ) {
                 result = new HashMap<String,String>();
                 result.put(searchName,values.get(position).toString());
+            } else if ( (valuesString!=null) && (valuesString.get(position).toString()!="") && (!valuesString.get(position).toString().contains("Всички")) ) {
+                result = new HashMap<String,String>();
+                result.put(searchName,valuesString.get(position).toString());
             }
         }
 

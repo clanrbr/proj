@@ -60,7 +60,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
     private RelativeLayout moreSearchOptions;
 
-    private ArrayList<String> stringArray;
+    private ArrayList<String> secondTownArray;
     private ArrayAdapter<CharSequence> adapter;
     private ArrayAdapter<String> spinnerAdapter;
     private Spinner townSpinner;
@@ -85,6 +85,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
     private ArrayList<CharSequence> phoneArray;
     private TextView extriProperty;
     private TextView buildTypeProperty;
+    private PropertyTypeAdapter adapterPropertiesType;
 
     // Electricity
     private Spinner electricitySpinner;
@@ -194,7 +195,6 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             }
         });
 
-
         townSpinner = (Spinner) findViewById(R.id.town_spinner);
         secondTownSpinnerLayout = (LinearLayout) findViewById(R.id.secondTownSpinner);
         secondTownSpinner = (Spinner) findViewById(R.id.second_town_spinner);
@@ -222,13 +222,13 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                             if (result != null) {
                                 try {
                                     JSONArray jsonArray = new JSONArray(result);
-                                    stringArray = new ArrayList<>();
-                                    stringArray.add("Всички");
+                                    secondTownArray = new ArrayList<>();
+                                    secondTownArray.add("Всички");
                                     for(int i = 0, count = jsonArray.length(); i< count; i++) {
                                         try {
                                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                                             if ( jsonObject!=null ) {
-                                                stringArray.add(jsonObject.getString("value"));
+                                                secondTownArray.add(jsonObject.getString("value"));
                                             }
                                         }
                                         catch (JSONException e) {
@@ -237,8 +237,21 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                                     }
                                     secondTownSpinnerLayout.setVisibility(View.VISIBLE);
                                     spinnerAdapter.clear();
-                                    secondTownSpinner.setSelection(0);
-                                    spinnerAdapter.addAll(stringArray);
+                                    spinnerAdapter.addAll(secondTownArray);
+                                    if ( (searchValuesEdit!=null) && (searchValuesEdit.get(3)!=null) ) {
+                                        String rubValue =  searchValuesEdit.get(3).get("raioni");
+                                        if (rubValue!=null) {
+                                            for(int i=0;i<secondTownArray.size();i++) {
+                                                if ( secondTownArray.get(i).equals(rubValue) ) {
+                                                    secondTownSpinner.setSelection(i);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        secondTownSpinner.setSelection(0);
+                                    }
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -259,6 +272,21 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         adapter = ArrayAdapter.createFromResource(getBaseContext(), R.array.town, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         townSpinner.setAdapter(adapter);
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(2)!=null) ) {
+            String rubValue =  searchValuesEdit.get(2).get("town");
+            if (rubValue!=null) {
+                ArrayList<String> arrayValueTown = new ArrayList<String>();
+                Collections.addAll(arrayValueTown, getResources().getStringArray(R.array.town));
+                for(int i=0;i<arrayValueTown.size();i++) {
+                    if ( arrayValueTown.get(i).equals(rubValue) ) {
+                        townSpinner.setSelection(i);
+                        break;
+                    }
+                }
+            }
+        } else {
+            townSpinner.setSelection(0);
+        }
 
         // Second Adapter for Areas
         secondTownSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -299,38 +327,45 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 //        propertyTypes.add("ГАРАЖ");
 //        propertyTypes.add("ЗЕМЕДЕЛСКА ЗЕМЯ");
 
-        choosePropertyType= (TextView) findViewById(R.id.choosePropertyType);
+        propertyTypes = new ArrayList<>();
+        Collections.addAll(propertyTypes, getResources().getStringArray(R.array.sell_property_types));
+        choosePropertyType = (TextView) findViewById(R.id.choosePropertyType);
+        if ( searchValuesEdit!=null ) {
+            String rubValue =  searchValuesEdit.get(4).get("type_home");
+            if (rubValue!=null) {
+                Log.e("HEREHERE",rubValue);
+                String[] parts = rubValue.split(",");
+                if ( parts.length>0 ) {
+                    for ( int i=0;i<parts.length;i++) {
+                        if ( rubValue.contains(String.valueOf(i)) ) {
+                            rubValue=rubValue.replace(String.valueOf(i),parts[i]);
+                        }
+                    }
+                }
+                choosePropertyType.setText(rubValue);
+            }
+        }
         choosePropertyType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentboxSelectedValue=checkboxSelectedValue;
-
-                propertyTypes = new ArrayList<>();
-                propertyTypes.add("ВСИЧКИ");
-                propertyTypes.add("1-СТАЕН");
-                propertyTypes.add("2-СТАЕН");
-                propertyTypes.add("3-СТАЕН");
-                propertyTypes.add("4-СТАЕН");
-                propertyTypes.add("МНОГОСТАЕН");
-                propertyTypes.add("МЕЗОНЕТ");
-                propertyTypes.add("АТЕЛИЕ, ТАВАН");
-                propertyTypes.add("ОФИС");
-                propertyTypes.add("МАГАЗИН");
-                propertyTypes.add("ЗАВЕДЕНИЕ");
-                propertyTypes.add("СКЛАД");
-                propertyTypes.add("ПРОМ. ПОМЕЩЕНИЕ");
-                propertyTypes.add("ХОТЕЛ");
-                propertyTypes.add("ЕТАЖ ОТ КЪЩА");
-                propertyTypes.add("КЪЩА");
-                propertyTypes.add("ВИЛА");
-                propertyTypes.add("МЯСТО");
-                propertyTypes.add("ГАРАЖ");
-                propertyTypes.add("ЗЕМЕДЕЛСКА ЗЕМЯ");
+//                currentboxSelectedValue=checkboxSelectedValue;
+                if ( choosePropertyType.getText()!=null ) {
+                    String getSelectedValuesPropertyType =choosePropertyType.getText().toString();
+                    if ( getSelectedValuesPropertyType.contains(",") ) {
+                        String[] parts = getSelectedValuesPropertyType.split(",");
+                        for(int i=0;i<parts.length;i++) {
+                            checkboxSelectedValue.add(parts[i]);
+                        }
+                    } else {
+                        checkboxSelectedValue.add(getSelectedValuesPropertyType);
+                    }
+                }
 
                 final Dialog dialog = new Dialog(AdvanceSearchActivity.this);
                 View vi = getLayoutInflater().inflate(R.layout.listview_popup, null);
 
-                PropertyTypeAdapter adapterPropertiesType = new PropertyTypeAdapter(getBaseContext(), R.layout.propertytype_single_item, propertyTypes);
+
+                adapterPropertiesType = new PropertyTypeAdapter(getBaseContext(), R.layout.propertytype_single_item, propertyTypes,checkboxSelectedValue);
                 ListView listViewPopup = (ListView) vi.findViewById(R.id.listViewPropertyType);
                 listViewPopup.setAdapter(adapterPropertiesType);
                 dialog.setContentView(vi);
@@ -340,8 +375,9 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                 closeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        currentboxSelectedValue=new ArrayList<>();
-                        dialog.hide();
+                        adapterPropertiesType.clearSelectedFields();
+//                        currentboxSelectedValue=new ArrayList<>();
+                        dialog.dismiss();
                     }
                 });
 
@@ -349,23 +385,42 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                 saveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        dialog.dismiss();
                         groupNumber=0;
-                        checkboxSelectedValue=currentboxSelectedValue;
-                        String valueCheckBox="";
-                        for (int i=0;i<checkboxSelectedValue.size();i++) {
-                            valueCheckBox+=checkboxSelectedValue.get(i)+",";
-                            if ( groupNumber==0 ) {
-                                groupNumber= HelpFunctions.returnGroupNumberOfProperty(checkboxSelectedValue.get(i),checkboxSelectedValue,0);
+                       //!!!!!
+                        currentboxSelectedValue=adapterPropertiesType.returnSelectedFields();
+                        if (currentboxSelectedValue!=null) {
+                            Log.e("HEREHERE","Click Event "+currentboxSelectedValue.toString());
+                            String valueCheckBox="";
+                            for (int i=0;i<currentboxSelectedValue.size();i++) {
+                                valueCheckBox+=currentboxSelectedValue.get(i)+",";
                             }
+
+                            if (valueCheckBox.length()>0) {
+                                valueCheckBox = valueCheckBox.substring(0, valueCheckBox.length()-1);
+                            } else {
+                                valueCheckBox="Всички";
+                            }
+                            choosePropertyType.setText(valueCheckBox);
                         }
 
-                        if (valueCheckBox.length()>0) {
-                            valueCheckBox = valueCheckBox.substring(0, valueCheckBox.length()-1);
-                        } else {
-                            valueCheckBox="ВСИЧКИ";
-                        }
-
-                        choosePropertyType.setText(valueCheckBox);
+//                       checkboxSelectedValue=currentboxSelectedValue;
+//                        String valueCheckBox="";
+//                        for (int i=0;i<checkboxSelectedValue.size();i++) {
+//                            valueCheckBox+=checkboxSelectedValue.get(i)+",";
+//                            if ( groupNumber==0 ) {
+//                                groupNumber= HelpFunctions.returnGroupNumberOfProperty(checkboxSelectedValue.get(i),checkboxSelectedValue,0);
+//                            }
+//                        }
+//
+//                        if (valueCheckBox.length()>0) {
+//                            valueCheckBox = valueCheckBox.substring(0, valueCheckBox.length()-1);
+//                        } else {
+//                            valueCheckBox="ВСИЧКИ";
+//                        }
+//
+//                        choosePropertyType.setText(valueCheckBox);
+                        
 //                        moreSearchOptions.removeAllViews();
 //                        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //                        View optionView = layoutInflater.inflate(R.layout.search_options_group_1, null);
@@ -1389,8 +1444,6 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                         } else {
                             moreSearchOptions.removeAllViews();
                         }
-
-                        dialog.hide();
                     }
                 });
             }
@@ -1420,6 +1473,12 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                 searchValues= new ArrayList<HashMap<String, String>>();
                 searchValues.add(HelpFunctions.generateHashForSearch("rub",typeAdvert));
                 searchValues.add(HelpFunctions.generateHashForSearch("page",1));
+                ArrayList<String> arrayValueTown = new ArrayList<String>();
+                Collections.addAll(arrayValueTown, getResources().getStringArray(R.array.town));
+                searchValues.add(HelpFunctions.generateHashForSearch("town",townSpinner,null,arrayValueTown));
+                searchValues.add(HelpFunctions.generateHashForSearch("raioni",secondTownSpinner,null,secondTownArray));
+                searchValues.add(HelpFunctions.generateHashForSearch("type_home",choosePropertyType,propertyTypes));
+                searchValues.add(HelpFunctions.generateHashForSearch("extri",extriProperty));
                 searchValues.add(HelpFunctions.generateHashForSearch("price_min",priceFrom));
                 searchValues.add(HelpFunctions.generateHashForSearch("price_max",priceTo));
                 searchValues.add(HelpFunctions.generateHashForSearch("kv_min",areaFrom));
@@ -1427,8 +1486,6 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                 ArrayList<String> arrayValue = new ArrayList<String>();
                 Collections.addAll(arrayValue, getResources().getStringArray(R.array.sortValues));
                 searchValues.add(HelpFunctions.generateHashForSearch("sort",sortResult,1));
-                searchValues.add(HelpFunctions.generateHashForSearch("type_home",choosePropertyType));
-                searchValues.add(HelpFunctions.generateHashForSearch("extri",extriProperty));
 
                 if ( groupNumber==1 ) {
                     searchValues.add(HelpFunctions.generateHashForSearch("floor_from",floorFromSpinner));
@@ -1436,8 +1493,8 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                     searchValues.add(HelpFunctions.generateHashForSearch("type_build",buildTypeProperty));
                     searchValues.add(HelpFunctions.generateHashForSearch("year_from",yearFrom));
                     searchValues.add(HelpFunctions.generateHashForSearch("year_to",yearTo));
-                    searchValues.add(HelpFunctions.generateHashForSearch("tec",tecSpinner,tecArray));
-                    searchValues.add(HelpFunctions.generateHashForSearch("phone",phoneSpinner,phoneArray));
+                    searchValues.add(HelpFunctions.generateHashForSearch("tec",tecSpinner,tecArray,null));
+                    searchValues.add(HelpFunctions.generateHashForSearch("phone",phoneSpinner,phoneArray,null));
                 } else if ( groupNumber==2 ) {
 
                 } else if ( groupNumber==3 ) {

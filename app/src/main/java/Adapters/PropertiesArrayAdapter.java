@@ -30,8 +30,8 @@ public class PropertiesArrayAdapter extends ArrayAdapter<JSONObject> {
     public PropertiesArrayAdapter(Context context, int resource,
                            ArrayList<JSONObject> data) {
         super(context, resource, data);
+
         this.context=context;
-//        this.textView = textViewResourceId;
         this.data = data;
     }
 

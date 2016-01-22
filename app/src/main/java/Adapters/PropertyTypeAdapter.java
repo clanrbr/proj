@@ -26,17 +26,29 @@ public class PropertyTypeAdapter extends ArrayAdapter<String> {
     private TextView propertyTypeCheckbox;
     private TextView propertyTitle;
     private LinearLayout propertyTypeWholeLane;
+    private ArrayList<String> selectedValues;
     Context context;
     int position=0;
 //    ArrayList<String> checkboxSelected;
 
     public PropertyTypeAdapter(Context context, int resource,
-                                  ArrayList<String> data) {
+                                  ArrayList<String> data,ArrayList<String> selectedStartValues) {
         super(context, resource, data);
         this.context=context;
 //        this.textView = textViewResourceId;
         this.data = data;
-//        checkboxSelected=new ArrayList<String>();
+        this.selectedValues=selectedStartValues;
+        if (this.selectedValues==null) {
+            this.selectedValues=new ArrayList<String>();
+        }
+    }
+
+    public ArrayList<String> returnSelectedFields() {
+        return this.selectedValues;
+    }
+
+    public void clearSelectedFields() {
+        this.selectedValues=new ArrayList<String>();
     }
 
     public void updateResults() {
@@ -62,11 +74,11 @@ public class PropertyTypeAdapter extends ArrayAdapter<String> {
 
         propertyTypeCheckbox = (TextView) convertView.findViewById(R.id.fragment_property_type_checkbox);
 
-        if ( AdvanceSearchActivity.currentboxSelectedValue.indexOf(type)>-1 ) {
+        if ( selectedValues.indexOf(type)>-1 ) {
             propertyTypeCheckbox.setText(context.getString(R.string.material_icon_checked_full));
         } else {
             propertyTypeCheckbox.setText(context.getString(R.string.material_icon_check_empty));
-            convertView.setEnabled(HelpFunctions.checkGroupOfPropertyType(type,AdvanceSearchActivity.currentboxSelectedValue));
+            convertView.setEnabled(HelpFunctions.checkGroupOfPropertyType(type,selectedValues));
         }
 
         propertyTypeWholeLane = (LinearLayout) convertView.findViewById(R.id.whole_lane);
@@ -79,21 +91,21 @@ public class PropertyTypeAdapter extends ArrayAdapter<String> {
                     TextView  propertyTitle = (TextView) parent.findViewById(R.id.type_of_property_single_line);
 
                     if ( position==0) {
-                        AdvanceSearchActivity.currentboxSelectedValue=new ArrayList<String>();
+                        selectedValues=new ArrayList<String>();
                     }
 
                     if ( parent.isEnabled() ) {
-                        if ( AdvanceSearchActivity.currentboxSelectedValue.indexOf(propertyTitle.getText())>-1 ) {
+                        if ( selectedValues.indexOf(propertyTitle.getText())>-1 ) {
                             propertyTypeCheckbox.setText(context.getString(R.string.material_icon_check_empty));
-                            AdvanceSearchActivity.currentboxSelectedValue.remove(propertyTitle.getText());
+                            selectedValues.remove(propertyTitle.getText());
                         } else {
                             propertyTypeCheckbox.setText(context.getString(R.string.material_icon_checked_full));
-                            AdvanceSearchActivity.currentboxSelectedValue.add(propertyTitle.getText().toString());
+                            selectedValues.add(propertyTitle.getText().toString());
                         }
                     } else {
                         if ( propertyTypeCheckbox.getText()==context.getString(R.string.material_icon_checked_full) ) {
                             propertyTypeCheckbox.setText(context.getString(R.string.material_icon_check_empty));
-                            AdvanceSearchActivity.currentboxSelectedValue.remove(propertyTitle.getText());
+                            selectedValues.remove(propertyTitle.getText());
                         }
                     }
 
@@ -101,7 +113,6 @@ public class PropertyTypeAdapter extends ArrayAdapter<String> {
                 }
             }
         });
-//        TextView propertyPrice = (TextView) convertView.findViewById(R.id.propertyPrice);
 
         return convertView;
 

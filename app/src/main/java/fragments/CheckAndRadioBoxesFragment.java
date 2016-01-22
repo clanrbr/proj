@@ -1402,8 +1402,8 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
                     searchValues.add(HelpFunctions.generateHashForSearch("type_build",buildTypeProperty));
                     searchValues.add(HelpFunctions.generateHashForSearch("year_from",yearFrom));
                     searchValues.add(HelpFunctions.generateHashForSearch("year_to",yearTo));
-                    searchValues.add(HelpFunctions.generateHashForSearch("tec",tecSpinner,tecArray));
-                    searchValues.add(HelpFunctions.generateHashForSearch("phone",phoneSpinner,phoneArray));
+                    searchValues.add(HelpFunctions.generateHashForSearch("tec",tecSpinner,tecArray,null));
+                    searchValues.add(HelpFunctions.generateHashForSearch("phone",phoneSpinner,phoneArray,null));
                 } else if ( groupNumber==2 ) {
 
                 } else if ( groupNumber==3 ) {

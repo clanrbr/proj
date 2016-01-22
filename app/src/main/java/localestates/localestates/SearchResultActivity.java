@@ -145,14 +145,15 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
             listView.setDivider(null);
 
             int startFromElement=5;
-            if (Integer.parseInt(numberOfAdverts)<10) {
+
+            if ( (numberOfAdverts!=null) && (Integer.parseInt(numberOfAdverts)<10) ) {
                 startFromElement=10;
             }
 
             listView.setOnScrollListener(new InfiniteScrollListener(startFromElement) {
                 @Override
                 public void loadMore(int page, int totalItemsCount) {
-                    if ( totalItemsCount<Integer.parseInt(numberOfAdverts) ) {
+                    if ( (numberOfAdverts!=null) && (totalItemsCount<Integer.parseInt(numberOfAdverts)) ) {
                         if (searchValues!=null) {
                             Log.e("HEREHERE","LOADING MORE");
                             Log.e("HEREHERE",String.valueOf(totalItemsCount));
