@@ -330,7 +330,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         propertyTypes = new ArrayList<>();
         Collections.addAll(propertyTypes, getResources().getStringArray(R.array.sell_property_types));
         choosePropertyType = (TextView) findViewById(R.id.choosePropertyType);
-        if ( searchValuesEdit!=null ) {
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(4)!=null) ) {
             String rubValue =  searchValuesEdit.get(4).get("type_home");
             if (rubValue!=null) {
                 Log.e("HEREHERE",rubValue);
@@ -348,9 +348,9 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         choosePropertyType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                currentboxSelectedValue=checkboxSelectedValue;
-                if ( choosePropertyType.getText()!=null ) {
-                    String getSelectedValuesPropertyType =choosePropertyType.getText().toString();
+                if ( (choosePropertyType.getText()!=null) && (choosePropertyType.getText().length()>0) && (!choosePropertyType.getText().toString().toUpperCase().contains("ВСИЧКИ")) ) {
+                    String getSelectedValuesPropertyType = choosePropertyType.getText().toString();
+                    checkboxSelectedValue=new ArrayList<String>();
                     if ( getSelectedValuesPropertyType.contains(",") ) {
                         String[] parts = getSelectedValuesPropertyType.split(",");
                         for(int i=0;i<parts.length;i++) {
@@ -386,14 +386,12 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
-                        groupNumber=0;
-                       //!!!!!
-                        currentboxSelectedValue=adapterPropertiesType.returnSelectedFields();
-                        if (currentboxSelectedValue!=null) {
-                            Log.e("HEREHERE","Click Event "+currentboxSelectedValue.toString());
+                        checkboxSelectedValue=adapterPropertiesType.returnSelectedFields();
+                        if (checkboxSelectedValue!=null) {
+                            Log.e("HEREHERE","Click Event "+checkboxSelectedValue.toString());
                             String valueCheckBox="";
-                            for (int i=0;i<currentboxSelectedValue.size();i++) {
-                                valueCheckBox+=currentboxSelectedValue.get(i)+",";
+                            for (int i=0;i<checkboxSelectedValue.size();i++) {
+                                valueCheckBox+=checkboxSelectedValue.get(i)+",";
                             }
 
                             if (valueCheckBox.length()>0) {
@@ -420,13 +418,13 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 //                        }
 //
 //                        choosePropertyType.setText(valueCheckBox);
-                        
+
 //                        moreSearchOptions.removeAllViews();
 //                        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //                        View optionView = layoutInflater.inflate(R.layout.search_options_group_1, null);
 //                        moreSearchOptions.addView(optionView);
 
-
+                        groupNumber=0;
                         if (groupNumber>0) {
 
                             LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);

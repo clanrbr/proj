@@ -35,7 +35,9 @@ public class PropertyTypeAdapter extends ArrayAdapter<String> {
                                   ArrayList<String> data,ArrayList<String> selectedStartValues) {
         super(context, resource, data);
         this.context=context;
-//        this.textView = textViewResourceId;
+
+        Log.e("HEREHERE","rebuild");
+
         this.data = data;
         this.selectedValues=selectedStartValues;
         if (this.selectedValues==null) {
@@ -44,11 +46,11 @@ public class PropertyTypeAdapter extends ArrayAdapter<String> {
     }
 
     public ArrayList<String> returnSelectedFields() {
-        return this.selectedValues;
+        return selectedValues;
     }
 
     public void clearSelectedFields() {
-        this.selectedValues=new ArrayList<String>();
+        selectedValues=new ArrayList<String>();
     }
 
     public void updateResults() {
@@ -60,14 +62,11 @@ public class PropertyTypeAdapter extends ArrayAdapter<String> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
         String type = getItem(position);
-//        Log.e("HEREHERE",String.valueOf(position));
-//        Log.e("HEREHERE",type);
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.propertytype_single_item, parent, false);
         }
-
 
         propertyTitle = (TextView) convertView.findViewById(R.id.type_of_property_single_line);
         propertyTitle.setText(type);
@@ -100,6 +99,9 @@ public class PropertyTypeAdapter extends ArrayAdapter<String> {
                             selectedValues.remove(propertyTitle.getText());
                         } else {
                             propertyTypeCheckbox.setText(context.getString(R.string.material_icon_checked_full));
+                            if ( (selectedValues.size()>0) && selectedValues.get(0).equals("ВСИЧКИ")) {
+                                selectedValues.remove(0);
+                            }
                             selectedValues.add(propertyTitle.getText().toString());
                         }
                     } else {
@@ -115,6 +117,5 @@ public class PropertyTypeAdapter extends ArrayAdapter<String> {
         });
 
         return convertView;
-
     }
 }

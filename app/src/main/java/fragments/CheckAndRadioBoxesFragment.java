@@ -295,7 +295,7 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
                 dialog.setCancelable(false);
 
                 View vi = li.inflate(R.layout.listview_popup, null, false);
-                PropertyTypeAdapter adapterPropertiesType = new PropertyTypeAdapter(getActivity(), R.layout.propertytype_single_item, propertyTypes);
+                PropertyTypeAdapter adapterPropertiesType = new PropertyTypeAdapter(getActivity(), R.layout.propertytype_single_item, propertyTypes,checkboxSelectedValue);
                 ListView listViewPopup = (ListView) vi.findViewById(R.id.listViewPropertyType);
                 listViewPopup.setAdapter(adapterPropertiesType);
                 dialog.setContentView(vi);

@@ -33,6 +33,9 @@ public class HelpFunctions {
         int match=0;
         if ( selectedFields.size()>0 ) {
             switch (selectedFields.get(0)) {
+                case "ВСИЧКИ":
+                    match=-1;
+                    break;
                 case "1-СТАЕН":
                     match=1;
                     break;
@@ -51,7 +54,7 @@ public class HelpFunctions {
                 case "МЕЗОНЕТ":
                     match=1;
                     break;
-                case "АТЕЛИЕ, ТАВАН":
+                case "АТЕЛИЕ ТАВАН":
                     match=1;
                     break;
 
@@ -97,17 +100,24 @@ public class HelpFunctions {
                     break;
             }
 
-            if ( (match==1) && ( (type=="1-СТАЕН") || (type=="2-СТАЕН") || (type=="3-СТАЕН") || (type=="4-СТАЕН") || (type=="МНОГОСТАЕН") || (type=="МЕЗОНЕТ") || (type=="АТЕЛИЕ, ТАВАН") ) ) {
+            if ( type.equals("ВСИЧКИ") ) {
                 return true;
-            } else if ( (match==2 ) && ( (type=="ХОТЕЛ") || (type=="ПРОМ. ПОМЕЩЕНИЕ") || (type=="СКЛАД") || (type=="ЗАВЕДЕНИЕ") || (type=="МАГАЗИН") || (type=="ОФИС") ) ) {
+            }
+
+            if ( match==-1 ) {
                 return true;
-            } else if ( (match==3) && ( (type=="ВИЛА") || (type=="КЪЩА") || (type=="ЕТАЖ ОТ КЪЩА") ) ) {
+            }
+            if ( (match==1) && ( type.equals("1-СТАЕН") || type.equals("2-СТАЕН") || type.equals("3-СТАЕН") || type.equals("4-СТАЕН") || type.equals("МНОГОСТАЕН") || type.equals("МЕЗОНЕТ") || type.equals("АТЕЛИЕ ТАВАН") ) ) {
                 return true;
-            } else if ( (match==4) && (type=="МЯСТО") ) {
+            } else if ( (match==2 ) && ( type.equals("ХОТЕЛ") || type.equals("ПРОМ. ПОМЕЩЕНИЕ") || type.equals("СКЛАД") || type.equals("ЗАВЕДЕНИЕ") || type.equals("МАГАЗИН") || type.equals("ОФИС") ) ) {
                 return true;
-            } else if ( (match==5) && (type=="ГАРАЖ")  ) {
+            } else if ( (match==3) && ( type.equals("ВИЛА") || type.equals("КЪЩА") || type.equals("ЕТАЖ ОТ КЪЩА") ) ) {
                 return true;
-            } else if ( (match==6) && (type=="ЗЕМЕДЕЛСКА ЗЕМЯ") ) {
+            } else if ( (match==4) && type.equals("МЯСТО") ) {
+                return true;
+            } else if ( (match==5) && type.equals("ГАРАЖ")  ) {
+                return true;
+            } else if ( (match==6) && type.equals("ЗЕМЕДЕЛСКА ЗЕМЯ") ) {
                 return true;
             }
 
@@ -128,7 +138,7 @@ public class HelpFunctions {
             }
         }
 
-        if (  (type=="1-СТАЕН") || (type=="2-СТАЕН") || (type=="3-СТАЕН") || (type=="4-СТАЕН") || (type=="МНОГОСТАЕН") || (type=="МЕЗОНЕТ") || (type=="АТЕЛИЕ, ТАВАН") )  {
+        if (  (type=="1-СТАЕН") || (type=="2-СТАЕН") || (type=="3-СТАЕН") || (type=="4-СТАЕН") || (type=="МНОГОСТАЕН") || (type=="МЕЗОНЕТ") || (type=="АТЕЛИЕ ТАВАН") )  {
             match=1;
         } else if (  (type=="ХОТЕЛ") || (type=="ПРОМ. ПОМЕЩЕНИЕ") || (type=="СКЛАД") || (type=="ЗАВЕДЕНИЕ") || (type=="МАГАЗИН") || (type=="ОФИС") )  {
             match=2;
