@@ -34,6 +34,26 @@ import java.util.HashMap;
 import adapters.PropertyTypeAdapter;
 import adapters.SimpleMultiChoiceAdapter;
 import interfaces.AsyncResponse;
+import interfaces.AsyncResponseBuildType;
+import interfaces.AsyncResponseElectricity;
+import interfaces.AsyncResponseExtri;
+import interfaces.AsyncResponseFloor;
+import interfaces.AsyncResponseLandCategory;
+import interfaces.AsyncResponseLandPermanentUsage;
+import interfaces.AsyncResponsePhone;
+import interfaces.AsyncResponseRegulation;
+import interfaces.AsyncResponseTec;
+import interfaces.AsyncResponseWater;
+import localEstatesHttpRequests.HTTPGETBuildType;
+import localEstatesHttpRequests.HTTPGETElectricity;
+import localEstatesHttpRequests.HTTPGETExtri;
+import localEstatesHttpRequests.HTTPGETFloor;
+import localEstatesHttpRequests.HTTPGETLandCategory;
+import localEstatesHttpRequests.HTTPGETLandPermanentUsage;
+import localEstatesHttpRequests.HTTPGETPhone;
+import localEstatesHttpRequests.HTTPGETRegulation;
+import localEstatesHttpRequests.HTTPGETTec;
+import localEstatesHttpRequests.HTTPGETWater;
 import localEstatesHttpRequests.HTTPGetProperties;
 import localEstatesHttpRequests.MakeASearchHttpRequest;
 import utils.HelpFunctions;
@@ -42,7 +62,9 @@ import utils.HelpFunctions;
  * Created by macbook on 1/19/16.
  */
 public class AdvanceSearchActivity extends ActionBarActivity implements
-        View.OnClickListener, AsyncResponse  {
+        View.OnClickListener, AsyncResponse, AsyncResponseExtri, AsyncResponseFloor,
+        AsyncResponseBuildType, AsyncResponseTec, AsyncResponsePhone, AsyncResponseElectricity,
+        AsyncResponseWater, AsyncResponseRegulation, AsyncResponseLandPermanentUsage, AsyncResponseLandCategory {
     public static final String ARG_SECTION_NUMBER = "section_number";
 
     private LinearLayout secondTownSpinnerLayout;
@@ -50,6 +72,16 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
     private int typeAdvert=1;
     private ArrayList<JSONObject> advertsJsonArray = new ArrayList<JSONObject>();
     private MakeASearchHttpRequest asyncTask = new MakeASearchHttpRequest();
+    private HTTPGETExtri asyncTaskGetExtri = new HTTPGETExtri();
+    private HTTPGETFloor asyncTaskGetFloor = new HTTPGETFloor();
+    private HTTPGETBuildType asyncTaskGetBuildType = new HTTPGETBuildType();
+    private HTTPGETTec asyncTaskGetTec = new HTTPGETTec();
+    private HTTPGETPhone asyncTaskGetPhone = new HTTPGETPhone();
+    private HTTPGETElectricity asyncTaskGetElectricity = new HTTPGETElectricity();
+    private HTTPGETWater asyncTaskGetWater = new HTTPGETWater();
+    private HTTPGETRegulation asyncTaskGetRegulation = new HTTPGETRegulation();
+    private HTTPGETLandPermanentUsage asyncTaskGetlandPermanentUsage = new HTTPGETLandPermanentUsage();
+    private HTTPGETLandCategory asyncTaskGetLandCategory = new HTTPGETLandCategory();
     private ArrayList<HashMap<String,String>> searchValues;
     private ArrayList<HashMap<String, String>> searchValuesEdit;
 
@@ -115,7 +147,6 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
     private Spinner sortResult;
     private ArrayAdapter<CharSequence> sortAdapter;
     public static ArrayList<String> checkboxSelectedValue;
-    public static ArrayList<String> currentboxSelectedValue;
     public ArrayList<String> extriSelectedValue;
     public ArrayList<String> buildTypeSelectedValue;
     private int groupNumber;
@@ -170,8 +201,17 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         }
 
         checkboxSelectedValue=new ArrayList<>();
-        currentboxSelectedValue=new ArrayList<>();
         asyncTask.delegate = this;
+        asyncTaskGetExtri.delegate=this;
+        asyncTaskGetFloor.delegate=this;
+        asyncTaskGetBuildType.delegate=this;
+        asyncTaskGetTec.delegate=this;
+        asyncTaskGetPhone.delegate=this;
+        asyncTaskGetElectricity.delegate=this;
+        asyncTaskGetWater.delegate=this;
+        asyncTaskGetRegulation.delegate=this;
+        asyncTaskGetlandPermanentUsage.delegate=this;
+        asyncTaskGetLandCategory.delegate=this;
 
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         if ( searchValuesEdit!=null ) {
@@ -277,7 +317,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             if (rubValue!=null) {
                 ArrayList<String> arrayValueTown = new ArrayList<String>();
                 Collections.addAll(arrayValueTown, getResources().getStringArray(R.array.town));
-                for(int i=0;i<arrayValueTown.size();i++) {
+                for ( int i=0;i<arrayValueTown.size();i++ ) {
                     if ( arrayValueTown.get(i).equals(rubValue) ) {
                         townSpinner.setSelection(i);
                         break;
@@ -288,44 +328,9 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             townSpinner.setSelection(0);
         }
 
-        // Second Adapter for Areas
-        secondTownSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-//                Log.e("HEREHERE", "Nothing Selected");
-            }
-        });
         spinnerAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, android.R.id.text1);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         secondTownSpinner.setAdapter(spinnerAdapter);
-
-//        String[] strings = { "ВСИЧКИ","СТАЯ", "1-СТАЕН", "2-СТАЕН", "3-СТАЕН","4-СТАЕН","МНОГОСТАЕН","МЕЗОНЕТ","АТЕЛИЕ, ТАВАН","ОФИС",
-//                             "МАГАЗИН","ЗАВЕДЕНИЕ","СКЛАД","ПРОМ. ПОМЕЩЕНИЕ","ХОТЕЛ","ЕТАЖ ОТ КЪЩА","КЪЩА","ВИЛА","МЯСТО","ГАРАЖ","ЗЕМЕДЕЛСКА ЗЕМЯ" };
-//        ArrayList<String> propertyTypes = new ArrayList<String>();
-//        propertyTypes.add("ВСИЧКИ");
-//        propertyTypes.add("1-СТАЕН");
-//        propertyTypes.add("2-СТАЕН");
-//        propertyTypes.add("3-СТАЕН");
-//        propertyTypes.add("4-СТАЕН");
-//        propertyTypes.add("МНОГОСТАЕН");
-//        propertyTypes.add("МЕЗОНЕТ");
-//        propertyTypes.add("АТЕЛИЕ, ТАВАН");
-//        propertyTypes.add("ОФИС");
-//        propertyTypes.add("МАГАЗИН");
-//        propertyTypes.add("ЗАВЕДЕНИЕ");
-//        propertyTypes.add("СКЛАД");
-//        propertyTypes.add("ПРОМ. ПОМЕЩЕНИЕ");
-//        propertyTypes.add("ХОТЕЛ");
-//        propertyTypes.add("ЕТАЖ ОТ КЪЩА");
-//        propertyTypes.add("КЪЩА");
-//        propertyTypes.add("ВИЛА");
-//        propertyTypes.add("МЯСТО");
-//        propertyTypes.add("ГАРАЖ");
-//        propertyTypes.add("ЗЕМЕДЕЛСКА ЗЕМЯ");
 
         propertyTypes = new ArrayList<>();
         Collections.addAll(propertyTypes, getResources().getStringArray(R.array.sell_property_types));
@@ -333,18 +338,57 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         if ( (searchValuesEdit!=null) && (searchValuesEdit.get(4)!=null) ) {
             String rubValue =  searchValuesEdit.get(4).get("type_home");
             if (rubValue!=null) {
-                Log.e("HEREHERE",rubValue);
                 String[] parts = rubValue.split(",");
                 if ( parts.length>0 ) {
                     for ( int i=0;i<parts.length;i++) {
-                        if ( rubValue.contains(String.valueOf(i)) ) {
-                            rubValue=rubValue.replace(String.valueOf(i),parts[i]);
+                        if ( rubValue.contains(String.valueOf(parts[i])) ) {
+                            rubValue=rubValue.replace(parts[i],propertyTypes.get(Integer.parseInt(parts[i])).toString());
                         }
                     }
                 }
                 choosePropertyType.setText(rubValue);
+
+                if (rubValue!="") {
+                    groupNumber=0;
+                    String [] propertyTypeFullName = rubValue.split(",");
+                    for (int i=0;i<propertyTypeFullName.length;i++) {
+                        if ( groupNumber==0 ) {
+                            groupNumber= HelpFunctions.returnGroupNumberOfProperty(propertyTypeFullName[i],null,0);
+                        }
+                    }
+
+                    if ( groupNumber>0 ) {
+                        moreSearchOptions.removeAllViews();
+                        View optionView = HelpFunctions.loadCorrectView(AdvanceSearchActivity.this,groupNumber);
+                        moreSearchOptions.addView(optionView);
+
+                        // get extras
+                        extriProperty = (TextView) optionView.findViewById(R.id.extriProperty);
+                        int extriGroup=HelpFunctions.returnExtriGroup(typeAdvert,groupNumber);
+                        String urlBuildExtri="http://api.imot.bg/mobile_api/dictionary/extri?type_extri="+String.valueOf(extriGroup);
+                        asyncTaskGetExtri.execute(urlBuildExtri);
+
+                        if (groupNumber==1) {
+                            loadGroup1(optionView);
+                        } else if (groupNumber==2) {
+                            loadGroup2(optionView);
+                        } else if (groupNumber==3) {
+                            loadGroup3(optionView);
+                        } else if (groupNumber==4) {
+                            loadGroup4(optionView);
+                        } else if (groupNumber==5) {
+                            loadGroup5(optionView);
+                        } else if (groupNumber==6) {
+                            loadGroup6(optionView);
+                        } else {}
+                    } else {
+                        moreSearchOptions.removeAllViews();
+                    }
+
+                }
             }
         }
+
         choosePropertyType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -364,7 +408,6 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                 final Dialog dialog = new Dialog(AdvanceSearchActivity.this);
                 View vi = getLayoutInflater().inflate(R.layout.listview_popup, null);
 
-
                 adapterPropertiesType = new PropertyTypeAdapter(getBaseContext(), R.layout.propertytype_single_item, propertyTypes,checkboxSelectedValue);
                 ListView listViewPopup = (ListView) vi.findViewById(R.id.listViewPropertyType);
                 listViewPopup.setAdapter(adapterPropertiesType);
@@ -376,7 +419,6 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                     @Override
                     public void onClick(View v) {
                         adapterPropertiesType.clearSelectedFields();
-//                        currentboxSelectedValue=new ArrayList<>();
                         dialog.dismiss();
                     }
                 });
@@ -386,12 +428,15 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
+                        groupNumber=0;
                         checkboxSelectedValue=adapterPropertiesType.returnSelectedFields();
                         if (checkboxSelectedValue!=null) {
-                            Log.e("HEREHERE","Click Event "+checkboxSelectedValue.toString());
                             String valueCheckBox="";
                             for (int i=0;i<checkboxSelectedValue.size();i++) {
                                 valueCheckBox+=checkboxSelectedValue.get(i)+",";
+                                if ( groupNumber==0 ) {
+                                    groupNumber= HelpFunctions.returnGroupNumberOfProperty(checkboxSelectedValue.get(i),checkboxSelectedValue,0);
+                                }
                             }
 
                             if (valueCheckBox.length()>0) {
@@ -402,1043 +447,30 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                             choosePropertyType.setText(valueCheckBox);
                         }
 
-//                       checkboxSelectedValue=currentboxSelectedValue;
-//                        String valueCheckBox="";
-//                        for (int i=0;i<checkboxSelectedValue.size();i++) {
-//                            valueCheckBox+=checkboxSelectedValue.get(i)+",";
-//                            if ( groupNumber==0 ) {
-//                                groupNumber= HelpFunctions.returnGroupNumberOfProperty(checkboxSelectedValue.get(i),checkboxSelectedValue,0);
-//                            }
-//                        }
-//
-//                        if (valueCheckBox.length()>0) {
-//                            valueCheckBox = valueCheckBox.substring(0, valueCheckBox.length()-1);
-//                        } else {
-//                            valueCheckBox="ВСИЧКИ";
-//                        }
-//
-//                        choosePropertyType.setText(valueCheckBox);
-
-//                        moreSearchOptions.removeAllViews();
-//                        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                        View optionView = layoutInflater.inflate(R.layout.search_options_group_1, null);
-//                        moreSearchOptions.addView(optionView);
-
-                        groupNumber=0;
-                        if (groupNumber>0) {
-
-                            LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                            View optionView;
-                            if ( groupNumber==1  ) {
-                                moreSearchOptions.removeAllViews();
-//                                optionView = layoutInflater.inflate(R.layout.search_options_group_1, null);
-                                optionView = getLayoutInflater().inflate(R.layout.search_options_group_1, null);
-                            } else if (groupNumber==2) {
-                                moreSearchOptions.removeAllViews();
-                                optionView = getLayoutInflater().inflate(R.layout.search_options_group_2, null);
-                            } else if (groupNumber==3) {
-                                moreSearchOptions.removeAllViews();
-                                optionView = getLayoutInflater().inflate(R.layout.search_options_group_3, null);
-                            } else if (groupNumber==4) {
-                                moreSearchOptions.removeAllViews();
-                                optionView = getLayoutInflater().inflate(R.layout.search_options_group_4, null);
-                            } else if (groupNumber==5) {
-                                moreSearchOptions.removeAllViews();
-                                optionView = getLayoutInflater().inflate(R.layout.search_options_group_5, null);
-                            } else if (groupNumber==6) {
-                                moreSearchOptions.removeAllViews();
-                                optionView = getLayoutInflater().inflate(R.layout.search_options_group_6, null);
-                            } else {
-                                moreSearchOptions.removeAllViews();
-                                optionView = getLayoutInflater().inflate(R.layout.search_options_group_1, null);
-                            }
+                        if ( groupNumber>0 ) {
+                            moreSearchOptions.removeAllViews();
+                            View optionView = HelpFunctions.loadCorrectView(AdvanceSearchActivity.this,groupNumber);
                             moreSearchOptions.addView(optionView);
 
-                            extriProperty = (TextView) optionView.findViewById(R.id.extriProperty);
                             // get extras
-                            HTTPGetProperties getExtras = new HTTPGetProperties() {
-                                @Override
-                                protected void onPostExecute(String result) {
-                                    if (result != null) {
-                                        Log.e("HEREHERE", "THIS RESULT");
-                                        Log.e("HEREHERE", result);
-                                        try {
-                                            JSONArray  jsonArray = new JSONArray(result);
-                                            Log.e("HEREHERE",jsonArray.toString());
-                                            extriArray = new ArrayList<>();
-                                            for(int i = 0, count = jsonArray.length(); i< count; i++) {
-                                                extriArray.add(jsonArray.getString(i));
-                                            }
-
-                                            extriProperty.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    final Dialog dialogSimple = new Dialog(AdvanceSearchActivity.this);
-                                                    View vi = getLayoutInflater().inflate(R.layout.listview_popup, null);
-//                                                    final Dialog dialogSimple = new Dialog(getBaseContext());
-//                                                    View vi = getLayoutInflater().inflate(R.layout.listview_popup, null);
-
-                                                    dialogSimple.setTitle("Избери особености:");
-                                                    dialogSimple.setCancelable(false);
-                                                    String textExtriFieldValue = (String) extriProperty.getText();
-                                                    if ( (textExtriFieldValue.length()>0) && (textExtriFieldValue.contains(",")) ) {
-                                                        extriSelectedValue= new ArrayList<>();
-                                                        String[] parts = textExtriFieldValue.split(",");
-                                                        if ( parts.length>0 ) {
-                                                            for ( int i=0;i<parts.length;i++) {
-                                                                extriSelectedValue.add(parts[i]);
-                                                            }
-                                                        } else {
-                                                            extriSelectedValue.add(textExtriFieldValue);
-                                                        }
-                                                    } else if ( (textExtriFieldValue.length()>0) && ( !textExtriFieldValue.equals("Всички") ) )  {
-                                                        extriSelectedValue= new ArrayList<>();
-                                                        extriSelectedValue.add(textExtriFieldValue);
-                                                    } else {
-                                                        extriSelectedValue= new ArrayList<>();
-                                                    }
-
-                                                    final SimpleMultiChoiceAdapter adapterExtriProperties = new SimpleMultiChoiceAdapter(getBaseContext(), R.layout.propertytype_single_item, extriArray,extriSelectedValue);
-                                                    ListView listViewPopup = (ListView) vi.findViewById(R.id.listViewPropertyType);
-                                                    listViewPopup.setAdapter(adapterExtriProperties);
-                                                    dialogSimple.setContentView(vi);
-                                                    dialogSimple.show();
-
-                                                    Button saveButton = (Button) vi.findViewById(R.id.savePopupButton);
-                                                    saveButton.setOnClickListener(new View.OnClickListener() {
-
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            extriSelectedValue=adapterExtriProperties.returnSelectedFields();
-                                                            if (extriSelectedValue!=null) {
-                                                                Log.e("HEREHERE","Click Event "+extriSelectedValue.toString());
-                                                                String valueCheckBox="";
-                                                                for (int i=0;i<extriSelectedValue.size();i++) {
-                                                                    valueCheckBox+=extriSelectedValue.get(i)+",";
-                                                                }
-
-                                                                if (valueCheckBox.length()>0) {
-                                                                    valueCheckBox = valueCheckBox.substring(0, valueCheckBox.length()-1);
-                                                                } else {
-                                                                    valueCheckBox="Всички";
-                                                                }
-                                                                extriProperty.setText(valueCheckBox);
-                                                            }
-                                                            dialogSimple.hide();
-                                                        }
-                                                    });
-
-                                                    Button closeButton = (Button) vi.findViewById(R.id.closePopupButton);
-                                                    closeButton.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            adapterExtriProperties.clearSelectedFields();
-                                                            dialogSimple.hide();
-                                                        }
-                                                    });
-                                                }
-                                            });
-
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    } else {
-                                        Log.e("HEREHERE", "EMPTY");
-                                    }
-                                }
-                            };
-
+                            extriProperty = (TextView) optionView.findViewById(R.id.extriProperty);
                             int extriGroup=HelpFunctions.returnExtriGroup(typeAdvert,groupNumber);
                             String urlBuildExtri="http://api.imot.bg/mobile_api/dictionary/extri?type_extri="+String.valueOf(extriGroup);
-                            getExtras.execute(urlBuildExtri);
+                            asyncTaskGetExtri.execute(urlBuildExtri);
 
                             if ( groupNumber==1 ) {
-                                // get floor
-                                floorFromSpinner = (Spinner) optionView.findViewById(R.id.floor_from);
-                                floorToSpinner = (Spinner) optionView.findViewById(R.id.floor_to);
-                                HTTPGetProperties getFloor = new HTTPGetProperties() {
-                                    @Override
-                                    protected void onPostExecute(String result) {
-                                        if (result != null) {
-                                            Log.e("HEREHERE", "THIS RESULT");
-                                            Log.e("HEREHERE", result);
-                                            try {
-                                                JSONArray  jsonArray = new JSONArray(result);
-                                                floorArray = new ArrayList<>();
-                                                for(int i = 0, count = jsonArray.length(); i< count; i++) {
-                                                    try {
-                                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                                        if ( jsonObject!=null ) {
-                                                            floorArray.add(jsonObject.getString("value"));
-                                                        }
-                                                    }
-                                                    catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-
-                                                floorFromAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, floorArray);
-                                                floorFromAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                floorFromSpinner.setAdapter(floorFromAdapter);
-
-                                                floorToAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, floorArray);
-                                                floorToAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                floorToSpinner.setAdapter(floorToAdapter);
-
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            Log.e("HEREHERE", "EMPTY");
-                                        }
-                                    }
-                                };
-
-                                String urlBuildFloor="http://api.imot.bg/mobile_api/dictionary/floor";
-                                getFloor.execute(urlBuildFloor);
-
-                                buildTypeProperty = (TextView) optionView.findViewById(R.id.buildTypeProperty);
-                                // get build type
-                                HTTPGetProperties getBuildType = new HTTPGetProperties() {
-                                    @Override
-                                    protected void onPostExecute(String result) {
-                                        if (result != null) {
-                                            Log.e("HEREHERE", "THIS RESULT");
-                                            Log.e("HEREHERE", result);
-                                            try {
-                                                JSONArray  jsonArray = new JSONArray(result);
-                                                Log.e("HEREHERE",jsonArray.toString());
-                                                buildTypeArray = new ArrayList<>();
-                                                for(int i = 0, count = jsonArray.length(); i< count; i++) {
-                                                    buildTypeArray.add(jsonArray.getString(i));
-                                                }
-
-                                                buildTypeProperty.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        final Dialog dialogSimple = new Dialog(AdvanceSearchActivity.this);
-                                                        View vi = getLayoutInflater().inflate(R.layout.listview_popup, null);
-                                                        dialogSimple.setTitle("Избери особености:");
-                                                        dialogSimple.setCancelable(false);
-
-                                                        String textbuildTypeFieldValue = (String) buildTypeProperty.getText();
-                                                        if ( (textbuildTypeFieldValue.length()>0) && (textbuildTypeFieldValue.contains(",")) ) {
-                                                            buildTypeSelectedValue= new ArrayList<>();
-                                                            String[] parts = textbuildTypeFieldValue.split(",");
-                                                            if ( parts.length>0 ) {
-                                                                for ( int i=0;i<parts.length;i++) {
-                                                                    buildTypeSelectedValue.add(parts[i]);
-                                                                }
-                                                            } else {
-                                                                buildTypeSelectedValue.add(textbuildTypeFieldValue);
-                                                            }
-                                                        } else if ( (textbuildTypeFieldValue.length()>0) && ( !textbuildTypeFieldValue.equals("Всички") ) )  {
-                                                            buildTypeSelectedValue= new ArrayList<>();
-                                                            buildTypeSelectedValue.add(textbuildTypeFieldValue);
-                                                        } else {
-                                                            buildTypeSelectedValue= new ArrayList<>();
-                                                        }
-
-                                                        final SimpleMultiChoiceAdapter adapterbuildTypeProperties = new SimpleMultiChoiceAdapter(getBaseContext(), R.layout.propertytype_single_item, buildTypeArray,buildTypeSelectedValue);
-                                                        ListView listViewPopup = (ListView) vi.findViewById(R.id.listViewPropertyType);
-                                                        listViewPopup.setAdapter(adapterbuildTypeProperties);
-                                                        dialogSimple.setContentView(vi);
-                                                        dialogSimple.show();
-
-                                                        Button saveButton = (Button) vi.findViewById(R.id.savePopupButton);
-                                                        saveButton.setOnClickListener(new View.OnClickListener() {
-
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                buildTypeSelectedValue=adapterbuildTypeProperties.returnSelectedFields();
-                                                                if (buildTypeSelectedValue!=null) {
-                                                                    Log.e("HEREHERE","Click Event "+buildTypeSelectedValue.toString());
-                                                                    String valueCheckBox="";
-                                                                    for (int i=0;i<buildTypeSelectedValue.size();i++) {
-                                                                        valueCheckBox+=buildTypeSelectedValue.get(i)+",";
-                                                                    }
-
-                                                                    if (valueCheckBox.length()>0) {
-                                                                        valueCheckBox = valueCheckBox.substring(0, valueCheckBox.length()-1);
-                                                                    } else {
-                                                                        valueCheckBox="Всички";
-                                                                    }
-                                                                    buildTypeProperty.setText(valueCheckBox);
-                                                                }
-                                                                dialogSimple.hide();
-                                                            }
-                                                        });
-
-                                                        Button closeButton = (Button) vi.findViewById(R.id.closePopupButton);
-                                                        closeButton.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                adapterbuildTypeProperties.clearSelectedFields();
-                                                                dialogSimple.hide();
-                                                            }
-                                                        });
-                                                    }
-                                                });
-
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            Log.e("HEREHERE", "EMPTY");
-                                        }
-                                    }
-                                };
-                                String urlBuildType="http://api.imot.bg/mobile_api/dictionary/type_build";
-                                getBuildType.execute(urlBuildType);
-
-                                // get year of build
-                                yearFrom = (EditText) optionView.findViewById(R.id.yearFrom);
-                                yearTo = (EditText) optionView.findViewById(R.id.yearTo);
-
-                                // get tec
-                                tecSpinner = (Spinner) optionView.findViewById(R.id.tec);
-                                HTTPGetProperties getTec = new HTTPGetProperties() {
-                                    @Override
-                                    protected void onPostExecute(String result) {
-                                        if (result != null) {
-                                            Log.e("HEREHERE", "THIS RESULT");
-                                            Log.e("HEREHERE", result);
-                                            try {
-                                                JSONArray  jsonArray = new JSONArray(result);
-                                                tecArray = new ArrayList<>();
-                                                for(int i = 0, count = jsonArray.length(); i< count; i++) {
-                                                    try {
-                                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                                        if ( jsonObject!=null ) {
-                                                            tecArray.add(jsonObject.getString("value"));
-                                                        }
-                                                    }
-                                                    catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                                tecAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, tecArray);
-                                                tecAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                tecSpinner.setAdapter(tecAdapter);
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            Log.e("HEREHERE", "EMPTY");
-                                        }
-                                    }
-                                };
-
-                                String urlBuildTec="http://api.imot.bg/mobile_api/dictionary/tec";
-                                getTec.execute(urlBuildTec);
-
-                                // get phone
-                                phoneSpinner = (Spinner) optionView.findViewById(R.id.phone);
-                                HTTPGetProperties getTel = new HTTPGetProperties() {
-                                    @Override
-                                    protected void onPostExecute(String result) {
-                                        if (result != null) {
-                                            Log.e("HEREHERE", "THIS RESULT");
-                                            Log.e("HEREHERE", result);
-                                            try {
-                                                JSONArray  jsonArray = new JSONArray(result);
-                                                phoneArray = new ArrayList<CharSequence>();
-                                                for(int i = 0, count = jsonArray.length(); i< count; i++) {
-                                                    try {
-                                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                                        if ( jsonObject!=null ) {
-                                                            phoneArray.add(jsonObject.getString("value"));
-                                                        }
-                                                    }
-                                                    catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                                phoneAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, phoneArray);
-                                                phoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                phoneSpinner.setAdapter(phoneAdapter);
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            Log.e("HEREHERE", "EMPTY");
-                                        }
-                                    }
-                                };
-
-                                String urlBuildPhone="http://api.imot.bg/mobile_api/dictionary/phone";
-                                getTel.execute(urlBuildPhone);
+                                loadGroup1(optionView);
                             } else if (groupNumber==2) {
-
-                                buildTypeProperty = (TextView) optionView.findViewById(R.id.buildTypeProperty);
-                                // get build type
-                                HTTPGetProperties getBuildType = new HTTPGetProperties() {
-                                    @Override
-                                    protected void onPostExecute(String result) {
-                                        if (result != null) {
-                                            Log.e("HEREHERE", "THIS RESULT");
-                                            Log.e("HEREHERE", result);
-                                            try {
-                                                JSONArray  jsonArray = new JSONArray(result);
-                                                Log.e("HEREHERE",jsonArray.toString());
-                                                buildTypeArray = new ArrayList<String>();
-                                                for(int i = 0, count = jsonArray.length(); i< count; i++) {
-                                                    buildTypeArray.add(jsonArray.getString(i));
-                                                }
-
-                                                buildTypeProperty.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        final Dialog dialogSimple = new Dialog(AdvanceSearchActivity.this);
-                                                        View vi = getLayoutInflater().inflate(R.layout.listview_popup, null);
-                                                        dialogSimple.setTitle("Избери особености:");
-                                                        dialogSimple.setCancelable(false);
-
-                                                        String textbuildTypeFieldValue = (String) buildTypeProperty.getText();
-                                                        if ( (textbuildTypeFieldValue.length()>0) && (textbuildTypeFieldValue.contains(",")) ) {
-                                                            buildTypeSelectedValue= new ArrayList<String>();
-                                                            String[] parts = textbuildTypeFieldValue.split(",");
-                                                            if ( parts.length>0 ) {
-                                                                for ( int i=0;i<parts.length;i++) {
-                                                                    buildTypeSelectedValue.add(parts[i]);
-                                                                }
-                                                            } else {
-                                                                buildTypeSelectedValue.add(textbuildTypeFieldValue);
-                                                            }
-                                                        } else if ( (textbuildTypeFieldValue.length()>0) && ( !textbuildTypeFieldValue.equals("Всички") ) )  {
-                                                            buildTypeSelectedValue= new ArrayList<String>();
-                                                            buildTypeSelectedValue.add(textbuildTypeFieldValue);
-                                                        } else {
-                                                            buildTypeSelectedValue= new ArrayList<String>();
-                                                        }
-
-                                                        final SimpleMultiChoiceAdapter adapterbuildTypeProperties = new SimpleMultiChoiceAdapter(getBaseContext(), R.layout.propertytype_single_item, buildTypeArray,buildTypeSelectedValue);
-                                                        ListView listViewPopup = (ListView) vi.findViewById(R.id.listViewPropertyType);
-                                                        listViewPopup.setAdapter(adapterbuildTypeProperties);
-                                                        dialogSimple.setContentView(vi);
-                                                        dialogSimple.show();
-
-                                                        Button saveButton = (Button) vi.findViewById(R.id.savePopupButton);
-                                                        saveButton.setOnClickListener(new View.OnClickListener() {
-
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                buildTypeSelectedValue=adapterbuildTypeProperties.returnSelectedFields();
-                                                                if (buildTypeSelectedValue!=null) {
-                                                                    Log.e("HEREHERE","Click Event "+buildTypeSelectedValue.toString());
-                                                                    String valueCheckBox="";
-                                                                    for (int i=0;i<buildTypeSelectedValue.size();i++) {
-                                                                        valueCheckBox+=buildTypeSelectedValue.get(i)+",";
-                                                                    }
-
-                                                                    if (valueCheckBox.length()>0) {
-                                                                        valueCheckBox = valueCheckBox.substring(0, valueCheckBox.length()-1);
-                                                                    } else {
-                                                                        valueCheckBox="Всички";
-                                                                    }
-                                                                    buildTypeProperty.setText(valueCheckBox);
-                                                                }
-                                                                dialogSimple.hide();
-                                                            }
-                                                        });
-
-                                                        Button closeButton = (Button) vi.findViewById(R.id.closePopupButton);
-                                                        closeButton.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                adapterbuildTypeProperties.clearSelectedFields();
-                                                                dialogSimple.hide();
-                                                            }
-                                                        });
-                                                    }
-                                                });
-
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            Log.e("HEREHERE", "EMPTY");
-                                        }
-                                    }
-                                };
-                                String urlBuildType="http://api.imot.bg/mobile_api/dictionary/type_build";
-                                getBuildType.execute(urlBuildType);
-
-                                // get year of build
-                                yearFrom = (EditText) optionView.findViewById(R.id.yearFrom);
-                                yearTo = (EditText) optionView.findViewById(R.id.yearTo);
-
-                                // get tec
-                                tecSpinner = (Spinner) optionView.findViewById(R.id.tec);
-                                HTTPGetProperties getTec = new HTTPGetProperties() {
-                                    @Override
-                                    protected void onPostExecute(String result) {
-                                        if (result != null) {
-                                            Log.e("HEREHERE", "THIS RESULT");
-                                            Log.e("HEREHERE", result);
-                                            try {
-                                                JSONArray  jsonArray = new JSONArray(result);
-                                                tecArray = new ArrayList<CharSequence>();
-                                                for(int i = 0, count = jsonArray.length(); i< count; i++) {
-                                                    try {
-                                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                                        if ( jsonObject!=null ) {
-                                                            tecArray.add(jsonObject.getString("value"));
-                                                        }
-                                                    }
-                                                    catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                                tecAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, tecArray);
-                                                tecAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                tecSpinner.setAdapter(tecAdapter);
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            Log.e("HEREHERE", "EMPTY");
-                                        }
-                                    }
-                                };
-
-                                String urlBuildTec="http://api.imot.bg/mobile_api/dictionary/tec";
-                                getTec.execute(urlBuildTec);
-
-                                // get phone
-                                phoneSpinner = (Spinner) optionView.findViewById(R.id.phone);
-                                HTTPGetProperties getTel = new HTTPGetProperties() {
-                                    @Override
-                                    protected void onPostExecute(String result) {
-                                        if (result != null) {
-                                            Log.e("HEREHERE", "THIS RESULT");
-                                            Log.e("HEREHERE", result);
-                                            try {
-                                                JSONArray  jsonArray = new JSONArray(result);
-                                                phoneArray = new ArrayList<CharSequence>();
-                                                for(int i = 0, count = jsonArray.length(); i< count; i++) {
-                                                    try {
-                                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                                        if ( jsonObject!=null ) {
-                                                            phoneArray.add(jsonObject.getString("value"));
-                                                        }
-                                                    }
-                                                    catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                                phoneAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, phoneArray);
-                                                phoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                phoneSpinner.setAdapter(phoneAdapter);
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            Log.e("HEREHERE", "EMPTY");
-                                        }
-                                    }
-                                };
-
-                                String urlBuildPhone="http://api.imot.bg/mobile_api/dictionary/phone";
-                                getTel.execute(urlBuildPhone);
-
+                                loadGroup2(optionView);
                             } else if (groupNumber==3) {
+                                loadGroup3(optionView);
                             } else if (groupNumber==4) {
-                                // get electricity
-                                electricitySpinner = (Spinner) optionView.findViewById(R.id.electricity);
-                                HTTPGetProperties getElectricity = new HTTPGetProperties() {
-                                    @Override
-                                    protected void onPostExecute(String result) {
-                                        if (result != null) {
-                                            Log.e("HEREHERE", "THIS RESULT");
-                                            Log.e("HEREHERE", result);
-                                            try {
-                                                JSONArray  jsonArray = new JSONArray(result);
-                                                electricityArray = new ArrayList<CharSequence>();
-                                                for(int i = 0, count = jsonArray.length(); i< count; i++) {
-                                                    try {
-                                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                                        if ( jsonObject!=null ) {
-                                                            electricityArray.add(jsonObject.getString("value"));
-                                                        }
-                                                    }
-                                                    catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                                electricityAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, electricityArray);
-                                                electricityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                electricitySpinner.setAdapter(electricityAdapter);
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            Log.e("HEREHERE", "EMPTY");
-                                        }
-                                    }
-                                };
-
-                                String urlElectricity="http://api.imot.bg/mobile_api/dictionary/electricity";
-                                getElectricity.execute(urlElectricity);
-
-                                // get water
-                                waterSpinner = (Spinner) optionView.findViewById(R.id.water);
-                                HTTPGetProperties getWater = new HTTPGetProperties() {
-                                    @Override
-                                    protected void onPostExecute(String result) {
-                                        if (result != null) {
-                                            Log.e("HEREHERE", "THIS RESULT");
-                                            Log.e("HEREHERE", result);
-                                            try {
-                                                JSONArray  jsonArray = new JSONArray(result);
-                                                waterArray = new ArrayList<CharSequence>();
-                                                for(int i = 0, count = jsonArray.length(); i< count; i++) {
-                                                    try {
-                                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                                        if ( jsonObject!=null ) {
-                                                            waterArray.add(jsonObject.getString("value"));
-                                                        }
-                                                    }
-                                                    catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                                waterAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, waterArray);
-                                                waterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                waterSpinner.setAdapter(waterAdapter);
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            Log.e("HEREHERE", "EMPTY");
-                                        }
-                                    }
-                                };
-
-                                String urlWater="http://api.imot.bg/mobile_api/dictionary/watter";
-                                getWater.execute(urlWater);
-
-                                // get Regulation
-                                regulationSpinner = (Spinner) optionView.findViewById(R.id.regulation);
-                                HTTPGetProperties getRegulation = new HTTPGetProperties() {
-                                    @Override
-                                    protected void onPostExecute(String result) {
-                                        if (result != null) {
-                                            Log.e("HEREHERE", "THIS RESULT");
-                                            Log.e("HEREHERE", result);
-                                            try {
-                                                JSONArray  jsonArray = new JSONArray(result);
-                                                regulationArray = new ArrayList<CharSequence>();
-                                                for(int i = 0, count = jsonArray.length(); i< count; i++) {
-                                                    try {
-                                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                                        if ( jsonObject!=null ) {
-                                                            regulationArray.add(jsonObject.getString("value"));
-                                                        }
-                                                    }
-                                                    catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                                regulationAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, regulationArray);
-                                                regulationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                regulationSpinner.setAdapter(regulationAdapter);
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            Log.e("HEREHERE", "EMPTY");
-                                        }
-                                    }
-                                };
-
-                                String urlRegulation="http://api.imot.bg/mobile_api/dictionary/watter";
-                                getRegulation.execute(urlRegulation);
-
+                                loadGroup4(optionView);
                             } else if (groupNumber==5) {
-                                buildTypeProperty = (TextView) optionView.findViewById(R.id.buildTypeProperty);
-                                // get build type
-                                HTTPGetProperties getBuildType = new HTTPGetProperties() {
-                                    @Override
-                                    protected void onPostExecute(String result) {
-                                        if (result != null) {
-                                            Log.e("HEREHERE", "THIS RESULT");
-                                            Log.e("HEREHERE", result);
-                                            try {
-                                                JSONArray  jsonArray = new JSONArray(result);
-                                                Log.e("HEREHERE",jsonArray.toString());
-                                                buildTypeArray = new ArrayList<String>();
-                                                for(int i = 0, count = jsonArray.length(); i< count; i++) {
-                                                    buildTypeArray.add(jsonArray.getString(i));
-                                                }
-
-                                                buildTypeProperty.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        final Dialog dialogSimple = new Dialog(AdvanceSearchActivity.this);
-                                                        View vi = getLayoutInflater().inflate(R.layout.listview_popup, null);
-                                                        dialogSimple.setTitle("Избери особености:");
-                                                        dialogSimple.setCancelable(false);
-
-                                                        String textbuildTypeFieldValue = (String) buildTypeProperty.getText();
-                                                        if ( (textbuildTypeFieldValue.length()>0) && (textbuildTypeFieldValue.contains(",")) ) {
-                                                            buildTypeSelectedValue= new ArrayList<String>();
-                                                            String[] parts = textbuildTypeFieldValue.split(",");
-                                                            if ( parts.length>0 ) {
-                                                                for ( int i=0;i<parts.length;i++) {
-                                                                    buildTypeSelectedValue.add(parts[i]);
-                                                                }
-                                                            } else {
-                                                                buildTypeSelectedValue.add(textbuildTypeFieldValue);
-                                                            }
-                                                        } else if ( (textbuildTypeFieldValue.length()>0) && ( !textbuildTypeFieldValue.equals("Всички") ) )  {
-                                                            buildTypeSelectedValue= new ArrayList<String>();
-                                                            buildTypeSelectedValue.add(textbuildTypeFieldValue);
-                                                        } else {
-                                                            buildTypeSelectedValue= new ArrayList<String>();
-                                                        }
-
-                                                        final SimpleMultiChoiceAdapter adapterbuildTypeProperties = new SimpleMultiChoiceAdapter(getBaseContext(), R.layout.propertytype_single_item, buildTypeArray,buildTypeSelectedValue);
-                                                        ListView listViewPopup = (ListView) vi.findViewById(R.id.listViewPropertyType);
-                                                        listViewPopup.setAdapter(adapterbuildTypeProperties);
-                                                        dialogSimple.setContentView(vi);
-                                                        dialogSimple.show();
-
-                                                        Button saveButton = (Button) vi.findViewById(R.id.savePopupButton);
-                                                        saveButton.setOnClickListener(new View.OnClickListener() {
-
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                buildTypeSelectedValue=adapterbuildTypeProperties.returnSelectedFields();
-                                                                if (buildTypeSelectedValue!=null) {
-                                                                    Log.e("HEREHERE","Click Event "+buildTypeSelectedValue.toString());
-                                                                    String valueCheckBox="";
-                                                                    for (int i=0;i<buildTypeSelectedValue.size();i++) {
-                                                                        valueCheckBox+=buildTypeSelectedValue.get(i)+",";
-                                                                    }
-
-                                                                    if (valueCheckBox.length()>0) {
-                                                                        valueCheckBox = valueCheckBox.substring(0, valueCheckBox.length()-1);
-                                                                    } else {
-                                                                        valueCheckBox="Всички";
-                                                                    }
-                                                                    buildTypeProperty.setText(valueCheckBox);
-                                                                }
-                                                                dialogSimple.hide();
-                                                            }
-                                                        });
-
-                                                        Button closeButton = (Button) vi.findViewById(R.id.closePopupButton);
-                                                        closeButton.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                adapterbuildTypeProperties.clearSelectedFields();
-                                                                dialogSimple.hide();
-                                                            }
-                                                        });
-                                                    }
-                                                });
-
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            Log.e("HEREHERE", "EMPTY");
-                                        }
-                                    }
-                                };
-                                String urlBuildType="http://api.imot.bg/mobile_api/dictionary/type_build";
-                                getBuildType.execute(urlBuildType);
-
-                                // get year of build
-                                yearFrom = (EditText) optionView.findViewById(R.id.yearFrom);
-                                yearTo = (EditText) optionView.findViewById(R.id.yearTo);
-
-                                // get tec
-                                tecSpinner = (Spinner) optionView.findViewById(R.id.tec);
-                                HTTPGetProperties getTec = new HTTPGetProperties() {
-                                    @Override
-                                    protected void onPostExecute(String result) {
-                                        if (result != null) {
-                                            Log.e("HEREHERE", "THIS RESULT");
-                                            Log.e("HEREHERE", result);
-                                            try {
-                                                JSONArray  jsonArray = new JSONArray(result);
-                                                tecArray = new ArrayList<CharSequence>();
-                                                for(int i = 0, count = jsonArray.length(); i< count; i++) {
-                                                    try {
-                                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                                        if ( jsonObject!=null ) {
-                                                            tecArray.add(jsonObject.getString("value"));
-                                                        }
-                                                    }
-                                                    catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                                tecAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, tecArray);
-                                                tecAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                tecSpinner.setAdapter(tecAdapter);
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            Log.e("HEREHERE", "EMPTY");
-                                        }
-                                    }
-                                };
-
-                                String urlBuildTec="http://api.imot.bg/mobile_api/dictionary/tec";
-                                getTec.execute(urlBuildTec);
-
-                                // get phone
-                                phoneSpinner = (Spinner) optionView.findViewById(R.id.phone);
-                                HTTPGetProperties getTel = new HTTPGetProperties() {
-                                    @Override
-                                    protected void onPostExecute(String result) {
-                                        if (result != null) {
-                                            Log.e("HEREHERE", "THIS RESULT");
-                                            Log.e("HEREHERE", result);
-                                            try {
-                                                JSONArray  jsonArray = new JSONArray(result);
-                                                phoneArray = new ArrayList<CharSequence>();
-                                                for(int i = 0, count = jsonArray.length(); i< count; i++) {
-                                                    try {
-                                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                                        if ( jsonObject!=null ) {
-                                                            phoneArray.add(jsonObject.getString("value"));
-                                                        }
-                                                    }
-                                                    catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                                phoneAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, phoneArray);
-                                                phoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                phoneSpinner.setAdapter(phoneAdapter);
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            Log.e("HEREHERE", "EMPTY");
-                                        }
-                                    }
-                                };
-
-                                String urlBuildPhone="http://api.imot.bg/mobile_api/dictionary/phone";
-                                getTel.execute(urlBuildPhone);
-
+                                loadGroup5(optionView);
                             } else if (groupNumber==6) {
-                                landPermanentUsageProperty = (TextView) optionView.findViewById(R.id.land_permanent_usage);
-                                // get Land Permanent Usage
-                                HTTPGetProperties getLandPermanentUsage = new HTTPGetProperties() {
-                                    @Override
-                                    protected void onPostExecute(String result) {
-                                        if (result != null) {
-                                            Log.e("HEREHERE", "THIS RESULT FROM HERE");
-                                            Log.e("HEREHERE", result);
-                                            try {
-                                                JSONArray  jsonArray = new JSONArray(result);
-                                                Log.e("HEREHERE",jsonArray.toString());
-                                                landPermanentUsageArray = new ArrayList<String>();
-                                                for(int i = 0, count = jsonArray.length(); i< count; i++) {
-                                                    try {
-                                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                                        if ( jsonObject!=null && (jsonObject.getString("value").length()>0) ) {
-                                                            landPermanentUsageArray.add(jsonObject.getString("value"));
-                                                        }
-                                                    }
-                                                    catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-
-                                                landPermanentUsageProperty.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        final Dialog dialogSimple = new Dialog(AdvanceSearchActivity.this);
-                                                        View vi = getLayoutInflater().inflate(R.layout.listview_popup, null);
-                                                        dialogSimple.setTitle("Начин на трайно ползване:");
-                                                        dialogSimple.setCancelable(false);
-
-                                                        String textlandPermanentUsageFieldValue = (String) landPermanentUsageProperty.getText();
-                                                        if ( (textlandPermanentUsageFieldValue.length()>0) && (textlandPermanentUsageFieldValue.contains(",")) ) {
-                                                            landPermanentUsageSelectedValue = new ArrayList<String>();
-                                                            String[] parts = textlandPermanentUsageFieldValue.split(",");
-                                                            if ( parts.length>0 ) {
-                                                                for ( int i=0;i<parts.length;i++) {
-                                                                    landPermanentUsageSelectedValue.add(parts[i]);
-                                                                }
-                                                            } else {
-                                                                landPermanentUsageSelectedValue.add(textlandPermanentUsageFieldValue);
-                                                            }
-                                                        } else if ( (textlandPermanentUsageFieldValue.length()>0) && ( !textlandPermanentUsageFieldValue.equals("Всички") ) )  {
-                                                            landPermanentUsageSelectedValue= new ArrayList<String>();
-                                                            landPermanentUsageSelectedValue.add(textlandPermanentUsageFieldValue);
-                                                        } else {
-                                                            landPermanentUsageSelectedValue= new ArrayList<String>();
-                                                        }
-
-                                                        final SimpleMultiChoiceAdapter adapterlandPermanentUsageProperties = new SimpleMultiChoiceAdapter(getBaseContext(), R.layout.propertytype_single_item, landPermanentUsageArray,landPermanentUsageSelectedValue);
-                                                        ListView listViewPopup = (ListView) vi.findViewById(R.id.listViewPropertyType);
-                                                        listViewPopup.setAdapter(adapterlandPermanentUsageProperties);
-                                                        dialogSimple.setContentView(vi);
-                                                        dialogSimple.show();
-
-                                                        Button saveButton = (Button) vi.findViewById(R.id.savePopupButton);
-                                                        saveButton.setOnClickListener(new View.OnClickListener() {
-
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                landPermanentUsageSelectedValue=adapterlandPermanentUsageProperties.returnSelectedFields();
-                                                                if (landPermanentUsageSelectedValue!=null) {
-                                                                    Log.e("HEREHERE","Click Event "+landPermanentUsageSelectedValue.toString());
-                                                                    String valueCheckBox="";
-                                                                    for (int i=0;i<landPermanentUsageSelectedValue.size();i++) {
-                                                                        valueCheckBox+=landPermanentUsageSelectedValue.get(i)+",";
-                                                                    }
-
-                                                                    if (valueCheckBox.length()>0) {
-                                                                        valueCheckBox = valueCheckBox.substring(0, valueCheckBox.length()-1);
-                                                                    } else {
-                                                                        valueCheckBox="Всички";
-                                                                    }
-                                                                    landPermanentUsageProperty.setText(valueCheckBox);
-                                                                } else {
-                                                                    landPermanentUsageProperty.setText("Всички");
-                                                                }
-                                                                dialogSimple.hide();
-                                                            }
-                                                        });
-
-                                                        Button closeButton = (Button) vi.findViewById(R.id.closePopupButton);
-                                                        closeButton.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                adapterlandPermanentUsageProperties.clearSelectedFields();
-                                                                dialogSimple.hide();
-                                                            }
-                                                        });
-                                                    }
-                                                });
-
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            Log.e("HEREHERE", "EMPTY");
-                                        }
-                                    }
-                                };
-                                String urlLandPermanentUsage="http://api.imot.bg/mobile_api/dictionary/land_permanent_usage";
-                                getLandPermanentUsage.execute(urlLandPermanentUsage);
-
-                                landCategoryProperty = (TextView) optionView.findViewById(R.id.land_category);
-                                // get Land Category
-                                HTTPGetProperties getLandCategory = new HTTPGetProperties() {
-                                    @Override
-                                    protected void onPostExecute(String result) {
-                                        if (result != null) {
-                                            Log.e("HEREHERE", "THIS RESULT FROM HERE");
-                                            Log.e("HEREHERE", result);
-                                            try {
-                                                JSONArray  jsonArray = new JSONArray(result);
-                                                Log.e("HEREHERE",jsonArray.toString());
-                                                landCategoryArray = new ArrayList<String>();
-                                                for(int i = 0, count = jsonArray.length(); i< count; i++) {
-                                                    try {
-                                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                                        if ( jsonObject!=null && (jsonObject.getString("value").length()>0) ) {
-                                                            landCategoryArray.add(jsonObject.getString("value"));
-                                                        }
-                                                    }
-                                                    catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-
-                                                landCategoryProperty.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        final Dialog dialogSimple = new Dialog(AdvanceSearchActivity.this);
-                                                        View vi = getLayoutInflater().inflate(R.layout.listview_popup, null);
-                                                        dialogSimple.setTitle("Начин на трайно ползване:");
-                                                        dialogSimple.setCancelable(false);
-
-                                                        String textlandCategoryFieldValue = (String) landCategoryProperty.getText();
-                                                        if ( (textlandCategoryFieldValue.length()>0) && (textlandCategoryFieldValue.contains(",")) ) {
-                                                            landCategorySelectedValue = new ArrayList<String>();
-                                                            String[] parts = textlandCategoryFieldValue.split(",");
-                                                            if ( parts.length>0 ) {
-                                                                for ( int i=0;i<parts.length;i++) {
-                                                                    landCategorySelectedValue.add(parts[i]);
-                                                                }
-                                                            } else {
-                                                                landCategorySelectedValue.add(textlandCategoryFieldValue);
-                                                            }
-                                                        } else if ( (textlandCategoryFieldValue.length()>0) && ( !textlandCategoryFieldValue.equals("Всички") ) )  {
-                                                            landCategorySelectedValue= new ArrayList<String>();
-                                                            landCategorySelectedValue.add(textlandCategoryFieldValue);
-                                                        } else {
-                                                            landCategorySelectedValue= new ArrayList<String>();
-                                                        }
-
-                                                        final SimpleMultiChoiceAdapter adapterlandCategoryProperties = new SimpleMultiChoiceAdapter(getBaseContext(), R.layout.propertytype_single_item, landCategoryArray,landCategorySelectedValue);
-                                                        ListView listViewPopup = (ListView) vi.findViewById(R.id.listViewPropertyType);
-                                                        listViewPopup.setAdapter(adapterlandCategoryProperties);
-                                                        dialogSimple.setContentView(vi);
-                                                        dialogSimple.show();
-
-                                                        Button saveButton = (Button) vi.findViewById(R.id.savePopupButton);
-                                                        saveButton.setOnClickListener(new View.OnClickListener() {
-
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                landCategorySelectedValue=adapterlandCategoryProperties.returnSelectedFields();
-                                                                if (landCategorySelectedValue!=null) {
-                                                                    Log.e("HEREHERE","Click Event "+landCategorySelectedValue.toString());
-                                                                    String valueCheckBox="";
-                                                                    for (int i=0;i<landCategorySelectedValue.size();i++) {
-                                                                        valueCheckBox+=landCategorySelectedValue.get(i)+",";
-                                                                    }
-
-                                                                    if (valueCheckBox.length()>0) {
-                                                                        valueCheckBox = valueCheckBox.substring(0, valueCheckBox.length()-1);
-                                                                    } else {
-                                                                        valueCheckBox="Всички";
-                                                                    }
-                                                                    landCategoryProperty.setText(valueCheckBox);
-                                                                } else {
-                                                                    landCategoryProperty.setText("Всички");
-                                                                }
-                                                                dialogSimple.hide();
-                                                            }
-                                                        });
-
-                                                        Button closeButton = (Button) vi.findViewById(R.id.closePopupButton);
-                                                        closeButton.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                adapterlandCategoryProperties.clearSelectedFields();
-                                                                dialogSimple.hide();
-                                                            }
-                                                        });
-                                                    }
-                                                });
-
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            Log.e("HEREHERE", "EMPTY");
-                                        }
-                                    }
-                                };
-                                String urlLandCategory="http://api.imot.bg/mobile_api/dictionary/land_category";
-                                getLandCategory.execute(urlLandCategory);
-                            } else {
-
-                            }
+                                loadGroup6(optionView);
+                            } else {}
                         } else {
                             moreSearchOptions.removeAllViews();
                         }
@@ -1450,19 +482,58 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         // Price of property
         priceFrom = (EditText) findViewById(R.id.priceFrom);
         priceFrom.setGravity(Gravity.CENTER);
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(6)!=null) ) {
+            String rubValue = searchValuesEdit.get(6).get("price_min");
+            if (rubValue != null) {
+                priceFrom.setText(rubValue);
+            }
+        }
+
         priceTo = (EditText) findViewById(R.id.priceTo);
         priceTo.setGravity(Gravity.CENTER);
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(7)!=null) ) {
+            String rubValue = searchValuesEdit.get(7).get("price_max");
+            if (rubValue != null) {
+                priceTo.setText(rubValue);
+            }
+        }
 
         // Area of property
         areaFrom = (EditText) findViewById(R.id.areaFrom);
         areaFrom.setGravity(Gravity.CENTER);
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(8)!=null) ) {
+            String rubValue = searchValuesEdit.get(8).get("kv_min");
+            if (rubValue != null) {
+                areaFrom.setText(rubValue);
+            }
+        }
+
         areaTo = (EditText) findViewById(R.id.areaTo);
         areaTo.setGravity(Gravity.CENTER);
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(9)!=null) ) {
+            String rubValue = searchValuesEdit.get(9).get("kv_max");
+            if (rubValue != null) {
+                areaTo.setText(rubValue);
+            }
+        }
+
 
         // sort property results
         sortAdapter = ArrayAdapter.createFromResource(getBaseContext(), R.array.sortValues, android.R.layout.simple_spinner_item);
         sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortResult.setAdapter(sortAdapter);
+
+
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(10)!=null) ) {
+            String rubValue = searchValuesEdit.get(10).get("sort");
+            if (rubValue!=null) {
+                ArrayList<String> arrayValue = new ArrayList<String>();
+                Collections.addAll(arrayValue, getResources().getStringArray(R.array.sortValues));
+                sortResult.setSelection(Integer.parseInt(rubValue)-1);
+            }
+        } else {
+            sortResult.setSelection(0);
+        }
 
 
         searchAdvancedButton.setOnClickListener(new View.OnClickListener() {
@@ -1524,6 +595,106 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         }
     }
 
+    public void loadGroup1(View optionView) {
+        // get floor
+        floorFromSpinner = (Spinner) optionView.findViewById(R.id.floor_from);
+        floorToSpinner = (Spinner) optionView.findViewById(R.id.floor_to);
+        String urlBuildFloor="http://api.imot.bg/mobile_api/dictionary/floor";
+        asyncTaskGetFloor.execute(urlBuildFloor);
+
+        // get build type
+        buildTypeProperty = (TextView) optionView.findViewById(R.id.buildTypeProperty);
+        String urlBuildType="http://api.imot.bg/mobile_api/dictionary/type_build";
+        asyncTaskGetBuildType.execute(urlBuildType);
+
+        // get year of build
+        yearFrom = (EditText) optionView.findViewById(R.id.yearFrom);
+        yearTo = (EditText) optionView.findViewById(R.id.yearTo);
+
+        // get tec
+        tecSpinner = (Spinner) optionView.findViewById(R.id.tec);
+        String urlBuildTec="http://api.imot.bg/mobile_api/dictionary/tec";
+        asyncTaskGetTec.execute(urlBuildTec);
+
+        // get phone
+        phoneSpinner = (Spinner) optionView.findViewById(R.id.phone);
+        String urlBuildPhone="http://api.imot.bg/mobile_api/dictionary/phone";
+        asyncTaskGetPhone.execute(urlBuildPhone);
+    }
+
+    public void loadGroup2(View optionView) {
+        // get build type
+        buildTypeProperty = (TextView) optionView.findViewById(R.id.buildTypeProperty);
+        String urlBuildType="http://api.imot.bg/mobile_api/dictionary/type_build";
+        asyncTaskGetBuildType.execute(urlBuildType);
+
+        // get year of build
+        yearFrom = (EditText) optionView.findViewById(R.id.yearFrom);
+        yearTo = (EditText) optionView.findViewById(R.id.yearTo);
+
+        // get tec
+        tecSpinner = (Spinner) optionView.findViewById(R.id.tec);
+        String urlBuildTec="http://api.imot.bg/mobile_api/dictionary/tec";
+        asyncTaskGetTec.execute(urlBuildTec);
+
+        // get phone
+        phoneSpinner = (Spinner) optionView.findViewById(R.id.phone);
+        String urlBuildPhone="http://api.imot.bg/mobile_api/dictionary/phone";
+        asyncTaskGetPhone.execute(urlBuildPhone);
+    }
+
+    public void loadGroup3 (View optionView) {}
+
+    public void loadGroup4 (View optionView) {
+        // get electricity
+        electricitySpinner = (Spinner) optionView.findViewById(R.id.electricity);
+        String urlElectricity="http://api.imot.bg/mobile_api/dictionary/electricity";
+        asyncTaskGetElectricity.execute(urlElectricity);
+
+        // get water
+        waterSpinner = (Spinner) optionView.findViewById(R.id.water);
+        String urlWater="http://api.imot.bg/mobile_api/dictionary/watter";
+        asyncTaskGetWater.execute(urlWater);
+
+        // get Regulation
+        regulationSpinner = (Spinner) optionView.findViewById(R.id.regulation);
+        String urlRegulation="http://api.imot.bg/mobile_api/dictionary/regulation";
+        asyncTaskGetRegulation.execute(urlRegulation);
+    }
+
+    public void loadGroup5 (View optionView) {
+        // get build type
+        buildTypeProperty = (TextView) optionView.findViewById(R.id.buildTypeProperty);
+        String urlBuildType="http://api.imot.bg/mobile_api/dictionary/type_build";
+        asyncTaskGetBuildType.execute(urlBuildType);
+
+        // get year of build
+        yearFrom = (EditText) optionView.findViewById(R.id.yearFrom);
+        yearTo = (EditText) optionView.findViewById(R.id.yearTo);
+
+        // get tec
+        tecSpinner = (Spinner) optionView.findViewById(R.id.tec);
+        String urlBuildTec="http://api.imot.bg/mobile_api/dictionary/tec";
+        asyncTaskGetTec.execute(urlBuildTec);
+
+        // get phone
+        phoneSpinner = (Spinner) optionView.findViewById(R.id.phone);
+        String urlBuildPhone="http://api.imot.bg/mobile_api/dictionary/phone";
+        asyncTaskGetPhone.execute(urlBuildPhone);
+    }
+
+    public void loadGroup6 (View optionView) {
+        // get Land Permanent Usage
+        landPermanentUsageProperty = (TextView) optionView.findViewById(R.id.land_permanent_usage);
+        String urlLandPermanentUsage="http://api.imot.bg/mobile_api/dictionary/land_permanent_usage";
+        asyncTaskGetlandPermanentUsage.execute(urlLandPermanentUsage);
+
+        // get Land Category
+        landCategoryProperty = (TextView) optionView.findViewById(R.id.land_category);
+        String urlLandCategory="http://api.imot.bg/mobile_api/dictionary/land_category";
+        asyncTaskGetLandCategory.execute(urlLandCategory);
+    }
+
     @Override
     public void processFinish(String output, String numberOfAdverts, String searchText) {
         Intent searchResultIntent = new Intent(AdvanceSearchActivity.this,SearchResultActivity.class);
@@ -1538,5 +709,402 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
     @Override
     public void onClick(View v) {
 
+    }
+
+    @Override
+    public void processGetExtriFinish(ArrayList<String> extriArrayResult) {
+        asyncTaskGetExtri = new HTTPGETExtri();
+        asyncTaskGetExtri.delegate=AdvanceSearchActivity.this;
+
+        extriArray=extriArrayResult;
+        if (extriArray!=null) {
+            extriProperty.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Dialog dialogSimple = new Dialog(AdvanceSearchActivity.this);
+                    View vi = getLayoutInflater().inflate(R.layout.listview_popup, null);
+                    dialogSimple.setTitle("Избери особености:");
+                    dialogSimple.setCancelable(false);
+                    String textExtriFieldValue = (String) extriProperty.getText();
+                    if ( (textExtriFieldValue.length()>0) && (textExtriFieldValue.contains(",")) ) {
+                        extriSelectedValue= new ArrayList<>();
+                        String[] parts = textExtriFieldValue.split(",");
+                        if ( parts.length>0 ) {
+                            for ( int i=0;i<parts.length;i++) {
+                                extriSelectedValue.add(parts[i]);
+                            }
+                        } else {
+                            extriSelectedValue.add(textExtriFieldValue);
+                        }
+                    } else if ( (textExtriFieldValue.length()>0) && ( !textExtriFieldValue.equals("Всички") ) )  {
+                        extriSelectedValue = new ArrayList<>();
+                        extriSelectedValue.add(textExtriFieldValue);
+                    } else {
+                        extriSelectedValue = new ArrayList<>();
+                    }
+
+                    if ( (searchValuesEdit!=null) && (searchValuesEdit.get(5)!=null) ) {
+                        String rubValue =  searchValuesEdit.get(5).get("extri");
+                        if (rubValue!=null) {
+                            extriProperty.setText(rubValue);
+                        }
+                    }
+
+                    final SimpleMultiChoiceAdapter adapterExtriProperties = new SimpleMultiChoiceAdapter(getBaseContext(), R.layout.propertytype_single_item, extriArray,extriSelectedValue);
+                    ListView listViewPopup = (ListView) vi.findViewById(R.id.listViewPropertyType);
+                    listViewPopup.setAdapter(adapterExtriProperties);
+                    dialogSimple.setContentView(vi);
+                    dialogSimple.show();
+
+                    Button saveButton = (Button) vi.findViewById(R.id.savePopupButton);
+                    saveButton.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            extriSelectedValue = adapterExtriProperties.returnSelectedFields();
+                            if (extriSelectedValue!=null) {
+                                String valueCheckBox="";
+                                for (int i=0;i<extriSelectedValue.size();i++) {
+                                    valueCheckBox+=extriSelectedValue.get(i)+",";
+                                }
+
+                                if (valueCheckBox.length()>0) {
+                                    valueCheckBox = valueCheckBox.substring(0, valueCheckBox.length()-1);
+                                } else {
+                                    valueCheckBox="Всички";
+                                }
+                                extriProperty.setText(valueCheckBox);
+                            }
+                            dialogSimple.dismiss();
+                        }
+                    });
+
+                    Button closeButton = (Button) vi.findViewById(R.id.closePopupButton);
+                    closeButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            adapterExtriProperties.clearSelectedFields();
+                            dialogSimple.dismiss();
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    @Override
+    public void processGetFloorFinish(ArrayList<CharSequence> floorArrayResult) {
+
+        asyncTaskGetFloor = new HTTPGETFloor();
+        asyncTaskGetFloor.delegate=AdvanceSearchActivity.this;
+
+        floorArray=floorArrayResult;
+        if (floorArray!=null) {
+            floorFromAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, floorArray);
+            floorFromAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            floorFromSpinner.setAdapter(floorFromAdapter);
+
+            floorToAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, floorArray);
+            floorToAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            floorToSpinner.setAdapter(floorToAdapter);
+        }
+    }
+
+    @Override
+    public void processGetBuildTypeFinish(ArrayList<String> buildTypeArrayResult) {
+        asyncTaskGetBuildType = new HTTPGETBuildType();
+        asyncTaskGetBuildType.delegate=AdvanceSearchActivity.this;
+
+        buildTypeArray = buildTypeArrayResult;
+        if ( buildTypeArray!=null ) {
+            buildTypeProperty.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Dialog dialogSimple = new Dialog(AdvanceSearchActivity.this);
+                    View vi = getLayoutInflater().inflate(R.layout.listview_popup, null);
+                    dialogSimple.setTitle("Избери особености:");
+                    dialogSimple.setCancelable(false);
+
+                    String textbuildTypeFieldValue = (String) buildTypeProperty.getText();
+                    if ( (textbuildTypeFieldValue.length()>0) && (textbuildTypeFieldValue.contains(",")) ) {
+                        buildTypeSelectedValue= new ArrayList<>();
+                        String[] parts = textbuildTypeFieldValue.split(",");
+                        if ( parts.length>0 ) {
+                            for ( int i=0;i<parts.length;i++) {
+                                buildTypeSelectedValue.add(parts[i]);
+                            }
+                        } else {
+                            buildTypeSelectedValue.add(textbuildTypeFieldValue);
+                        }
+                    } else if ( (textbuildTypeFieldValue.length()>0) && ( !textbuildTypeFieldValue.equals("Всички") ) )  {
+                        buildTypeSelectedValue= new ArrayList<>();
+                        buildTypeSelectedValue.add(textbuildTypeFieldValue);
+                    } else {
+                        buildTypeSelectedValue= new ArrayList<>();
+                    }
+
+                    final SimpleMultiChoiceAdapter adapterbuildTypeProperties = new SimpleMultiChoiceAdapter(getBaseContext(), R.layout.propertytype_single_item, buildTypeArray,buildTypeSelectedValue);
+                    ListView listViewPopup = (ListView) vi.findViewById(R.id.listViewPropertyType);
+                    listViewPopup.setAdapter(adapterbuildTypeProperties);
+                    dialogSimple.setContentView(vi);
+                    dialogSimple.show();
+
+                    Button saveButton = (Button) vi.findViewById(R.id.savePopupButton);
+                    saveButton.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            buildTypeSelectedValue=adapterbuildTypeProperties.returnSelectedFields();
+                            if (buildTypeSelectedValue!=null) {
+                                Log.e("HEREHERE","Click Event "+buildTypeSelectedValue.toString());
+                                String valueCheckBox="";
+                                for (int i=0;i<buildTypeSelectedValue.size();i++) {
+                                    valueCheckBox+=buildTypeSelectedValue.get(i)+",";
+                                }
+
+                                if (valueCheckBox.length()>0) {
+                                    valueCheckBox = valueCheckBox.substring(0, valueCheckBox.length()-1);
+                                } else {
+                                    valueCheckBox="Всички";
+                                }
+                                buildTypeProperty.setText(valueCheckBox);
+                            }
+                            dialogSimple.hide();
+                        }
+                    });
+
+                    Button closeButton = (Button) vi.findViewById(R.id.closePopupButton);
+                    closeButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            adapterbuildTypeProperties.clearSelectedFields();
+                            dialogSimple.hide();
+                        }
+                    });
+                }
+            });
+        }
+
+
+    }
+
+    @Override
+    public void processGetTecFinish(ArrayList<CharSequence> tecArrayResult) {
+        asyncTaskGetTec = new HTTPGETTec();
+        asyncTaskGetTec.delegate=AdvanceSearchActivity.this;
+        tecArray = tecArrayResult;
+        if ( tecArray!=null ) {
+            tecAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, tecArray);
+            tecAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            tecSpinner.setAdapter(tecAdapter);
+
+        }
+    }
+
+    @Override
+    public void processGetPhoneFinish(ArrayList<CharSequence> phoneArrayResult) {
+        asyncTaskGetPhone = new HTTPGETPhone();
+        asyncTaskGetPhone.delegate=AdvanceSearchActivity.this;
+        phoneArray = phoneArrayResult;
+        if ( phoneArray!=null ) {
+            phoneAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, phoneArray);
+            phoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            phoneSpinner.setAdapter(phoneAdapter);
+        }
+    }
+
+    @Override
+    public void processGetElectricityFinish(ArrayList<CharSequence> electricityArrayResult) {
+        asyncTaskGetElectricity = new HTTPGETElectricity();
+        asyncTaskGetElectricity.delegate=AdvanceSearchActivity.this;
+        electricityArray = electricityArrayResult;
+        if ( electricityArray!=null ) {
+            electricityAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, electricityArray);
+            electricityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            electricitySpinner.setAdapter(electricityAdapter);
+        }
+    }
+
+    @Override
+    public void processGetWaterFinish(ArrayList<CharSequence> waterArrayResult) {
+        asyncTaskGetWater = new HTTPGETWater();
+        asyncTaskGetWater.delegate=AdvanceSearchActivity.this;
+
+        waterArray = waterArrayResult;
+        if ( waterArray!=null ) {
+            waterAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, waterArray);
+            waterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            waterSpinner.setAdapter(waterAdapter);
+        }
+    }
+
+    @Override
+    public void processGetRegulationFinish(ArrayList<CharSequence> regulationArrayResult) {
+        asyncTaskGetRegulation = new HTTPGETRegulation();
+        asyncTaskGetRegulation.delegate=AdvanceSearchActivity.this;
+
+        regulationArray = regulationArrayResult;
+        if ( regulationArray!=null ) {
+            regulationAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, regulationArray);
+            regulationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            regulationSpinner.setAdapter(regulationAdapter);
+        }
+    }
+
+    @Override
+    public void processGetLandPermanentUsagePropertyFinish(ArrayList<String> landPermanentUsagePropertyTypeArrayResult) {
+        asyncTaskGetlandPermanentUsage = new HTTPGETLandPermanentUsage();
+        asyncTaskGetlandPermanentUsage.delegate=AdvanceSearchActivity.this;
+
+        landPermanentUsageArray = landPermanentUsagePropertyTypeArrayResult;
+        if ( landPermanentUsageArray!=null ) {
+            landPermanentUsageProperty.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Dialog dialogSimple = new Dialog(AdvanceSearchActivity.this);
+                    View vi = getLayoutInflater().inflate(R.layout.listview_popup, null);
+                    dialogSimple.setTitle("Начин на трайно ползване:");
+                    dialogSimple.setCancelable(false);
+
+                    String textlandPermanentUsageFieldValue = (String) landPermanentUsageProperty.getText();
+                    if ( (textlandPermanentUsageFieldValue.length()>0) && (textlandPermanentUsageFieldValue.contains(",")) ) {
+                        landPermanentUsageSelectedValue = new ArrayList<String>();
+                        String[] parts = textlandPermanentUsageFieldValue.split(",");
+                        if ( parts.length>0 ) {
+                            for ( int i=0;i<parts.length;i++) {
+                                landPermanentUsageSelectedValue.add(parts[i]);
+                            }
+                        } else {
+                            landPermanentUsageSelectedValue.add(textlandPermanentUsageFieldValue);
+                        }
+                    } else if ( (textlandPermanentUsageFieldValue.length()>0) && ( !textlandPermanentUsageFieldValue.equals("Всички") ) )  {
+                        landPermanentUsageSelectedValue= new ArrayList<String>();
+                        landPermanentUsageSelectedValue.add(textlandPermanentUsageFieldValue);
+                    } else {
+                        landPermanentUsageSelectedValue= new ArrayList<String>();
+                    }
+
+                    final SimpleMultiChoiceAdapter adapterlandPermanentUsageProperties = new SimpleMultiChoiceAdapter(getBaseContext(), R.layout.propertytype_single_item, landPermanentUsageArray,landPermanentUsageSelectedValue);
+                    ListView listViewPopup = (ListView) vi.findViewById(R.id.listViewPropertyType);
+                    listViewPopup.setAdapter(adapterlandPermanentUsageProperties);
+                    dialogSimple.setContentView(vi);
+                    dialogSimple.show();
+
+                    Button saveButton = (Button) vi.findViewById(R.id.savePopupButton);
+                    saveButton.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            landPermanentUsageSelectedValue=adapterlandPermanentUsageProperties.returnSelectedFields();
+                            if (landPermanentUsageSelectedValue!=null) {
+                                Log.e("HEREHERE","Click Event "+landPermanentUsageSelectedValue.toString());
+                                String valueCheckBox="";
+                                for (int i=0;i<landPermanentUsageSelectedValue.size();i++) {
+                                    valueCheckBox+=landPermanentUsageSelectedValue.get(i)+",";
+                                }
+
+                                if (valueCheckBox.length()>0) {
+                                    valueCheckBox = valueCheckBox.substring(0, valueCheckBox.length()-1);
+                                } else {
+                                    valueCheckBox="Всички";
+                                }
+                                landPermanentUsageProperty.setText(valueCheckBox);
+                            } else {
+                                landPermanentUsageProperty.setText("Всички");
+                            }
+                            dialogSimple.dismiss();
+                        }
+                    });
+
+                    Button closeButton = (Button) vi.findViewById(R.id.closePopupButton);
+                    closeButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            adapterlandPermanentUsageProperties.clearSelectedFields();
+                            dialogSimple.dismiss();
+                        }
+                    });
+                }
+            });
+        }
+
+    }
+
+    @Override
+    public void processGetLandCategoryFinish(ArrayList<String> landCategoryArrayResult) {
+        asyncTaskGetLandCategory= new HTTPGETLandCategory();
+        asyncTaskGetLandCategory.delegate=AdvanceSearchActivity.this;
+
+        landCategoryArray=landCategoryArrayResult;
+        if (landCategoryArray!=null)  {
+            landCategoryProperty.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Dialog dialogSimple = new Dialog(AdvanceSearchActivity.this);
+                    View vi = getLayoutInflater().inflate(R.layout.listview_popup, null);
+                    dialogSimple.setTitle("Начин на трайно ползване:");
+                    dialogSimple.setCancelable(false);
+
+                    String textlandCategoryFieldValue = (String) landCategoryProperty.getText();
+                    if ( (textlandCategoryFieldValue.length()>0) && (textlandCategoryFieldValue.contains(",")) ) {
+                        landCategorySelectedValue = new ArrayList<String>();
+                        String[] parts = textlandCategoryFieldValue.split(",");
+                        if ( parts.length>0 ) {
+                            for ( int i=0;i<parts.length;i++) {
+                                landCategorySelectedValue.add(parts[i]);
+                            }
+                        } else {
+                            landCategorySelectedValue.add(textlandCategoryFieldValue);
+                        }
+                    } else if ( (textlandCategoryFieldValue.length()>0) && ( !textlandCategoryFieldValue.equals("Всички") ) )  {
+                        landCategorySelectedValue= new ArrayList<String>();
+                        landCategorySelectedValue.add(textlandCategoryFieldValue);
+                    } else {
+                        landCategorySelectedValue= new ArrayList<String>();
+                    }
+
+                    final SimpleMultiChoiceAdapter adapterlandCategoryProperties = new SimpleMultiChoiceAdapter(getBaseContext(), R.layout.propertytype_single_item, landCategoryArray,landCategorySelectedValue);
+                    ListView listViewPopup = (ListView) vi.findViewById(R.id.listViewPropertyType);
+                    listViewPopup.setAdapter(adapterlandCategoryProperties);
+                    dialogSimple.setContentView(vi);
+                    dialogSimple.show();
+
+                    Button saveButton = (Button) vi.findViewById(R.id.savePopupButton);
+                    saveButton.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            landCategorySelectedValue=adapterlandCategoryProperties.returnSelectedFields();
+                            if (landCategorySelectedValue!=null) {
+                                Log.e("HEREHERE","Click Event "+landCategorySelectedValue.toString());
+                                String valueCheckBox="";
+                                for (int i=0;i<landCategorySelectedValue.size();i++) {
+                                    valueCheckBox+=landCategorySelectedValue.get(i)+",";
+                                }
+
+                                if (valueCheckBox.length()>0) {
+                                    valueCheckBox = valueCheckBox.substring(0, valueCheckBox.length()-1);
+                                } else {
+                                    valueCheckBox="Всички";
+                                }
+                                landCategoryProperty.setText(valueCheckBox);
+                            } else {
+                                landCategoryProperty.setText("Всички");
+                            }
+                            dialogSimple.hide();
+                        }
+                    });
+
+                    Button closeButton = (Button) vi.findViewById(R.id.closePopupButton);
+                    closeButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            adapterlandCategoryProperties.clearSelectedFields();
+                            dialogSimple.hide();
+                        }
+                    });
+                }
+            });
+        }
     }
 }

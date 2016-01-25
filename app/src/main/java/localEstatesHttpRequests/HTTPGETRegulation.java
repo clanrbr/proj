@@ -1,29 +1,31 @@
 package localEstatesHttpRequests;
 
 import android.os.AsyncTask;
-import android.support.v4.util.SimpleArrayMap;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
-import utils.HelpFunctions;
+import interfaces.AsyncResponseRegulation;
+import interfaces.AsyncResponseWater;
 
 /**
- * Created by Ado on 11/30/2015.
+ * Created by macbook on 1/25/16.
  */
-public class HTTPGetProperties extends AsyncTask<String, Void, String> {
+public class HTTPGETRegulation extends AsyncTask<String, Void, String> {
     private Exception exception;
-    private SimpleArrayMap<String, String> mHeaders = new SimpleArrayMap<String,String>();
-    private String responseBody;
+    private ArrayList<CharSequence> regulationArray;
+    public AsyncResponseRegulation delegate = null;
 
     public String readIt(InputStream stream) throws IOException, UnsupportedEncodingException {
 
@@ -42,7 +44,6 @@ public class HTTPGetProperties extends AsyncTask<String, Void, String> {
         InputStream is = null;
         try {
             URL url= new URL(urls[0]);
-//            URL url = new URL(myurl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(10000); /* milliseconds */
             conn.setConnectTimeout(15000); /* milliseconds */
@@ -53,25 +54,42 @@ public class HTTPGetProperties extends AsyncTask<String, Void, String> {
             if ( response==200 ) {
                 is = conn.getInputStream();
                 String contentAsString = readIt(is);
+                Log.e("HEREHERE",contentAsString);
                 return contentAsString;
             } else {
                 return null;
             }
         } catch (Exception e) {
             this.exception = e;
-            Log.e("HEREHERE", "ne");
             return null;
         }
     }
 
-//    @Override
-//    protected void onPostExecute(String result) {
-//        if (result!=null) {
-//            Log.e("HEREHERE", "OT TUK LI GO PRINTI?");
-//            Log.e("HEREHERE",result);
-//        } else {
-//            Log.e("HEREHERE", "EMPTY");
-//        }
-//
-//    }
+    //    @Override
+    protected void onPostExecute(String result) {
+        if (result!=null) {
+            regulationArray=new ArrayList<>();
+            try {
+                JSONArray  jsonArray = new JSONArray(result);
+                for(int i = 0, count = jsonArray.length(); i< count; i++) {
+                    try {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        if ( jsonObject!=null ) {
+                            regulationArray.add(jsonObject.getString("value"));
+                        }
+                    }
+                    catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            Log.e("HEREHERE","vryshta null tuk");
+        }
+
+        delegate.processGetRegulationFinish(regulationArray);
+    }
 }

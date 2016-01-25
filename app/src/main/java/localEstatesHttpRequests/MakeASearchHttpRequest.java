@@ -85,18 +85,6 @@ public class MakeASearchHttpRequest extends AsyncTask<String, Void, String> {
                 if (json.has("search_text") ) {
                     advertsSearchText=json.getString("search_text");
                 }
-//
-                Log.e("HEREHERE","TUKA KAK E?");
-//                Log.e("HEREHERE",arrayList);
-//                JSONArray jsonArray = json.getJSONArray("adverts");
-//                if (jsonArray != null) {
-//                    for (int i = 0; i < jsonArray.length(); i++) {
-//                        if (jsonArray.getJSONObject(i) != null) {
-//                            advertsJsonArray.add(jsonArray.getJSONObject(i));
-//                        }
-//                    }
-//                }
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }

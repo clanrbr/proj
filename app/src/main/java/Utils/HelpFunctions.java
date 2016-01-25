@@ -1,8 +1,10 @@
 package utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -103,7 +105,6 @@ public class HelpFunctions {
             if ( type.equals("ВСИЧКИ") ) {
                 return true;
             }
-
             if ( match==-1 ) {
                 return true;
             }
@@ -138,17 +139,17 @@ public class HelpFunctions {
             }
         }
 
-        if (  (type=="1-СТАЕН") || (type=="2-СТАЕН") || (type=="3-СТАЕН") || (type=="4-СТАЕН") || (type=="МНОГОСТАЕН") || (type=="МЕЗОНЕТ") || (type=="АТЕЛИЕ ТАВАН") )  {
+        if (  type.equals("1-СТАЕН") || type.equals("2-СТАЕН") || type.equals("3-СТАЕН") || type.equals("4-СТАЕН") || type.equals("МНОГОСТАЕН") || type.equals("МЕЗОНЕТ") || type.equals("АТЕЛИЕ ТАВАН") )  {
             match=1;
-        } else if (  (type=="ХОТЕЛ") || (type=="ПРОМ. ПОМЕЩЕНИЕ") || (type=="СКЛАД") || (type=="ЗАВЕДЕНИЕ") || (type=="МАГАЗИН") || (type=="ОФИС") )  {
+        } else if (  type.equals("ХОТЕЛ") || type.equals("ПРОМ. ПОМЕЩЕНИЕ") || type.equals("СКЛАД") || type.equals("ЗАВЕДЕНИЕ") || type.equals("МАГАЗИН") || type.equals("ОФИС") )  {
             match=2;
-        } else if ( (type=="ВИЛА") || (type=="КЪЩА") || (type=="ЕТАЖ ОТ КЪЩА") ) {
+        } else if ( type.equals("ВИЛА") || type.equals("КЪЩА") || type.equals("ЕТАЖ ОТ КЪЩА") ) {
             match=3;
-        } else if ( type=="МЯСТО") {
+        } else if ( type.equals("МЯСТО") ) {
             match=4;
-        } else if (type=="ГАРАЖ") {
+        } else if ( type.equals("ГАРАЖ") ) {
             match=5;
-        } else if ( type=="ЗЕМЕДЕЛСКА ЗЕМЯ") {
+        } else if ( type.equals("ЗЕМЕДЕЛСКА ЗЕМЯ") ) {
             match=6;
         }
 
@@ -301,6 +302,27 @@ public class HelpFunctions {
         }
 
         return buildUrl;
+    }
+
+    public static View loadCorrectView(Activity context,int groupNumber) {
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View optionView;
+        if ( groupNumber==1  ) {
+            optionView = context.getLayoutInflater().inflate(R.layout.search_options_group_1, null);
+        } else if (groupNumber==2) {
+            optionView = context.getLayoutInflater().inflate(R.layout.search_options_group_2, null);
+        } else if (groupNumber==3) {
+            optionView = context.getLayoutInflater().inflate(R.layout.search_options_group_3, null);
+        } else if (groupNumber==4) {
+            optionView = context.getLayoutInflater().inflate(R.layout.search_options_group_4, null);
+        } else if (groupNumber==5) {
+            optionView = context.getLayoutInflater().inflate(R.layout.search_options_group_5, null);
+        } else if (groupNumber==6) {
+            optionView = context.getLayoutInflater().inflate(R.layout.search_options_group_6, null);
+        } else {
+            optionView = context.getLayoutInflater().inflate(R.layout.search_options_group_1, null);
+        }
+        return optionView;
     }
 
 //    public static HashMap<String, String> generateHashForSearch(String searchName, TextView field, ArrayList values) {
