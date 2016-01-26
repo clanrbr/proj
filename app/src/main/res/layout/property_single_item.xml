@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,7 +40,7 @@
                 android:layout_marginLeft="6dp" >
 
                 <ImageView
-                    android:id="@+id/list_item_sticky_header_shop_image1"
+                    android:id="@+id/advertImage2"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginRight="3dp"
@@ -52,7 +51,7 @@
                     android:scaleType="centerCrop" />
 
                 <ImageView
-                    android:id="@+id/list_item_sticky_header_shop_image2"
+                    android:id="@+id/advertImage3"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="3dp"
@@ -64,7 +63,7 @@
                     android:scaleType="centerCrop" />
 
                 <ImageView
-                    android:id="@+id/list_item_sticky_header_shop_image3"
+                    android:id="@+id/advertImage4"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="3dp"
@@ -72,17 +71,6 @@
                     android:layout_weight="1"
                     android:background="@color/material_grey_300"
                     android:contentDescription="4"
-                    android:src="@drawable/noproperty"
-                    android:scaleType="centerCrop" />
-
-                <ImageView
-                    android:id="@+id/list_item_sticky_header_shop_image4"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginLeft="3dp"
-                    android:layout_weight="1"
-                    android:background="@color/material_grey_300"
-                    android:contentDescription="5"
                     android:src="@drawable/noproperty"
                     android:scaleType="centerCrop" />
             </LinearLayout>
@@ -129,7 +117,7 @@
                     android:gravity="right|bottom" >
 
                     <utils.RobotoTextView
-                        android:id="@+id/list_item_sticky_header_shop_button"
+                        android:id="@+id/openAdvert"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"

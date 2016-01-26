@@ -58,6 +58,7 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
         setContentView(R.layout.activity_search_results);
 
         ImageView menuItemSearch = (ImageView) findViewById(R.id.searchActionBar);
+        menuItemSearch.setImageResource(R.drawable.ic_search_white_24dp);
         ImageView menuItemFavourite = (ImageView) findViewById(R.id.favouriteActionBar);
         ImageView menuItemNotification = (ImageView) findViewById(R.id.notificationActionBar);
         ImageView menuItemHome = (ImageView) findViewById(R.id.homeActionBar);
@@ -66,6 +67,7 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
         menuItemHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
             }
         });
 
@@ -109,10 +111,7 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
             String results = extras.getString("results");
             numberOfAdverts = extras.getString("results_numberOfAdverts");
             searchText = extras.getString("results_text");
-
             searchValues = (ArrayList<HashMap<String, String>>) extras.getSerializable("searchValues");
-//                    .getSerializableExtra("arraylist");
-
 
             if (results!=null) {
                 this.results = new ArrayList<>();
@@ -129,7 +128,6 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.e("HEREHERE",results);
             } else {
                 Log.e("HEREHERE","NULL");
             }

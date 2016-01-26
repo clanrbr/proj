@@ -44,6 +44,7 @@ public class StartActivity extends ActionBarActivity {
         ImageView menuItemFavourite = (ImageView) findViewById(R.id.favouriteActionBar);
         ImageView menuItemNotification = (ImageView) findViewById(R.id.notificationActionBar);
         ImageView menuItemHome = (ImageView) findViewById(R.id.homeActionBar);
+        menuItemHome.setImageResource(R.drawable.ic_home_white_24dp);
 
 
         menuItemHome.setOnClickListener(new View.OnClickListener() {

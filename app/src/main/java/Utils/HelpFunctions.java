@@ -251,7 +251,7 @@ public class HelpFunctions {
         return result;
     }
 
-    public static HashMap<String, String> generateHashForSearch(String searchName, Spinner field,ArrayList<CharSequence> values, ArrayList<String> valuesString) {
+    public static HashMap<String, String> generateHashForSearch(String searchName, Spinner field, ArrayList<CharSequence> values, ArrayList<String> valuesString) {
         HashMap<String, String> result=null;
         if (field!=null) {
             int position = field.getSelectedItemPosition();

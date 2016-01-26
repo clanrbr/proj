@@ -39,6 +39,7 @@ import interfaces.AsyncResponseElectricity;
 import interfaces.AsyncResponseExtri;
 import interfaces.AsyncResponseFloor;
 import interfaces.AsyncResponseLandCategory;
+import interfaces.AsyncResponseLandLeaseContract;
 import interfaces.AsyncResponseLandPermanentUsage;
 import interfaces.AsyncResponsePhone;
 import interfaces.AsyncResponseRegulation;
@@ -49,6 +50,7 @@ import localEstatesHttpRequests.HTTPGETElectricity;
 import localEstatesHttpRequests.HTTPGETExtri;
 import localEstatesHttpRequests.HTTPGETFloor;
 import localEstatesHttpRequests.HTTPGETLandCategory;
+import localEstatesHttpRequests.HTTPGETLandLeaseContract;
 import localEstatesHttpRequests.HTTPGETLandPermanentUsage;
 import localEstatesHttpRequests.HTTPGETPhone;
 import localEstatesHttpRequests.HTTPGETRegulation;
@@ -64,7 +66,8 @@ import utils.HelpFunctions;
 public class AdvanceSearchActivity extends ActionBarActivity implements
         View.OnClickListener, AsyncResponse, AsyncResponseExtri, AsyncResponseFloor,
         AsyncResponseBuildType, AsyncResponseTec, AsyncResponsePhone, AsyncResponseElectricity,
-        AsyncResponseWater, AsyncResponseRegulation, AsyncResponseLandPermanentUsage, AsyncResponseLandCategory {
+        AsyncResponseWater, AsyncResponseRegulation, AsyncResponseLandPermanentUsage, AsyncResponseLandCategory,
+        AsyncResponseLandLeaseContract {
     public static final String ARG_SECTION_NUMBER = "section_number";
 
     private LinearLayout secondTownSpinnerLayout;
@@ -82,6 +85,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
     private HTTPGETRegulation asyncTaskGetRegulation = new HTTPGETRegulation();
     private HTTPGETLandPermanentUsage asyncTaskGetlandPermanentUsage = new HTTPGETLandPermanentUsage();
     private HTTPGETLandCategory asyncTaskGetLandCategory = new HTTPGETLandCategory();
+    private HTTPGETLandLeaseContract asyncTaskGetLandLeaseContract = new HTTPGETLandLeaseContract();
     private ArrayList<HashMap<String,String>> searchValues;
     private ArrayList<HashMap<String, String>> searchValuesEdit;
 
@@ -144,6 +148,12 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
     public ArrayList<String> landCategorySelectedValue;
     private TextView landCategoryProperty;
 
+    //    Land Lease Contract
+    private Spinner landLeaseContractSpinner;
+    private ArrayAdapter<CharSequence> landLeaseContractAdapter;
+    private ArrayList<CharSequence> landLeaseContractArray;
+
+
     private Spinner sortResult;
     private ArrayAdapter<CharSequence> sortAdapter;
     public static ArrayList<String> checkboxSelectedValue;
@@ -162,6 +172,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         setContentView(R.layout.activity_advance_search);
 
         ImageView menuItemSearch = (ImageView) findViewById(R.id.searchActionBar);
+        menuItemSearch.setImageResource(R.drawable.ic_search_white_24dp);
         ImageView menuItemFavourite = (ImageView) findViewById(R.id.favouriteActionBar);
         ImageView menuItemNotification = (ImageView) findViewById(R.id.notificationActionBar);
         ImageView menuItemHome = (ImageView) findViewById(R.id.homeActionBar);
@@ -169,6 +180,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         menuItemHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
             }
         });
 
@@ -212,6 +224,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         asyncTaskGetRegulation.delegate=this;
         asyncTaskGetlandPermanentUsage.delegate=this;
         asyncTaskGetLandCategory.delegate=this;
+        asyncTaskGetLandLeaseContract.delegate=this;
 
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         if ( searchValuesEdit!=null ) {
@@ -458,6 +471,9 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                             String urlBuildExtri="http://api.imot.bg/mobile_api/dictionary/extri?type_extri="+String.valueOf(extriGroup);
                             asyncTaskGetExtri.execute(urlBuildExtri);
 
+                            Log.e("HEREHERE","GROUP NUMBER");
+                            Log.e("HEREHERE",String.valueOf(groupNumber));
+
                             if ( groupNumber==1 ) {
                                 loadGroup1(optionView);
                             } else if (groupNumber==2) {
@@ -517,7 +533,6 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             }
         }
 
-
         // sort property results
         sortAdapter = ArrayAdapter.createFromResource(getBaseContext(), R.array.sortValues, android.R.layout.simple_spinner_item);
         sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -556,24 +571,35 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                 Collections.addAll(arrayValue, getResources().getStringArray(R.array.sortValues));
                 searchValues.add(HelpFunctions.generateHashForSearch("sort",sortResult,1));
 
-                if ( groupNumber==1 ) {
-                    searchValues.add(HelpFunctions.generateHashForSearch("floor_from",floorFromSpinner));
-                    searchValues.add(HelpFunctions.generateHashForSearch("floor_to",floorToSpinner));
+                if ( groupNumber==1 ) { //11
                     searchValues.add(HelpFunctions.generateHashForSearch("type_build",buildTypeProperty));
                     searchValues.add(HelpFunctions.generateHashForSearch("year_from",yearFrom));
                     searchValues.add(HelpFunctions.generateHashForSearch("year_to",yearTo));
                     searchValues.add(HelpFunctions.generateHashForSearch("tec",tecSpinner,tecArray,null));
                     searchValues.add(HelpFunctions.generateHashForSearch("phone",phoneSpinner,phoneArray,null));
-                } else if ( groupNumber==2 ) {
-
-                } else if ( groupNumber==3 ) {
-
-                } else if ( groupNumber==4 ) {
-
-                } else if ( groupNumber==5 ) {
-
-                } else if ( groupNumber==6 ) {
-
+                    searchValues.add(HelpFunctions.generateHashForSearch("floor_from",floorFromSpinner));
+                    searchValues.add(HelpFunctions.generateHashForSearch("floor_to",floorToSpinner));
+                } else if ( groupNumber==2 ) { //11
+                    searchValues.add(HelpFunctions.generateHashForSearch("type_build",buildTypeProperty));
+                    searchValues.add(HelpFunctions.generateHashForSearch("year_from",yearFrom));
+                    searchValues.add(HelpFunctions.generateHashForSearch("year_to",yearTo));
+                    searchValues.add(HelpFunctions.generateHashForSearch("tec",tecSpinner,tecArray,null));
+                    searchValues.add(HelpFunctions.generateHashForSearch("phone",phoneSpinner,phoneArray,null));
+                } else if ( groupNumber==3 ) { //11
+                } else if ( groupNumber==4 ) { //11
+                    searchValues.add(HelpFunctions.generateHashForSearch("electricity",electricitySpinner,electricityArray,null));
+                    searchValues.add(HelpFunctions.generateHashForSearch("watter",waterSpinner,waterArray,null));
+                    searchValues.add(HelpFunctions.generateHashForSearch("regulation",regulationSpinner,regulationArray,null));
+                } else if ( groupNumber==5 ) { //11
+                    searchValues.add(HelpFunctions.generateHashForSearch("type_build",buildTypeProperty));
+                    searchValues.add(HelpFunctions.generateHashForSearch("year_from",yearFrom));
+                    searchValues.add(HelpFunctions.generateHashForSearch("year_to",yearTo));
+                    searchValues.add(HelpFunctions.generateHashForSearch("tec",tecSpinner,tecArray,null));
+                    searchValues.add(HelpFunctions.generateHashForSearch("phone",phoneSpinner,phoneArray,null));
+                } else if ( groupNumber==6 ) { //11
+                    searchValues.add(HelpFunctions.generateHashForSearch("land_category",landCategoryProperty));
+                    searchValues.add(HelpFunctions.generateHashForSearch("land_permanent_usage",landPermanentUsageProperty));
+                    searchValues.add(HelpFunctions.generateHashForSearch("land_lease_contract",landLeaseContractSpinner));
                 }
 
                 String searchUrl = HelpFunctions.convertToUrl(searchValues);
@@ -609,7 +635,19 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
         // get year of build
         yearFrom = (EditText) optionView.findViewById(R.id.yearFrom);
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(12)!=null) ) {
+            String rubValue = searchValuesEdit.get(12).get("year_from");
+            if (rubValue != null) {
+                yearFrom.setText(rubValue);
+            }
+        }
         yearTo = (EditText) optionView.findViewById(R.id.yearTo);
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(13)!=null) ) {
+            String rubValue = searchValuesEdit.get(13).get("year_to");
+            if (rubValue != null) {
+                yearTo.setText(rubValue);
+            }
+        }
 
         // get tec
         tecSpinner = (Spinner) optionView.findViewById(R.id.tec);
@@ -630,7 +668,19 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
         // get year of build
         yearFrom = (EditText) optionView.findViewById(R.id.yearFrom);
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(12)!=null) ) {
+            String rubValue = searchValuesEdit.get(12).get("year_from");
+            if (rubValue != null) {
+                yearFrom.setText(rubValue);
+            }
+        }
         yearTo = (EditText) optionView.findViewById(R.id.yearTo);
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(13)!=null) ) {
+            String rubValue = searchValuesEdit.get(13).get("year_to");
+            if (rubValue != null) {
+                yearTo.setText(rubValue);
+            }
+        }
 
         // get tec
         tecSpinner = (Spinner) optionView.findViewById(R.id.tec);
@@ -670,7 +720,19 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
         // get year of build
         yearFrom = (EditText) optionView.findViewById(R.id.yearFrom);
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(12)!=null) ) {
+            String rubValue = searchValuesEdit.get(12).get("year_from");
+            if (rubValue != null) {
+                yearFrom.setText(rubValue);
+            }
+        }
         yearTo = (EditText) optionView.findViewById(R.id.yearTo);
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(13)!=null) ) {
+            String rubValue = searchValuesEdit.get(13).get("year_to");
+            if (rubValue != null) {
+                yearTo.setText(rubValue);
+            }
+        }
 
         // get tec
         tecSpinner = (Spinner) optionView.findViewById(R.id.tec);
@@ -693,6 +755,11 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         landCategoryProperty = (TextView) optionView.findViewById(R.id.land_category);
         String urlLandCategory="http://api.imot.bg/mobile_api/dictionary/land_category";
         asyncTaskGetLandCategory.execute(urlLandCategory);
+
+        //get Land Lease Contract
+        landLeaseContractSpinner = (Spinner) optionView.findViewById(R.id.landLeaseContractSpinner);
+        String urlBuildPhone="http://api.imot.bg/mobile_api/dictionary/land_lease_contract";
+        asyncTaskGetLandLeaseContract.execute(urlBuildPhone);
     }
 
     @Override
@@ -803,10 +870,36 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             floorFromAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, floorArray);
             floorFromAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             floorFromSpinner.setAdapter(floorFromAdapter);
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(15)!=null) ) {
+                String rubValue =  searchValuesEdit.get(15).get("floor_from");
+                if (rubValue!=null) {
+                    for(int i=0;i<floorArray.size();i++) {
+                        if ( floorArray.get(i).equals(rubValue) ) {
+                            floorFromSpinner.setSelection(i);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                floorFromSpinner.setSelection(0);
+            }
 
             floorToAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, floorArray);
             floorToAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             floorToSpinner.setAdapter(floorToAdapter);
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(16)!=null) ) {
+                String rubValue =  searchValuesEdit.get(16).get("floor_to");
+                if (rubValue!=null) {
+                    for(int i=0;i<floorArray.size();i++) {
+                        if ( floorArray.get(i).equals(rubValue) ) {
+                            floorToSpinner.setSelection(i);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                floorToSpinner.setSelection(0);
+            }
         }
     }
 
@@ -817,6 +910,12 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
         buildTypeArray = buildTypeArrayResult;
         if ( buildTypeArray!=null ) {
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(11)!=null) ) {
+                String rubValue = searchValuesEdit.get(11).get("type_build");
+                if (rubValue != null) {
+                    buildTypeProperty.setText(rubValue);
+                }
+            }
             buildTypeProperty.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -897,6 +996,19 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             tecAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, tecArray);
             tecAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             tecSpinner.setAdapter(tecAdapter);
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(13)!=null) ) {
+                String rubValue =  searchValuesEdit.get(13).get("tec");
+                if (rubValue!=null) {
+                    for(int i=0;i<tecArray.size();i++) {
+                        if ( tecArray.get(i).equals(rubValue) ) {
+                            tecSpinner.setSelection(i);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                tecSpinner.setSelection(0);
+            }
 
         }
     }
@@ -910,6 +1022,19 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             phoneAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, phoneArray);
             phoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             phoneSpinner.setAdapter(phoneAdapter);
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(14)!=null) ) {
+                String rubValue =  searchValuesEdit.get(14).get("phone");
+                if (rubValue!=null) {
+                    for(int i=0;i<phoneArray.size();i++) {
+                        if ( phoneArray.get(i).equals(rubValue) ) {
+                            phoneSpinner.setSelection(i);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                phoneSpinner.setSelection(0);
+            }
         }
     }
 
@@ -922,6 +1047,19 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             electricityAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, electricityArray);
             electricityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             electricitySpinner.setAdapter(electricityAdapter);
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(11)!=null) ) {
+                String rubValue =  searchValuesEdit.get(11).get("electricity");
+                if (rubValue!=null) {
+                    for(int i=0;i<electricityArray.size();i++) {
+                        if ( electricityArray.get(i).equals(rubValue) ) {
+                            electricitySpinner.setSelection(i);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                electricitySpinner.setSelection(0);
+            }
         }
     }
 
@@ -935,6 +1073,19 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             waterAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, waterArray);
             waterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             waterSpinner.setAdapter(waterAdapter);
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(12)!=null) ) {
+                String rubValue =  searchValuesEdit.get(12).get("watter");
+                if (rubValue!=null) {
+                    for(int i=0;i<waterArray.size();i++) {
+                        if ( waterArray.get(i).equals(rubValue) ) {
+                            waterSpinner.setSelection(i);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                waterSpinner.setSelection(0);
+            }
         }
     }
 
@@ -948,6 +1099,19 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             regulationAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, regulationArray);
             regulationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             regulationSpinner.setAdapter(regulationAdapter);
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(13)!=null) ) {
+                String rubValue =  searchValuesEdit.get(13).get("regulation");
+                if (rubValue!=null) {
+                    for(int i=0;i<regulationArray.size();i++) {
+                        if ( regulationArray.get(i).equals(rubValue) ) {
+                            regulationSpinner.setSelection(i);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                regulationSpinner.setSelection(0);
+            }
         }
     }
 
@@ -958,6 +1122,13 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
         landPermanentUsageArray = landPermanentUsagePropertyTypeArrayResult;
         if ( landPermanentUsageArray!=null ) {
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(12)!=null) ) {
+                String rubValue = searchValuesEdit.get(12).get("land_permanent_usage");
+                if (rubValue != null) {
+                    landPermanentUsageProperty.setText(rubValue);
+                }
+            }
+
             landPermanentUsageProperty.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1037,6 +1208,13 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
         landCategoryArray=landCategoryArrayResult;
         if (landCategoryArray!=null)  {
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(11)!=null) ) {
+                String rubValue = searchValuesEdit.get(11).get("land_category");
+                if (rubValue != null) {
+                    landCategoryProperty.setText(rubValue);
+                }
+            }
+
             landCategoryProperty.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1105,6 +1283,27 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                     });
                 }
             });
+        }
+    }
+
+    @Override
+    public void processGetLandLeaseContractFinish(ArrayList<CharSequence> landLeaseContractArrayResult) {
+        asyncTaskGetLandLeaseContract = new HTTPGETLandLeaseContract();
+        asyncTaskGetLandLeaseContract.delegate=AdvanceSearchActivity.this;
+        landLeaseContractArray = landLeaseContractArrayResult;
+        if ( landLeaseContractArrayResult!=null ) {
+            landLeaseContractAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, landLeaseContractArray);
+            landLeaseContractAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            landLeaseContractSpinner.setAdapter(landLeaseContractAdapter);
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(13)!=null) ) {
+                String rubValue =  searchValuesEdit.get(13).get("tec");
+                if (rubValue!=null) {
+                    landLeaseContractSpinner.setSelection(Integer.parseInt(rubValue));
+                }
+            } else {
+                landLeaseContractSpinner.setSelection(0);
+            }
+
         }
     }
 }

@@ -10,7 +10,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import adapters.SectionPageAdapter;
 import fragments.CheckAndRadioBoxesFragment;
-import fragments.SearchResultFragment;
 
 /**
  * Created by macbook on 12/21/15.
