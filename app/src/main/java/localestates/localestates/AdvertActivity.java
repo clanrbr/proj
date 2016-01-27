@@ -1,42 +1,53 @@
 package localestates.localestates;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
 import android.support.v7.widget.Toolbar;
-import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.nineoldandroids.view.ViewHelper;
+import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
+import adapters.GridViewPropertyFeaturesAdapter;
 import interfaces.AsyncResponseLoadAdvert;
 import localEstatesHttpRequests.HTTPGETAdvert;
+import utils.ExpandableHeightGridView;
+import utils.HelpFunctions;
 
 /**
  * Created by macbook on 1/26/16.
  */
-public class AdvertActivity extends AppCompatActivity implements ObservableScrollViewCallbacks , AsyncResponseLoadAdvert {
+public class AdvertActivity extends AppCompatActivity implements ObservableScrollViewCallbacks ,
+        AsyncResponseLoadAdvert, OnMapReadyCallback {
 
+    private String googleMapsAPI="AIzaSyCNBVx3m2Q0q2oo4FQhA4UdAyuTaCQ0BRg";
     private String advertTitle;
-    private View mImageView;
-    private View mToolbarView;
+    private ImageView mImageView;
+    private Toolbar mToolbarView;
     private TextView priceLabel;
     private TextView placeLabel;
     private TextView moreInfoLabel;
-    private TextView quadratureLabel;
-    private TextView floorLabel;
+    private ExpandableHeightGridView feturesGridView;
     private ObservableScrollView mScrollView;
     private int mParallaxImageHeight;
     private JSONObject advertInto;
@@ -58,9 +69,11 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
 
         priceLabel = (TextView) findViewById(R.id.priceLabel);
         placeLabel = (TextView) findViewById(R.id.placeLabel);
+        feturesGridView = (ExpandableHeightGridView) findViewById(R.id.features);
         moreInfoLabel = (TextView) findViewById(R.id.moreInfoLabel);
-        quadratureLabel = (TextView) findViewById(R.id.quadratureLabel);
-        floorLabel = (TextView) findViewById(R.id.floorLabel);
+
+//        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
@@ -73,9 +86,11 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
 
         }
 
-        mImageView = findViewById(R.id.image);
-        mToolbarView = findViewById(R.id.toolbar);
+        mImageView = (ImageView) findViewById(R.id.bigImage);
+        mToolbarView = (Toolbar) findViewById(R.id.toolbar);
         mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getResources().getColor(R.color.main_color_500)));
+        if (mToolbarView != null)
+            mToolbarView.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
 
         mScrollView = (ObservableScrollView) findViewById(R.id.scroll);
         mScrollView.setScrollViewCallbacks(this);
@@ -109,6 +124,16 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
         advertInto=new JSONObject();
         if (output!=null) {
             advertInto=output;
+            ArrayList<CharSequence> gridValueTitle = new ArrayList<CharSequence>();
+            ArrayList<CharSequence> gridValue = new ArrayList<CharSequence>();
+            if ( advertInto.has("pictures") ) {
+                JSONArray picturesArray = new JSONArray();
+                picturesArray=advertInto.getJSONArray("pictures");
+                if (picturesArray.length()>0) {
+                    Picasso.with(AdvertActivity.this).load(picturesArray.get(0).toString()).placeholder(R.drawable.noproperty).error(R.drawable.noproperty).into(mImageView);
+                }
+            }
+
             if ( advertInto.has("rub") ) {
                 String value=advertInto.getString("rub");
                 if ( advertInto.has("type_home") ) {
@@ -129,9 +154,10 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
             if ( advertInto.has("quadrature") ) {
                 String value = advertInto.getString("quadrature");
                 if ( advertInto.has("metric") ) {
-                    value=value + advertInto.getString("metric");
+                    value=value +" "+ advertInto.getString("metric");
                 }
-                quadratureLabel.setText(value);
+                gridValueTitle.add("Квадратура:");
+                gridValue.add(value);
             }
 
             if ( advertInto.has("town") ) {
@@ -151,14 +177,50 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
                 if ( advertInto.has("floor_max") ) {
                     value=value + " от " + advertInto.getString("floor_max");
                 }
-                floorLabel.setText(value);
+                gridValueTitle.add("Етаж:");
+                gridValue.add(value);
             }
 
-            if ( advertInto.has("floor_regulation") )  {
-
+            if ( advertInto.has("phone_electricity") )  {
+                String typeHome = advertInto.getString("type_home");
+                if ( typeHome.contains(",")) {
+                    typeHome = typeHome.replace(",", "");
+                }
+                int groupNumber= HelpFunctions.returnGroupNumberOfProperty(typeHome,null,0);
+                if ( groupNumber==4 ) {
+                    gridValueTitle.add("Електричество:");
+                } else {
+                    gridValueTitle.add("Телефон:");
+                }
+                gridValue.add(advertInto.getString("phone_electricity"));
             }
 
+            if ( advertInto.has("tec_watter") ) {
+                String typeHome = advertInto.getString("type_home");
+                if ( typeHome.contains(",")) {
+                    typeHome = typeHome.replace(",", "");
+                }
+                int groupNumber = HelpFunctions.returnGroupNumberOfProperty(typeHome,null,0);
+                if ( groupNumber==4 ) {
+                    gridValueTitle.add("Вода:");
+                } else {
+                    gridValueTitle.add("ТEЦ:");
+                }
+                gridValue.add(advertInto.getString("tec_watter"));
+            }
+
+            if ( gridValue.size()>0 ) {
+                Log.e("HEREHERE",String.valueOf(gridValue.size()));
+                GridViewPropertyFeaturesAdapter adapter = new GridViewPropertyFeaturesAdapter(AdvertActivity.this,gridValueTitle,gridValue);
+                feturesGridView.setAdapter(adapter);
+            }
         }
+    }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(0, 0))
+                .title("Marker"));
     }
 }

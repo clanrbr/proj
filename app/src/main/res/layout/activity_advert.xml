@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -24,8 +25,7 @@
                     android:id="@+id/bigImage"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/parallax_image_height"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/example" />
+                    android:scaleType="centerCrop" />
 
                 <View
                     android:id="@+id/anchor"
@@ -33,55 +33,119 @@
                     android:layout_height="@dimen/parallax_image_height"
                     android:minHeight="@dimen/parallax_image_height" />
 
-                <TextView
+                <utils.RobotoTextView
                     android:id="@+id/priceLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_below="@id/anchor"
-                    android:background="@android:color/white"
-                    android:paddingBottom="@dimen/activity_vertical_margin"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingTop="@dimen/activity_vertical_margin" />
-
-                <TextView
-                    android:id="@+id/quadratureLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/priceLabel"
+                    android:maxLines="1"
+                    android:textColor="@color/material_lime_700"
                     android:background="@android:color/white"
+                    android:textSize="20sp"
                     android:paddingBottom="@dimen/activity_vertical_margin"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingTop="@dimen/activity_vertical_margin" />
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    app:typeface="robotoBlack" />
 
-                <TextView
+                <utils.RobotoTextView
                     android:id="@+id/placeLabel"
+                    android:layout_below="@id/priceLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/quadratureLabel"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textColor="@color/main_color_grey_900"
                     android:background="@android:color/white"
+                    android:textSize="16sp"
                     android:paddingBottom="@dimen/activity_vertical_margin"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingTop="@dimen/activity_vertical_margin" />
-
-                <TextView
-                    android:id="@+id/floorLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    app:typeface="robotoRegular" />
+                
+                <LinearLayout
+                    android:id="@+id/locationBar"
                     android:layout_below="@id/placeLabel"
-                    android:background="@android:color/white"
-                    android:paddingBottom="@dimen/activity_vertical_margin"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingTop="@dimen/activity_vertical_margin" />
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp">
+
+                        <utils.MaterialRippleLayout
+                            style="@style/RippleStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            app:rippleColor="@color/main_color_grey_400" >
+
+                            <utils.RobotoTextView
+                                android:id="@+id/editSearchButton"
+                                style="@style/ButtonStyle.RaisedEmpty"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="0dp"
+                                android:background="@color/main_color_500"
+                                android:minWidth="112dp"
+                                android:text=""
+                                android:textColor="#fff" />
+                        </utils.MaterialRippleLayout>
+
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:id="@+id/actionOpenMap"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/myImageView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_location_on_white_24dp" />
+
+                        <TextView
+                            android:id="@+id/myImageViewText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@+id/myImageView"
+                            android:layout_alignTop="@+id/myImageView"
+                            android:layout_alignRight="@+id/myImageView"
+                            android:layout_alignBottom="@+id/myImageView"
+                            android:layout_margin="1dp"
+                            android:gravity="center"
+                            android:text="Hello"
+                            android:textColor="#000000" />
+                    </LinearLayout>
+
+                </LinearLayout>
+                
+                <utils.ExpandableHeightGridView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/features"
+                    android:layout_below="@id/locationBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:horizontalSpacing="10dp"
+                    android:numColumns="1"
+                    android:background="@color/white"
+                    android:verticalSpacing="10dp" />
 
                 <TextView
                     android:id="@+id/moreInfoLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/floorLabel"
+                    android:layout_below="@id/features"
                     android:background="@android:color/white"
                     android:paddingBottom="@dimen/activity_vertical_margin"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -95,12 +159,21 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="match_parent"
+            android:theme="@style/my_toolbar"
+            android:background="@drawable/toolbar_background"
+            android:elevation="5dp"
+            android:gravity="top"
+            app:titleMarginTop="13dp"
+            android:layout_gravity="top"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            app:popupTheme="@style/Theme.AppCompat.Light.DarkActionBar"
-            app:theme="@style/Toolbar" />
+            android:layout_width="match_parent"/>
+
+        <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"-->
+            <!--android:name="com.google.android.gms.maps.MapFragment"-->
+            <!--android:id="@+id/map"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"/>-->
+
     </FrameLayout>
 
 </LinearLayout>

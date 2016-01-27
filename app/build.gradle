@@ -32,5 +32,7 @@ dependencies {
     compile 'com.vinaysshenoy:mugen:1.0.2'
     compile 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
     compile 'com.github.ksoichiro:android-observablescrollview:1.6.0'
+    compile 'com.google.android.gms:play-services:8.3.0'
+    compile 'com.google.android.gms:play-services-maps:8.3.0'
 
 }

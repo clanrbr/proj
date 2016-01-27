@@ -160,10 +160,24 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <!--<style name="Toolbar" parent="Theme.AppCompat">-->
+        <!--<item name="colorPrimary">@color/main_color_500</item>-->
+        <!--<item name="colorPrimaryDark">@color/main_color_700</item>-->
+        <!--<item name="colorAccent">@color/main_color_500</item>-->
+    <!--</style>-->
+
     <style name="Toolbar" parent="Theme.AppCompat">
         <item name="colorPrimary">@color/main_color_500</item>
         <item name="colorPrimaryDark">@color/main_color_700</item>
         <item name="colorAccent">@color/main_color_500</item>
+    </style>
+
+    <style name="my_toolbar" >
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <!--<item name="android:textColorPrimary">?attr/colorAccent</item>-->
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
 </resources>
