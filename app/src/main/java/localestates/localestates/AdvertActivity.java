@@ -1,12 +1,16 @@
 package localestates.localestates;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import android.support.v7.widget.Toolbar;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,12 +23,14 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.nineoldandroids.view.ViewHelper;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -38,7 +44,7 @@ import utils.HelpFunctions;
  * Created by macbook on 1/26/16.
  */
 public class AdvertActivity extends AppCompatActivity implements ObservableScrollViewCallbacks ,
-        AsyncResponseLoadAdvert, OnMapReadyCallback {
+        AsyncResponseLoadAdvert {
 
     private String googleMapsAPI="AIzaSyCNBVx3m2Q0q2oo4FQhA4UdAyuTaCQ0BRg";
     private String advertTitle;
@@ -46,7 +52,11 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
     private Toolbar mToolbarView;
     private TextView priceLabel;
     private TextView placeLabel;
-    private TextView moreInfoLabel;
+    private TextView brokerName;
+    private TextView agencyName;
+    private TextView agencyAddress;
+    private ExpandableTextView moreInfoLabelExpand;
+    private FrameLayout mapBar;
     private ExpandableHeightGridView feturesGridView;
     private ObservableScrollView mScrollView;
     private int mParallaxImageHeight;
@@ -70,10 +80,52 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
         priceLabel = (TextView) findViewById(R.id.priceLabel);
         placeLabel = (TextView) findViewById(R.id.placeLabel);
         feturesGridView = (ExpandableHeightGridView) findViewById(R.id.features);
-        moreInfoLabel = (TextView) findViewById(R.id.moreInfoLabel);
+        mapBar = (FrameLayout) findViewById(R.id.mapBar);
+        moreInfoLabelExpand = (ExpandableTextView) findViewById(R.id.moreInfoLabelExpand);
+        brokerName = (TextView) findViewById(R.id.brokerName);
+        agencyName = (TextView) findViewById(R.id.agencyName);
+        agencyAddress = (TextView) findViewById(R.id.agencyAddress);
 
-//        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
+        // change color of icon
+        ImageView mapImageView = (ImageView) findViewById(R.id.mapImageView);
+        mapImageView.setColorFilter(ContextCompat.getColor(AdvertActivity.this, R.color.material_lime_900));
+
+        mapBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mapIntent = new Intent(AdvertActivity.this,MapActivity.class);
+                if ( advertInto.has("points") ) {
+                    try {
+                        mapIntent.putExtra("points",advertInto.getString("points"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if ( advertInto.has("coordinates") ) {
+                    try {
+                        mapIntent.putExtra("coordinates",advertInto.getString("coordinates"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if ( advertInto.has("rub") ) {
+                    String value= null;
+                    try {
+                        value = advertInto.getString("rub");
+                        if ( advertInto.has("type_home") ) {
+                            value=value + " " + advertInto.getString("type_home");
+                        }
+                        mapIntent.putExtra("title",value);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                startActivity(mapIntent);
+            }
+        });
 
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
@@ -82,15 +134,20 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
                 String urlGetAdvert="http://api.imot.bg/mobile_api/details?id="+advertID;
                 asyncLoadAdvert.execute(urlGetAdvert);
             }
-        } else {
-
         }
 
         mImageView = (ImageView) findViewById(R.id.bigImage);
         mToolbarView = (Toolbar) findViewById(R.id.toolbar);
         mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getResources().getColor(R.color.main_color_500)));
-        if (mToolbarView != null)
+        if (mToolbarView != null) {
             mToolbarView.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+            mToolbarView.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
 
         mScrollView = (ObservableScrollView) findViewById(R.id.scroll);
         mScrollView.setScrollViewCallbacks(this);
@@ -117,6 +174,11 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
 
     @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     @Override
@@ -169,7 +231,10 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
             }
 
             if ( advertInto.has("additional_information") ) {
-                moreInfoLabel.setText(advertInto.getString("additional_information"));
+//                moreInfoLabel.setText(advertInto.getString("additional_information"));
+
+                // IMPORTANT - call setText on the ExpandableTextView to set the text content to displ  ay
+                moreInfoLabelExpand.setText(advertInto.getString("additional_information"));
             }
 
             if ( advertInto.has("floor_regulation") ) {
@@ -209,18 +274,28 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
                 gridValue.add(advertInto.getString("tec_watter"));
             }
 
+            if (advertInto.has("agency")) {
+                if (advertInto.has("broker_id")) {
+                    if ( advertInto.has("broker_name") ) {
+                        brokerName.setText("Брокер: "+ advertInto.getString("broker_name"));
+                    }
+                }
+
+                JSONObject agencyObject = advertInto.getJSONObject("agency");
+                if ( agencyObject.has("name") ) {
+                    agencyName.setText("Агенция: "+ agencyObject.getString("name"));
+                }
+
+                if ( agencyObject.has("address") ) {
+                    agencyAddress.setText(agencyObject.getString("address"));
+                }
+             }
+
+
             if ( gridValue.size()>0 ) {
-                Log.e("HEREHERE",String.valueOf(gridValue.size()));
                 GridViewPropertyFeaturesAdapter adapter = new GridViewPropertyFeaturesAdapter(AdvertActivity.this,gridValueTitle,gridValue);
                 feturesGridView.setAdapter(adapter);
             }
         }
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(0, 0))
-                .title("Marker"));
     }
 }
