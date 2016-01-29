@@ -1,18 +1,28 @@
 package localestates.localestates;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
 import android.support.v7.widget.Toolbar;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
@@ -35,19 +45,22 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 import adapters.GridViewPropertyFeaturesAdapter;
+import constants.LocalEstateConstants;
 import interfaces.AsyncResponseLoadAdvert;
 import localEstatesHttpRequests.HTTPGETAdvert;
 import utils.ExpandableHeightGridView;
 import utils.HelpFunctions;
+import utils.MaterialRippleLayout;
 
 /**
  * Created by macbook on 1/26/16.
  */
-public class AdvertActivity extends AppCompatActivity implements ObservableScrollViewCallbacks ,
+public class AdvertActivity extends AppCompatActivity implements ObservableScrollViewCallbacks,
         AsyncResponseLoadAdvert {
 
-    private String googleMapsAPI="AIzaSyCNBVx3m2Q0q2oo4FQhA4UdAyuTaCQ0BRg";
+    private String googleMapsAPI = "AIzaSyCNBVx3m2Q0q2oo4FQhA4UdAyuTaCQ0BRg";
     private String advertTitle;
+    private String advertPhone;
     private ImageView mImageView;
     private Toolbar mToolbarView;
     private TextView priceLabel;
@@ -55,6 +68,7 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
     private TextView brokerName;
     private TextView agencyName;
     private TextView agencyAddress;
+    private MaterialRippleLayout callAction;
     private ExpandableTextView moreInfoLabelExpand;
     private FrameLayout mapBar;
     private ExpandableHeightGridView feturesGridView;
@@ -75,7 +89,7 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
         setContentView(R.layout.activity_advert);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-        asyncLoadAdvert.delegate=this;
+        asyncLoadAdvert.delegate = this;
 
         priceLabel = (TextView) findViewById(R.id.priceLabel);
         placeLabel = (TextView) findViewById(R.id.placeLabel);
@@ -85,6 +99,19 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
         brokerName = (TextView) findViewById(R.id.brokerName);
         agencyName = (TextView) findViewById(R.id.agencyName);
         agencyAddress = (TextView) findViewById(R.id.agencyAddress);
+        callAction = (MaterialRippleLayout) findViewById(R.id.callAction);
+
+        callAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(AdvertActivity.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(AdvertActivity.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, LocalEstateConstants.MY_PEMISSION_PHONE_CODE);
+                } else {
+                    callActionFunction();
+                }
+
+            }
+        });
 
         // change color of icon
         ImageView mapImageView = (ImageView) findViewById(R.id.mapImageView);
@@ -155,6 +182,25 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case LocalEstateConstants.MY_PEMISSION_PHONE_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0  && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    callActionFunction();
+                } else {
+                    Toast.makeText(AdvertActivity.this, "Обаждането изисква разрешение", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         onScrollChanged(mScrollView.getCurrentScrollY(), false, false);
@@ -170,6 +216,35 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
 
     @Override
     public void onDownMotionEvent() {
+    }
+
+    public void callActionFunction() {
+        if (ContextCompat.checkSelfPermission(AdvertActivity.this, android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+            LayoutInflater inflater = AdvertActivity.this.getLayoutInflater();
+            View dialoglayout = inflater.inflate(R.layout.dialog_phone_permission, null);
+            final AlertDialog.Builder builderDialog = new AlertDialog.Builder(AdvertActivity.this);
+            builderDialog.setView(dialoglayout);
+            final AlertDialog show = builderDialog.show();
+            Button closeButton= (Button) dialoglayout.findViewById(R.id.closeDialog);
+            closeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    show.dismiss();
+                }
+            });
+            Button callButton= (Button) dialoglayout.findViewById(R.id.callDialog);
+            callButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    show.dismiss();
+                    if (ContextCompat.checkSelfPermission(AdvertActivity.this, android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                        Intent phoneIntent = new Intent(Intent.ACTION_CALL);
+                        phoneIntent.setData(Uri.parse("tel:" + advertPhone));
+                        startActivity(phoneIntent);
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -277,19 +352,26 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
             if (advertInto.has("agency")) {
                 if (advertInto.has("broker_id")) {
                     if ( advertInto.has("broker_name") ) {
+                        brokerName.setVisibility(View.VISIBLE);
                         brokerName.setText("Брокер: "+ advertInto.getString("broker_name"));
                     }
                 }
 
                 JSONObject agencyObject = advertInto.getJSONObject("agency");
                 if ( agencyObject.has("name") ) {
+                    agencyName.setVisibility(View.VISIBLE);
                     agencyName.setText("Агенция: "+ agencyObject.getString("name"));
                 }
 
                 if ( agencyObject.has("address") ) {
+                    agencyAddress.setVisibility(View.VISIBLE);
                     agencyAddress.setText(agencyObject.getString("address"));
                 }
              }
+
+            if ( advertInto.has("phone") ) {
+                advertPhone=advertInto.getString("phone");
+            }
 
 
             if ( gridValue.size()>0 ) {
