@@ -7,10 +7,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -46,6 +48,7 @@ import java.util.ArrayList;
 
 import adapters.GridViewPropertyFeaturesAdapter;
 import constants.LocalEstateConstants;
+import events.OnSwipeTouchListener;
 import interfaces.AsyncResponseLoadAdvert;
 import localEstatesHttpRequests.HTTPGETAdvert;
 import utils.ExpandableHeightGridView;
@@ -59,6 +62,7 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
         AsyncResponseLoadAdvert {
 
     private String googleMapsAPI = "AIzaSyCNBVx3m2Q0q2oo4FQhA4UdAyuTaCQ0BRg";
+    private JSONArray picturesArray;
     private String advertTitle;
     private String advertPhone;
     private ImageView mImageView;
@@ -164,6 +168,17 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
         }
 
         mImageView = (ImageView) findViewById(R.id.bigImage);
+        mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent largeImageIntent = new Intent(AdvertActivity.this,AdvertImagesActivity.class);
+                if ( (picturesArray!=null) && (picturesArray.length()>0) ) {
+                    largeImageIntent.putExtra("advertPictures",picturesArray.toString());
+                }
+                startActivity(largeImageIntent);
+            }
+        });
+
         mToolbarView = (Toolbar) findViewById(R.id.toolbar);
         mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getResources().getColor(R.color.main_color_500)));
         if (mToolbarView != null) {
@@ -178,6 +193,23 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
 
         mScrollView = (ObservableScrollView) findViewById(R.id.scroll);
         mScrollView.setScrollViewCallbacks(this);
+//        mScrollView.setOnTouchListener(new OnSwipeTouchListener(AdvertActivity.this) {
+//            public void onSwipeTop() {
+//                Toast.makeText(AdvertActivity.this, "top", Toast.LENGTH_SHORT).show();
+//            }
+//            public void onSwipeRight() {
+//                Toast.makeText(AdvertActivity.this, "right", Toast.LENGTH_SHORT).show();
+//            }
+//            public void onSwipeLeft() {
+//                Toast.makeText(AdvertActivity.this, "left", Toast.LENGTH_SHORT).show();
+//            }
+//            public void onSwipeBottom() {
+//                Toast.makeText(AdvertActivity.this, "bottom", Toast.LENGTH_SHORT).show();
+//            }
+//
+//        });
+
+
         mParallaxImageHeight = getResources().getDimensionPixelSize(R.dimen.parallax_image_height);
     }
 
@@ -216,6 +248,12 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
 
     @Override
     public void onDownMotionEvent() {
+        Log.e("HEREHERE","DADA");
+        if (  mScrollView.getScrollY()==0 ) {
+            Log.e("HEREHERE",String.valueOf(mScrollView.getScrollY()));
+        }
+//        if ( mScrollView.getY() )
+//        =true;
     }
 
     public void callActionFunction() {
@@ -249,6 +287,17 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
 
     @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+        Log.e("HEREHERE","LAST EVENT");
+        if (ScrollState.DOWN==scrollState) {
+            Log.e("HEREHERE","OTIVA NAGORE");
+            if (mScrollView.getScrollY()==0) {
+                Log.e("HEREHERE",String.valueOf(mScrollView.getScrollY()));
+
+            }
+        }
+        if (ScrollState.STOP==scrollState) {
+            Log.e("HEREHERE","SPIRA");
+        }
     }
 
     @Override
@@ -264,7 +313,7 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
             ArrayList<CharSequence> gridValueTitle = new ArrayList<CharSequence>();
             ArrayList<CharSequence> gridValue = new ArrayList<CharSequence>();
             if ( advertInto.has("pictures") ) {
-                JSONArray picturesArray = new JSONArray();
+                picturesArray = new JSONArray();
                 picturesArray=advertInto.getJSONArray("pictures");
                 if (picturesArray.length()>0) {
                     Picasso.with(AdvertActivity.this).load(picturesArray.get(0).toString()).placeholder(R.drawable.noproperty).error(R.drawable.noproperty).into(mImageView);
