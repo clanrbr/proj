@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +23,7 @@ import fragments.CheckAndRadioBoxesFragment;
 import fragments.MainPageFragment;
 import localEstatesHttpRequests.HTTPGetProperties;
 
-public class StartActivity extends ActionBarActivity {
+public class StartActivity extends AppCompatActivity {
 
     private ArrayList<JSONObject> advertsJsonArray = new ArrayList<JSONObject>();
     private PropertiesArrayAdapter adapterProperties;
@@ -56,6 +57,9 @@ public class StartActivity extends ActionBarActivity {
         menuItemFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent favouriteIntent = new Intent(StartActivity.this,AdvertNotepadActivity.class);
+                finish();
+                startActivity(favouriteIntent);
 
             }
         });
