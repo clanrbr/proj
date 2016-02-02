@@ -89,9 +89,32 @@
         <item>Цена на кв.м</item>
     </string-array>
 
-
     <string-array name="sell_property_types">
         <item>ВСИЧКИ</item>
+        <item>1-СТАЕН</item>
+        <item>2-СТАЕН</item>
+        <item>3-СТАЕН</item>
+        <item>4-СТАЕН</item>
+        <item>МНОГОСТАЕН</item>
+        <item>МЕЗОНЕТ</item>
+        <item>АТЕЛИЕ ТАВАН</item>
+        <item>ОФИС</item>
+        <item>МАГАЗИН</item>
+        <item>ЗАВЕДЕНИЕ</item>
+        <item>СКЛАД</item>
+        <item>ПРОМ. ПОМЕЩЕНИЕ</item>
+        <item>ХОТЕЛ</item>
+        <item>ЕТАЖ ОТ КЪЩА</item>
+        <item>КЪЩА</item>
+        <item>ВИЛА</item>
+        <item>ПАРЦЕЛ</item>
+        <item>ГАРАЖ</item>
+        <item>ЗЕМЕДЕЛСКА ЗЕМЯ</item>
+    </string-array>
+
+    <string-array name="rent_property_types">
+        <item>ВСИЧКИ</item>
+        <item>СТАЯ</item>
         <item>1-СТАЕН</item>
         <item>2-СТАЕН</item>
         <item>3-СТАЕН</item>

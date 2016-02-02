@@ -320,7 +320,7 @@ public class CheckAndRadioBoxesFragment extends Fragment implements
                         for (int i=0;i<checkboxSelectedValue.size();i++) {
                             valueCheckBox+=checkboxSelectedValue.get(i)+",";
                             if ( groupNumber==0 ) {
-                                groupNumber= HelpFunctions.returnGroupNumberOfProperty(checkboxSelectedValue.get(i),checkboxSelectedValue,0);
+                                groupNumber= HelpFunctions.returnGroupNumberOfProperty(checkboxSelectedValue.get(i),checkboxSelectedValue);
                             }
                         }
 

@@ -12,23 +12,26 @@
         android:background="@drawable/shadow_style"
         android:orientation="vertical">
 
-        <utils.RobotoTextView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:text="Вид строителство:"
-            android:textColor="@color/main_color_500"
-            android:textSize="16sp"
-            app:typeface="robotoLight" />
+            android:layout_height="wrap_content">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/material_grey_300" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@color/main_color_500" />
+            <utils.RobotoTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Вид строителство:"
+                android:textColor="@color/main_color_500"
+                android:textSize="16sp"
+                app:typeface="robotoLight" />
+        </LinearLayout>
 
         <LinearLayout
             android:paddingLeft="8dp"
@@ -57,23 +60,27 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shadow_style"
         android:orientation="vertical">
-        <utils.RobotoTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:text="Година на строителство:"
-            android:textColor="@color/main_color_500"
-            android:textSize="16sp"
-            app:typeface="robotoLight" />
 
-        <View
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@color/main_color_500" />
+            android:layout_height="wrap_content">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/material_grey_300" />
+
+            <utils.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Година на строителство:"
+                android:textColor="@color/main_color_500"
+                android:textSize="16sp"
+                app:typeface="robotoLight" />
+        </LinearLayout>
 
         <LinearLayout
             android:paddingLeft="8dp"
@@ -119,23 +126,27 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shadow_style"
         android:orientation="vertical">
-        <utils.RobotoTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:text="Особености:"
-            android:textColor="@color/main_color_500"
-            android:textSize="16sp"
-            app:typeface="robotoLight" />
 
-        <View
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@color/main_color_500" />
+            android:layout_height="wrap_content">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/material_grey_300" />
+
+            <utils.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Особености:"
+                android:textColor="@color/main_color_500"
+                android:textSize="16sp"
+                app:typeface="robotoLight" />
+        </LinearLayout>
 
         <LinearLayout
             android:paddingLeft="8dp"
@@ -164,23 +175,27 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shadow_style"
         android:orientation="vertical">
-        <utils.RobotoTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:text="ТЕЦ:"
-            android:textColor="@color/main_color_500"
-            android:textSize="16sp"
-            app:typeface="robotoLight" />
 
-        <View
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@color/main_color_500" />
+            android:layout_height="wrap_content">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/material_grey_300" />
+
+            <utils.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:text="ТЕЦ:"
+                android:textColor="@color/main_color_500"
+                android:textSize="16sp"
+                app:typeface="robotoLight" />
+        </LinearLayout>
 
         <Spinner
             android:id="@+id/tec"
@@ -193,23 +208,27 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shadow_style"
         android:orientation="vertical">
-        <utils.RobotoTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:text="Тел.:"
-            android:textColor="@color/main_color_500"
-            android:textSize="16sp"
-            app:typeface="robotoLight" />
 
-        <View
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@color/main_color_500" />
+            android:layout_height="wrap_content">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/material_grey_300" />
+
+            <utils.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Тел.:"
+                android:textColor="@color/main_color_500"
+                android:textSize="16sp"
+                app:typeface="robotoLight" />
+        </LinearLayout>
 
         <Spinner
             android:id="@+id/phone"

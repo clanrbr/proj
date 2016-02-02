@@ -40,7 +40,7 @@ public class AdvertImagesActivity extends AppCompatActivity {
             window.setStatusBarColor(getResources().getColor(R.color.main_color_700));
         }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_fullscreen_image);
+        setContentView(R.layout.activity_image_view_activty);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         Bundle extras = getIntent().getExtras();

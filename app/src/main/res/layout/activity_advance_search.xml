@@ -18,29 +18,32 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shadow_style"
                 android:orientation="vertical">
-                <utils.RobotoTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Търсене на имот за:"
-                    android:textColor="@color/main_color_500"
-                    android:textSize="16sp"
-                    app:typeface="robotoLight" />
 
-                <View
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@color/main_color_500" />
+                    android:layout_height="wrap_content">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/material_grey_300" />
+
+                    <utils.RobotoTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Търсене на имот за:"
+                        android:textColor="@color/main_color_500"
+                        android:textSize="16sp"
+                        app:typeface="robotoLight" />
+                </LinearLayout>
 
                 <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/radioGroup"
@@ -78,36 +81,26 @@
                 android:background="@drawable/shadow_style"
                 android:orientation="vertical">
 
-                <utils.RobotoTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Местоположение:"
-                    android:textColor="@color/main_color_500"
-                    android:textSize="16sp"
-                    app:typeface="robotoLight" />
-
-                <View
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@color/main_color_500" />
+                    android:layout_height="wrap_content">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/material_grey_300" />
 
-                <!--<TextView-->
-                <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-                <!--android:id="@+id/town_spinner"-->
-                <!--style="?android:attr/spinnerItemStyle"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="48dp"-->
-                <!--android:gravity="center_vertical"-->
-                <!--android:paddingLeft="4dp"-->
-                <!--android:textSize="18sp"-->
-                <!--android:textColor="#FFFFFF"-->
-                <!--android:ellipsize="marquee"-->
-                <!--android:singleLine="true" />-->
+                    <utils.RobotoTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Местоположение:"
+                        android:textColor="@color/main_color_500"
+                        android:textSize="16sp"
+                        app:typeface="robotoLight" />
+                </LinearLayout>
 
                 <Spinner
                     android:id="@+id/town_spinner"
@@ -123,23 +116,26 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <utils.RobotoTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Район:"
-                    android:textColor="@color/main_color_500"
-                    android:textSize="16sp"
-                    app:typeface="robotoLight" />
-
-                <View
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@color/main_color_500" />
+                    android:layout_height="wrap_content">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/material_grey_300" />
+
+                    <utils.RobotoTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Район:"
+                        android:textColor="@color/main_color_500"
+                        android:textSize="16sp"
+                        app:typeface="robotoLight" />
+                </LinearLayout>
 
                 <Spinner
                     android:id="@+id/second_town_spinner"
@@ -147,30 +143,32 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shadow_style"
                 android:orientation="vertical">
 
-                <utils.RobotoTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Търсене на имот за:"
-                    android:textColor="@color/main_color_500"
-                    android:textSize="16sp"
-                    app:typeface="robotoLight" />
-
-                <View
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@color/main_color_500" />
+                    android:layout_height="wrap_content">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/material_grey_300" />
+
+                    <utils.RobotoTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Търсене на имот за:"
+                        android:textColor="@color/main_color_500"
+                        android:textSize="16sp"
+                        app:typeface="robotoLight" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:paddingLeft="8dp"
@@ -200,23 +198,27 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/shadow_style"
                 android:orientation="vertical">
-                <utils.RobotoTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Цена на имота (Евро):"
-                    android:textColor="@color/main_color_500"
-                    android:textSize="16sp"
-                    app:typeface="robotoLight" />
 
-                <View
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@color/main_color_500" />
+                    android:layout_height="wrap_content">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/material_grey_300" />
+
+                    <utils.RobotoTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Цена на имота (Евро):"
+                        android:textColor="@color/main_color_500"
+                        android:textSize="16sp"
+                        app:typeface="robotoLight" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:paddingLeft="8dp"
@@ -264,23 +266,26 @@
                 android:background="@drawable/shadow_style"
                 android:orientation="vertical">
 
-                <utils.RobotoTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Квадратура (кв.м):"
-                    android:textColor="@color/main_color_500"
-                    android:textSize="16sp"
-                    app:typeface="robotoLight" />
-
-                <View
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@color/main_color_500" />
+                    android:layout_height="wrap_content">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/material_grey_300" />
+
+                    <utils.RobotoTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Квадратура (кв.м):"
+                        android:textColor="@color/main_color_500"
+                        android:textSize="16sp"
+                        app:typeface="robotoLight" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:paddingLeft="8dp"
@@ -326,23 +331,27 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/shadow_style"
                 android:orientation="vertical">
-                <utils.RobotoTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Сортиране според:"
-                    android:textColor="@color/main_color_500"
-                    android:textSize="16sp"
-                    app:typeface="robotoLight" />
 
-                <View
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@color/main_color_500" />
+                    android:layout_height="wrap_content">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/material_grey_300" />
+
+                    <utils.RobotoTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Сортиране според:"
+                        android:textColor="@color/main_color_500"
+                        android:textSize="16sp"
+                        app:typeface="robotoLight" />
+                </LinearLayout>
 
                 <Spinner
                     android:id="@+id/sortResult"

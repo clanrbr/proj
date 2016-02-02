@@ -38,6 +38,9 @@ public class HelpFunctions {
                 case "ВСИЧКИ":
                     match=-1;
                     break;
+                case "СТАЯ":
+                    match=1;
+                    break;
                 case "1-СТАЕН":
                     match=1;
                     break;
@@ -89,6 +92,10 @@ public class HelpFunctions {
                     match=3;
                     break;
 
+                case "ПАРЦЕЛ":
+                    match=4;
+                    break;
+
                 case "МЯСТО":
                     match=4;
                     break;
@@ -96,6 +103,7 @@ public class HelpFunctions {
                 case "ГАРАЖ":
                     match=5;
                     break;
+
 
                 case "ЗЕМЕДЕЛСКА ЗЕМЯ":
                     match=6;
@@ -108,13 +116,13 @@ public class HelpFunctions {
             if ( match==-1 ) {
                 return true;
             }
-            if ( (match==1) && ( type.equals("1-СТАЕН") || type.equals("2-СТАЕН") || type.equals("3-СТАЕН") || type.equals("4-СТАЕН") || type.equals("МНОГОСТАЕН") || type.equals("МЕЗОНЕТ") || type.equals("АТЕЛИЕ ТАВАН") ) ) {
+            if ( (match==1) && (  type.equals("СТАЯ") || type.equals("1-СТАЕН") || type.equals("2-СТАЕН") || type.equals("3-СТАЕН") || type.equals("4-СТАЕН") || type.equals("МНОГОСТАЕН") || type.equals("МЕЗОНЕТ") || type.equals("АТЕЛИЕ ТАВАН") ) ) {
                 return true;
             } else if ( (match==2 ) && ( type.equals("ХОТЕЛ") || type.equals("ПРОМ. ПОМЕЩЕНИЕ") || type.equals("СКЛАД") || type.equals("ЗАВЕДЕНИЕ") || type.equals("МАГАЗИН") || type.equals("ОФИС") ) ) {
                 return true;
             } else if ( (match==3) && ( type.equals("ВИЛА") || type.equals("КЪЩА") || type.equals("ЕТАЖ ОТ КЪЩА") ) ) {
                 return true;
-            } else if ( (match==4) && type.equals("МЯСТО") ) {
+            } else if ( (match==4) && ( type.equals("ПАРЦЕЛ") || type.equals("МЯСТО") ) ) {
                 return true;
             } else if ( (match==5) && type.equals("ГАРАЖ")  ) {
                 return true;
@@ -128,7 +136,7 @@ public class HelpFunctions {
         return true;
     }
 
-    public static int returnGroupNumberOfProperty(String typeProperty, ArrayList<String> selectedFields,int typeAdvert) {
+    public static int returnGroupNumberOfProperty(String typeProperty, ArrayList<String> selectedFields) {
         int match=0;
         String type="";
         if (typeProperty!=null) {
@@ -139,13 +147,13 @@ public class HelpFunctions {
             }
         }
 
-        if (  type.equals("1-СТАЕН") || type.equals("2-СТАЕН") || type.equals("3-СТАЕН") || type.equals("4-СТАЕН") || type.equals("МНОГОСТАЕН") || type.equals("МЕЗОНЕТ") || type.equals("АТЕЛИЕ ТАВАН") )  {
+        if ( type.equals("СТАЯ") ||  type.equals("1-СТАЕН") || type.equals("2-СТАЕН") || type.equals("3-СТАЕН") || type.equals("4-СТАЕН") || type.equals("МНОГОСТАЕН") || type.equals("МЕЗОНЕТ") || type.equals("АТЕЛИЕ ТАВАН") )  {
             match=1;
         } else if (  type.equals("ХОТЕЛ") || type.equals("ПРОМ. ПОМЕЩЕНИЕ") || type.equals("СКЛАД") || type.equals("ЗАВЕДЕНИЕ") || type.equals("МАГАЗИН") || type.equals("ОФИС") )  {
             match=2;
         } else if ( type.equals("ВИЛА") || type.equals("КЪЩА") || type.equals("ЕТАЖ ОТ КЪЩА") ) {
             match=3;
-        } else if ( type.equals("МЯСТО") ) {
+        } else if ( ( type.equals("ПАРЦЕЛ") || type.equals("МЯСТО") ) ) {
             match=4;
         } else if ( type.equals("ГАРАЖ") ) {
             match=5;
@@ -261,6 +269,32 @@ public class HelpFunctions {
             } else if ( (valuesString!=null) && (valuesString.get(position).toString()!="") && (!valuesString.get(position).toString().contains("Всички")) ) {
                 result = new HashMap<String,String>();
                 result.put(searchName,valuesString.get(position).toString());
+            }
+        }
+
+        return result;
+    }
+
+    public static HashMap<String, String> generateHashForSearchTypeHome(String searchName, TextView field,ArrayList<String> values,int typeAdvert) {
+
+        HashMap<String, String> result=null;
+        if (field!=null) {
+            if ( field.getText().toString()!="" ) {
+                String valuesNumbers=field.getText().toString();
+                Iterator it ;
+                if ( typeAdvert==1 ) {
+                    it = ConstantsImportant.orderTypeHome.entrySet().iterator();
+                } else {
+                    it = ConstantsImportant.orderTypeHomeRent.entrySet().iterator();
+                }
+                while (it.hasNext()) {
+                    Map.Entry pair = (Map.Entry)it.next();
+                    if ( valuesNumbers.contains(pair.getKey().toString()) ) {
+                        valuesNumbers=valuesNumbers.replace(pair.getKey().toString(),pair.getValue().toString());
+                    }
+                }
+                result = new HashMap<String,String>();
+                result.put(searchName,valuesNumbers);
             }
         }
 

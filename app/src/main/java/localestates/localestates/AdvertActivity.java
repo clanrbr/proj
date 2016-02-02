@@ -12,6 +12,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +24,6 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,25 +31,26 @@ import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.nineoldandroids.view.ViewHelper;
+import com.raizlabs.android.dbflow.runtime.TransactionManager;
+import com.raizlabs.android.dbflow.runtime.transaction.process.InsertModelTransaction;
+import com.raizlabs.android.dbflow.sql.language.Delete;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.sql.language.property.IProperty;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import adapters.GridViewPropertyFeaturesAdapter;
 import constants.LocalEstateConstants;
-import events.OnSwipeTouchListener;
+import db.AdvertNotepad;
+import db.AdvertNotepad_Table;
 import interfaces.AsyncResponseLoadAdvert;
 import localEstatesHttpRequests.HTTPGETAdvert;
 import utils.ExpandableHeightGridView;
@@ -61,6 +63,10 @@ import utils.MaterialRippleLayout;
 public class AdvertActivity extends AppCompatActivity implements ObservableScrollViewCallbacks,
         AsyncResponseLoadAdvert {
 
+    private int startScroll;
+    private String advertID;
+    private String advertOutput;
+    private int stopScroll;
     private String googleMapsAPI = "AIzaSyCNBVx3m2Q0q2oo4FQhA4UdAyuTaCQ0BRg";
     private JSONArray picturesArray;
     private String advertTitle;
@@ -167,6 +173,7 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
             }
         }
 
+
         mImageView = (ImageView) findViewById(R.id.bigImage);
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,12 +255,7 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
 
     @Override
     public void onDownMotionEvent() {
-        Log.e("HEREHERE","DADA");
-        if (  mScrollView.getScrollY()==0 ) {
-            Log.e("HEREHERE",String.valueOf(mScrollView.getScrollY()));
-        }
-//        if ( mScrollView.getY() )
-//        =true;
+        startScroll = mScrollView.getScrollY();
     }
 
     public void callActionFunction() {
@@ -287,17 +289,55 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
 
     @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
-        Log.e("HEREHERE","LAST EVENT");
-        if (ScrollState.DOWN==scrollState) {
-            Log.e("HEREHERE","OTIVA NAGORE");
-            if (mScrollView.getScrollY()==0) {
-                Log.e("HEREHERE",String.valueOf(mScrollView.getScrollY()));
+        stopScroll = mScrollView.getScrollY();
 
+        if ( (startScroll==stopScroll)  && (startScroll==0) && (stopScroll==0) ) {
+            Intent largeImageIntent = new Intent(AdvertActivity.this,AdvertImagesActivity.class);
+            if ( (picturesArray!=null) && (picturesArray.length()>0) ) {
+                largeImageIntent.putExtra("advertPictures",picturesArray.toString());
             }
+            startActivity(largeImageIntent);
+
         }
-        if (ScrollState.STOP==scrollState) {
-            Log.e("HEREHERE","SPIRA");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_start, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.addFavouritesBar) {
+            int orderAdvert=1;
+
+
+            AdvertNotepad lastAdvertNotepad = SQLite.select()
+                .from(AdvertNotepad.class)
+                .where()
+                .orderBy(AdvertNotepad_Table.order,true)
+                .querySingle();
+
+            if (lastAdvertNotepad!=null) {
+                orderAdvert=lastAdvertNotepad.order+1;
+            }
+
+            AdvertNotepad advnote = new AdvertNotepad();
+                advnote.advert_id=advertID;
+                advnote.advert_note="";
+                advnote.advert_list=advertOutput;
+                advnote.order=orderAdvert;
+            advnote.save();
+
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -309,9 +349,15 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
     public void processFinishLoadAdvert(JSONObject output) throws JSONException {
         advertInto=new JSONObject();
         if (output!=null) {
+            advertOutput=output.toString();
             advertInto=output;
             ArrayList<CharSequence> gridValueTitle = new ArrayList<CharSequence>();
             ArrayList<CharSequence> gridValue = new ArrayList<CharSequence>();
+            if ( advertInto.has("id") ) {
+                advertID=advertInto.getString("id");
+            }
+
+
             if ( advertInto.has("pictures") ) {
                 picturesArray = new JSONArray();
                 picturesArray=advertInto.getJSONArray("pictures");
@@ -355,9 +401,6 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
             }
 
             if ( advertInto.has("additional_information") ) {
-//                moreInfoLabel.setText(advertInto.getString("additional_information"));
-
-                // IMPORTANT - call setText on the ExpandableTextView to set the text content to displ  ay
                 moreInfoLabelExpand.setText(advertInto.getString("additional_information"));
             }
 
@@ -375,7 +418,7 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
                 if ( typeHome.contains(",")) {
                     typeHome = typeHome.replace(",", "");
                 }
-                int groupNumber= HelpFunctions.returnGroupNumberOfProperty(typeHome,null,0);
+                int groupNumber= HelpFunctions.returnGroupNumberOfProperty(typeHome,null);
                 if ( groupNumber==4 ) {
                     gridValueTitle.add("Електричество:");
                 } else {
@@ -389,7 +432,7 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
                 if ( typeHome.contains(",")) {
                     typeHome = typeHome.replace(",", "");
                 }
-                int groupNumber = HelpFunctions.returnGroupNumberOfProperty(typeHome,null,0);
+                int groupNumber = HelpFunctions.returnGroupNumberOfProperty(typeHome,null);
                 if ( groupNumber==4 ) {
                     gridValueTitle.add("Вода:");
                 } else {
@@ -417,6 +460,14 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
                     agencyAddress.setText(agencyObject.getString("address"));
                 }
              }
+
+            if ( advertInto.has("extri") ) {
+                JSONArray extriArr = advertInto.getJSONArray("extri");
+                if ( extriArr.length()>0 ) {
+                    gridValueTitle.add("Вид строителство:");
+                    gridValue.add(extriArr.getString(0));
+                }
+            }
 
             if ( advertInto.has("phone") ) {
                 advertPhone=advertInto.getString("phone");

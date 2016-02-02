@@ -31,6 +31,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import adapters.PropertyTypeAdapter;
 import adapters.SimpleMultiChoiceAdapter;
@@ -59,6 +61,7 @@ import localEstatesHttpRequests.HTTPGETTec;
 import localEstatesHttpRequests.HTTPGETWater;
 import localEstatesHttpRequests.HTTPGetProperties;
 import localEstatesHttpRequests.MakeASearchHttpRequest;
+import utils.ConstantsImportant;
 import utils.HelpFunctions;
 
 /**
@@ -298,7 +301,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                                     secondTownSpinnerLayout.setVisibility(View.VISIBLE);
                                     spinnerAdapter.clear();
                                     spinnerAdapter.addAll(secondTownArray);
-                                    if ( (searchValuesEdit!=null) && (searchValuesEdit.get(3)!=null) ) {
+                                    if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>3) && (searchValuesEdit.get(3)!=null) ) {
                                         String rubValue =  searchValuesEdit.get(3).get("raioni");
                                         if (rubValue!=null) {
                                             for(int i=0;i<secondTownArray.size();i++) {
@@ -332,7 +335,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         adapter = ArrayAdapter.createFromResource(getBaseContext(), R.array.town, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         townSpinner.setAdapter(adapter);
-        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(2)!=null) ) {
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>2) && (searchValuesEdit.get(2)!=null) ) {
             String rubValue =  searchValuesEdit.get(2).get("town");
             if (rubValue!=null) {
                 ArrayList<String> arrayValueTown = new ArrayList<String>();
@@ -353,19 +356,28 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         secondTownSpinner.setAdapter(spinnerAdapter);
 
         propertyTypes = new ArrayList<>();
-        Collections.addAll(propertyTypes, getResources().getStringArray(R.array.sell_property_types));
+        if ( typeAdvert==1 ) {
+            Collections.addAll(propertyTypes, getResources().getStringArray(R.array.sell_property_types));
+        } else {
+            Collections.addAll(propertyTypes, getResources().getStringArray(R.array.rent_property_types));
+        }
         choosePropertyType = (TextView) findViewById(R.id.choosePropertyType);
-        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(4)!=null) ) {
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>4) && (searchValuesEdit.get(4)!=null) ) {
             String rubValue =  searchValuesEdit.get(4).get("type_home");
             if (rubValue!=null) {
                 String[] parts = rubValue.split(",");
-                if ( parts.length>0 ) {
+                if (parts.length>0) {
                     for ( int i=0;i<parts.length;i++) {
-                        if ( rubValue.contains(String.valueOf(parts[i])) ) {
-                            rubValue=rubValue.replace(parts[i],propertyTypes.get(Integer.parseInt(parts[i])).toString());
+                        Iterator it = ConstantsImportant.orderTypeHome.entrySet().iterator();
+                        while ( it.hasNext() ) {
+                            Map.Entry pair = (Map.Entry)it.next();
+                            if ( parts[i].equals(pair.getValue().toString()) ) {
+                                rubValue=rubValue.replace(parts[i].toString(),pair.getKey().toString());
+                            }
                         }
                     }
                 }
+
                 choosePropertyType.setText(rubValue);
 
                 if (rubValue!="") {
@@ -373,7 +385,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                     String [] propertyTypeFullName = rubValue.split(",");
                     for (int i=0;i<propertyTypeFullName.length;i++) {
                         if ( groupNumber==0 ) {
-                            groupNumber= HelpFunctions.returnGroupNumberOfProperty(propertyTypeFullName[i],null,0);
+                            groupNumber= HelpFunctions.returnGroupNumberOfProperty(propertyTypeFullName[i],null);
                         }
                     }
 
@@ -412,6 +424,14 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         choosePropertyType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if ( typeAdvert==1 ) {
+                    propertyTypes = new ArrayList<String>();
+                    Collections.addAll(propertyTypes, getResources().getStringArray(R.array.sell_property_types));
+                } else {
+                    propertyTypes = new ArrayList<String>();
+                    Collections.addAll(propertyTypes, getResources().getStringArray(R.array.rent_property_types));
+                }
+
                 if ( (choosePropertyType.getText()!=null) && (choosePropertyType.getText().length()>0) && (!choosePropertyType.getText().toString().toUpperCase().contains("ВСИЧКИ")) ) {
                     String getSelectedValuesPropertyType = choosePropertyType.getText().toString();
                     checkboxSelectedValue=new ArrayList<String>();
@@ -448,6 +468,10 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
+                        int oldGroupNumber=0;
+                        if ( groupNumber>0) {
+                            oldGroupNumber=groupNumber;
+                        }
                         groupNumber=0;
                         checkboxSelectedValue=adapterPropertiesType.returnSelectedFields();
                         if (checkboxSelectedValue!=null) {
@@ -455,7 +479,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                             for (int i=0;i<checkboxSelectedValue.size();i++) {
                                 valueCheckBox+=checkboxSelectedValue.get(i)+",";
                                 if ( groupNumber==0 ) {
-                                    groupNumber= HelpFunctions.returnGroupNumberOfProperty(checkboxSelectedValue.get(i),checkboxSelectedValue,0);
+                                    groupNumber= HelpFunctions.returnGroupNumberOfProperty(checkboxSelectedValue.get(i),checkboxSelectedValue);
                                 }
                             }
 
@@ -465,6 +489,15 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                                 valueCheckBox="Всички";
                             }
                             choosePropertyType.setText(valueCheckBox);
+                        }
+
+                        if ( (groupNumber!=groupNumber) && (searchValuesEdit!=null && (searchValuesEdit.size()>0)  ) ) {
+
+                            if (searchValuesEdit.size()>10) {
+                                for (int j = searchValuesEdit.size()-1; j >= 11; j--) {
+                                    searchValuesEdit.remove(j);
+                                }
+                            }
                         }
 
                         if ( groupNumber>0 ) {
@@ -505,7 +538,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         // Price of property
         priceFrom = (EditText) findViewById(R.id.priceFrom);
         priceFrom.setGravity(Gravity.CENTER);
-        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(6)!=null) ) {
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>6) && (searchValuesEdit.get(6)!=null) ) {
             String rubValue = searchValuesEdit.get(6).get("price_min");
             if (rubValue != null) {
                 priceFrom.setText(rubValue);
@@ -514,7 +547,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
         priceTo = (EditText) findViewById(R.id.priceTo);
         priceTo.setGravity(Gravity.CENTER);
-        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(7)!=null) ) {
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>7) && (searchValuesEdit.get(7)!=null) ) {
             String rubValue = searchValuesEdit.get(7).get("price_max");
             if (rubValue != null) {
                 priceTo.setText(rubValue);
@@ -524,7 +557,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         // Area of property
         areaFrom = (EditText) findViewById(R.id.areaFrom);
         areaFrom.setGravity(Gravity.CENTER);
-        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(8)!=null) ) {
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>8) && (searchValuesEdit.get(8)!=null) ) {
             String rubValue = searchValuesEdit.get(8).get("kv_min");
             if (rubValue != null) {
                 areaFrom.setText(rubValue);
@@ -533,7 +566,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
         areaTo = (EditText) findViewById(R.id.areaTo);
         areaTo.setGravity(Gravity.CENTER);
-        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(9)!=null) ) {
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>9) && (searchValuesEdit.get(9)!=null) ) {
             String rubValue = searchValuesEdit.get(9).get("kv_max");
             if (rubValue != null) {
                 areaTo.setText(rubValue);
@@ -546,7 +579,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         sortResult.setAdapter(sortAdapter);
 
 
-        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(10)!=null) ) {
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>10) && (searchValuesEdit.get(10)!=null) ) {
             String rubValue = searchValuesEdit.get(10).get("sort");
             if (rubValue!=null) {
                 ArrayList<String> arrayValue = new ArrayList<String>();
@@ -568,7 +601,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                 Collections.addAll(arrayValueTown, getResources().getStringArray(R.array.town));
                 searchValues.add(HelpFunctions.generateHashForSearch("town",townSpinner,null,arrayValueTown));
                 searchValues.add(HelpFunctions.generateHashForSearch("raioni",secondTownSpinner,null,secondTownArray));
-                searchValues.add(HelpFunctions.generateHashForSearch("type_home",choosePropertyType,propertyTypes));
+                searchValues.add(HelpFunctions.generateHashForSearchTypeHome("type_home",choosePropertyType,propertyTypes,typeAdvert));
                 searchValues.add(HelpFunctions.generateHashForSearch("extri",extriProperty));
                 searchValues.add(HelpFunctions.generateHashForSearch("price_min",priceFrom));
                 searchValues.add(HelpFunctions.generateHashForSearch("price_max",priceTo));
@@ -642,14 +675,14 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
         // get year of build
         yearFrom = (EditText) optionView.findViewById(R.id.yearFrom);
-        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(12)!=null) ) {
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>12) && (searchValuesEdit.get(12)!=null) ) {
             String rubValue = searchValuesEdit.get(12).get("year_from");
             if (rubValue != null) {
                 yearFrom.setText(rubValue);
             }
         }
         yearTo = (EditText) optionView.findViewById(R.id.yearTo);
-        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(13)!=null) ) {
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>13) && (searchValuesEdit.get(13)!=null) ) {
             String rubValue = searchValuesEdit.get(13).get("year_to");
             if (rubValue != null) {
                 yearTo.setText(rubValue);
@@ -675,14 +708,14 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
         // get year of build
         yearFrom = (EditText) optionView.findViewById(R.id.yearFrom);
-        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(12)!=null) ) {
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>12) && (searchValuesEdit.get(12)!=null) ) {
             String rubValue = searchValuesEdit.get(12).get("year_from");
             if (rubValue != null) {
                 yearFrom.setText(rubValue);
             }
         }
         yearTo = (EditText) optionView.findViewById(R.id.yearTo);
-        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(13)!=null) ) {
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>13) && (searchValuesEdit.get(13)!=null) ) {
             String rubValue = searchValuesEdit.get(13).get("year_to");
             if (rubValue != null) {
                 yearTo.setText(rubValue);
@@ -727,14 +760,14 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
         // get year of build
         yearFrom = (EditText) optionView.findViewById(R.id.yearFrom);
-        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(12)!=null) ) {
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>12) && (searchValuesEdit.get(12)!=null) ) {
             String rubValue = searchValuesEdit.get(12).get("year_from");
             if (rubValue != null) {
                 yearFrom.setText(rubValue);
             }
         }
         yearTo = (EditText) optionView.findViewById(R.id.yearTo);
-        if ( (searchValuesEdit!=null) && (searchValuesEdit.get(13)!=null) ) {
+        if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>13) && (searchValuesEdit.get(13)!=null) ) {
             String rubValue = searchValuesEdit.get(13).get("year_to");
             if (rubValue != null) {
                 yearTo.setText(rubValue);
@@ -817,7 +850,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                         extriSelectedValue = new ArrayList<>();
                     }
 
-                    if ( (searchValuesEdit!=null) && (searchValuesEdit.get(5)!=null) ) {
+                    if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>5) && (searchValuesEdit.get(5)!=null) ) {
                         String rubValue =  searchValuesEdit.get(5).get("extri");
                         if (rubValue!=null) {
                             extriProperty.setText(rubValue);
@@ -877,7 +910,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             floorFromAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, floorArray);
             floorFromAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             floorFromSpinner.setAdapter(floorFromAdapter);
-            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(15)!=null) ) {
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>15) && (searchValuesEdit.get(15)!=null) ) {
                 String rubValue =  searchValuesEdit.get(15).get("floor_from");
                 if (rubValue!=null) {
                     for(int i=0;i<floorArray.size();i++) {
@@ -894,7 +927,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             floorToAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, floorArray);
             floorToAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             floorToSpinner.setAdapter(floorToAdapter);
-            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(16)!=null) ) {
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>16) && (searchValuesEdit.get(16)!=null) ) {
                 String rubValue =  searchValuesEdit.get(16).get("floor_to");
                 if (rubValue!=null) {
                     for(int i=0;i<floorArray.size();i++) {
@@ -917,7 +950,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
         buildTypeArray = buildTypeArrayResult;
         if ( buildTypeArray!=null ) {
-            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(11)!=null) ) {
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>11) && (searchValuesEdit.get(11)!=null) ) {
                 String rubValue = searchValuesEdit.get(11).get("type_build");
                 if (rubValue != null) {
                     buildTypeProperty.setText(rubValue);
@@ -975,7 +1008,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                                 }
                                 buildTypeProperty.setText(valueCheckBox);
                             }
-                            dialogSimple.hide();
+                            dialogSimple.dismiss();
                         }
                     });
 
@@ -984,7 +1017,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                         @Override
                         public void onClick(View v) {
                             adapterbuildTypeProperties.clearSelectedFields();
-                            dialogSimple.hide();
+                            dialogSimple.dismiss();
                         }
                     });
                 }
@@ -1003,7 +1036,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             tecAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, tecArray);
             tecAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             tecSpinner.setAdapter(tecAdapter);
-            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(13)!=null) ) {
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>13) && (searchValuesEdit.get(13)!=null) ) {
                 String rubValue =  searchValuesEdit.get(13).get("tec");
                 if (rubValue!=null) {
                     for(int i=0;i<tecArray.size();i++) {
@@ -1029,7 +1062,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             phoneAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, phoneArray);
             phoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             phoneSpinner.setAdapter(phoneAdapter);
-            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(14)!=null) ) {
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>14) && (searchValuesEdit.get(14)!=null) ) {
                 String rubValue =  searchValuesEdit.get(14).get("phone");
                 if (rubValue!=null) {
                     for(int i=0;i<phoneArray.size();i++) {
@@ -1054,7 +1087,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             electricityAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, electricityArray);
             electricityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             electricitySpinner.setAdapter(electricityAdapter);
-            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(11)!=null) ) {
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>11) && (searchValuesEdit.get(11)!=null) ) {
                 String rubValue =  searchValuesEdit.get(11).get("electricity");
                 if (rubValue!=null) {
                     for(int i=0;i<electricityArray.size();i++) {
@@ -1080,7 +1113,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             waterAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, waterArray);
             waterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             waterSpinner.setAdapter(waterAdapter);
-            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(12)!=null) ) {
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>12) && (searchValuesEdit.get(12)!=null) ) {
                 String rubValue =  searchValuesEdit.get(12).get("watter");
                 if (rubValue!=null) {
                     for(int i=0;i<waterArray.size();i++) {
@@ -1106,7 +1139,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             regulationAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, regulationArray);
             regulationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             regulationSpinner.setAdapter(regulationAdapter);
-            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(13)!=null) ) {
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>13) && (searchValuesEdit.get(13)!=null) ) {
                 String rubValue =  searchValuesEdit.get(13).get("regulation");
                 if (rubValue!=null) {
                     for(int i=0;i<regulationArray.size();i++) {
@@ -1129,7 +1162,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
         landPermanentUsageArray = landPermanentUsagePropertyTypeArrayResult;
         if ( landPermanentUsageArray!=null ) {
-            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(12)!=null) ) {
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>12) && (searchValuesEdit.get(12)!=null) ) {
                 String rubValue = searchValuesEdit.get(12).get("land_permanent_usage");
                 if (rubValue != null) {
                     landPermanentUsageProperty.setText(rubValue);
@@ -1175,7 +1208,6 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                         public void onClick(View v) {
                             landPermanentUsageSelectedValue=adapterlandPermanentUsageProperties.returnSelectedFields();
                             if (landPermanentUsageSelectedValue!=null) {
-                                Log.e("HEREHERE","Click Event "+landPermanentUsageSelectedValue.toString());
                                 String valueCheckBox="";
                                 for (int i=0;i<landPermanentUsageSelectedValue.size();i++) {
                                     valueCheckBox+=landPermanentUsageSelectedValue.get(i)+",";
@@ -1215,7 +1247,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
         landCategoryArray=landCategoryArrayResult;
         if (landCategoryArray!=null)  {
-            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(11)!=null) ) {
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>11) && (searchValuesEdit.get(11)!=null) ) {
                 String rubValue = searchValuesEdit.get(11).get("land_category");
                 if (rubValue != null) {
                     landCategoryProperty.setText(rubValue);
@@ -1276,7 +1308,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                             } else {
                                 landCategoryProperty.setText("Всички");
                             }
-                            dialogSimple.hide();
+                            dialogSimple.dismiss();
                         }
                     });
 
@@ -1285,7 +1317,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                         @Override
                         public void onClick(View v) {
                             adapterlandCategoryProperties.clearSelectedFields();
-                            dialogSimple.hide();
+                            dialogSimple.dismiss();
                         }
                     });
                 }
@@ -1302,7 +1334,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             landLeaseContractAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, landLeaseContractArray);
             landLeaseContractAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             landLeaseContractSpinner.setAdapter(landLeaseContractAdapter);
-            if ( (searchValuesEdit!=null) && (searchValuesEdit.get(13)!=null) ) {
+            if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>13) && (searchValuesEdit.get(13)!=null) ) {
                 String rubValue =  searchValuesEdit.get(13).get("tec");
                 if (rubValue!=null) {
                     landLeaseContractSpinner.setSelection(Integer.parseInt(rubValue));
