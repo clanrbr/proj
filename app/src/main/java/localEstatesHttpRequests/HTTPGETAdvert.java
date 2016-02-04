@@ -3,6 +3,9 @@ package localEstatesHttpRequests;
 import android.os.AsyncTask;
 import android.support.v4.util.SimpleArrayMap;
 import android.util.Log;
+import android.view.View;
+
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,11 +25,19 @@ import interfaces.AsyncResponseLoadAdvert;
 /**
  * Created by macbook on 1/26/16.
  */
-public class HTTPGETAdvert extends AsyncTask<String, Void, String> {
+public class HTTPGETAdvert extends AsyncTask<String, Integer, String> {
     private Exception exception;
     private JSONObject advertInfo;
     private JSONArray advertsJsonArray;
     public AsyncResponseLoadAdvert delegate = null;
+
+    private CircularProgressBar progressBar;
+    private int asyncStarted;
+
+    public HTTPGETAdvert(CircularProgressBar progressBar) {
+
+        this.progressBar=progressBar;
+    }
 
     public String readIt(InputStream stream) throws IOException, UnsupportedEncodingException {
 
@@ -66,7 +77,21 @@ public class HTTPGETAdvert extends AsyncTask<String, Void, String> {
         }
     }
 
-    //    @Override
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        if ( progressBar!=null ) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        progressBar.setProgress(values[0]);
+    }
+
+    @Override
     protected void onPostExecute(String result) {
         advertInfo=null;
         if (result!=null) {

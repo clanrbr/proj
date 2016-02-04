@@ -6,12 +6,13 @@
     <!--android:orientation="vertical" android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent">-->
 
-    <LinearLayout
+    <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="match_parent">
+
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -21,294 +22,393 @@
             android:id="@+id/scroll2">
 
 
-        <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
-            android:id="@+id/scroll"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true">
-
-            <RelativeLayout
+            <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
+                android:id="@+id/scroll"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true">
 
-                <ImageView
-                    android:id="@+id/bigImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/parallax_image_height"
-                    android:scaleType="centerCrop" />
-
-                <View
-                    android:id="@+id/anchor"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/parallax_image_height"
-                    android:minHeight="@dimen/parallax_image_height" />
-
-                <utils.RobotoTextView
-                    android:id="@+id/priceLabel"
-                    android:layout_below="@id/anchor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:textColor="@color/material_lime_700"
-                    android:background="@android:color/white"
-                    android:textSize="20sp"
-                    android:paddingBottom="@dimen/activity_vertical_margin"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingTop="@dimen/activity_vertical_margin"
-                    app:typeface="robotoBlack" />
-
-                <utils.RobotoTextView
-                    android:id="@+id/placeLabel"
-                    android:layout_below="@id/priceLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:text=""
-                    android:textColor="@color/main_color_grey_900"
-                    android:background="@android:color/white"
-                    android:textSize="16sp"
-                    android:paddingBottom="@dimen/activity_vertical_margin"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingTop="@dimen/activity_vertical_margin"
-                    app:typeface="robotoRegular" />
-
-                <LinearLayout
-                    android:id="@+id/mapOptionsBar"
-                    android:background="@color/white"
-                    android:layout_below="@id/placeLabel"
-                    android:orientation="horizontal"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <utils.MaterialRippleLayout
-                        android:id="@+id/mapBar"
-                        style="@style/RippleStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        app:rippleColor="@color/main_color_grey_400" >
+                    <ImageView
+                        android:id="@+id/bigImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/parallax_image_height"
+                        android:scaleType="centerCrop" />
 
-                        <LinearLayout
-                            android:id="@+id/shsh"
-                            android:background="@color/white"
-                            android:layout_below="@id/placeLabel"
-                            android:orientation="vertical"
+                    <View
+                        android:id="@+id/anchor"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/parallax_image_height"
+                        android:minHeight="@dimen/parallax_image_height" />
+
+                    <utils.RobotoTextView
+                        android:id="@+id/priceLabel"
+                        android:layout_below="@id/anchor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:textColor="@color/material_lime_700"
+                        android:background="@android:color/white"
+                        android:textSize="20sp"
+                        android:paddingBottom="@dimen/activity_vertical_margin"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin"
+                        app:typeface="robotoBlack" />
+
+                    <utils.RobotoTextView
+                        android:id="@+id/placeLabel"
+                        android:layout_below="@id/priceLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="@color/main_color_grey_900"
+                        android:background="@android:color/white"
+                        android:textSize="16sp"
+                        android:paddingBottom="@dimen/activity_vertical_margin"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin"
+                        app:typeface="robotoRegular" />
+
+                    <LinearLayout
+                        android:id="@+id/mapOptionsBar"
+                        android:background="@color/white"
+                        android:layout_below="@id/placeLabel"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <utils.MaterialRippleLayout
+                            android:id="@+id/mapBar"
+                            style="@style/RippleStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            app:rippleColor="@color/main_color_grey_400" >
+
+                            <LinearLayout
+                                android:id="@+id/columnMap1"
+                                android:background="@color/white"
+                                android:layout_below="@id/placeLabel"
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:id="@+id/mapImageView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_location_on_black_24dp"
+                                    android:backgroundTint="@color/material_lime_900"/>
+
+                                <utils.RobotoTextView
+                                    android:id="@+id/showMap"
+                                    style="@style/ButtonStyle.RaisedEmpty"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="0dp"
+                                    android:background="@color/white"
+                                    android:minWidth="112dp"
+                                    android:text="Карта"
+                                    android:textColor="@color/material_lime_900" />
+                            </LinearLayout>
+
+                        </utils.MaterialRippleLayout>
+
+                        <utils.MaterialRippleLayout
+                            android:id="@+id/mapNavBar"
+                            style="@style/RippleStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            app:rippleColor="@color/main_color_grey_400" >
+
+                            <LinearLayout
+                                android:id="@+id/columnMap2"
+                                android:background="@color/white"
+                                android:layout_below="@id/placeLabel"
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:id="@+id/mapNavImageView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_navigation_black_24dp"
+                                    android:backgroundTint="@color/material_lime_900"/>
+
+                                <utils.RobotoTextView
+                                    android:id="@+id/showNavMap"
+                                    style="@style/ButtonStyle.RaisedEmpty"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="0dp"
+                                    android:background="@color/white"
+                                    android:minWidth="112dp"
+                                    android:text="Навигация"
+                                    android:textColor="@color/material_lime_900" />
+                            </LinearLayout>
+
+                        </utils.MaterialRippleLayout>
+
+                        <utils.MaterialRippleLayout
+                            android:id="@+id/mapStreetViewBar"
+                            style="@style/RippleStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            app:rippleColor="@color/main_color_grey_400" >
+
+                            <LinearLayout
+                                android:id="@+id/columnMap3"
+                                android:background="@color/white"
+                                android:layout_below="@id/placeLabel"
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:id="@+id/mapStreetViewImageView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_directions_run_black_24dp"
+                                    android:backgroundTint="@color/material_lime_900"/>
+
+                                <utils.RobotoTextView
+                                    android:id="@+id/showStreetViewMap"
+                                    style="@style/ButtonStyle.RaisedEmpty"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="0dp"
+                                    android:background="@color/white"
+                                    android:minWidth="112dp"
+                                    android:text="Гледка от място"
+                                    android:textColor="@color/material_lime_900" />
+                            </LinearLayout>
+
+                        </utils.MaterialRippleLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/separator0"
+                        android:layout_below="@+id/mapOptionsBar"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/material_grey_300" />
+
+                        <utils.RobotoTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="10dp"
+                            android:text="Основна информация:"
+                            android:textColor="@color/main_color_500"
+                            android:textSize="16sp"
+                            app:typeface="robotoLight" />
+                    </LinearLayout>
+
+                    <utils.ExpandableHeightGridView
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/features"
+                        android:layout_below="@id/separator0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:horizontalSpacing="10dp"
+                        android:numColumns="1"
+                        android:background="@color/white"
+                        android:verticalSpacing="10dp" />
+
+                    <LinearLayout
+                        android:id="@+id/separator1"
+                        android:layout_below="@+id/features"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/material_grey_300" />
+
+                        <utils.RobotoTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="10dp"
+                            android:text="Допълнителна информация:"
+                            android:textColor="@color/main_color_500"
+                            android:textSize="16sp"
+                            app:typeface="robotoLight" />
+                    </LinearLayout>
+
+                    <com.ms.square.android.expandabletextview.ExpandableTextView
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/moreInfoLabelExpand"
+                        android:layout_below="@id/separator1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        expandableTextView:maxCollapsedLines="4"
+                        expandableTextView:animDuration="200">
+                        <utils.RobotoTextView
+                            android:id="@+id/expandable_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center">
+                            android:textColor="@color/main_color_grey_900"
+                            android:background="@android:color/white"
+                            android:textSize="16sp"
+                            android:paddingBottom="@dimen/activity_vertical_margin"
+                            android:paddingLeft="@dimen/activity_horizontal_margin"
+                            android:paddingRight="@dimen/activity_horizontal_margin"
+                            android:paddingTop="@dimen/activity_vertical_margin"
+                            app:typeface="robotoRegular" />
 
-                            <ImageView
-                                android:id="@+id/mapImageView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_location_on_black_24dp"
-                                android:backgroundTint="@color/material_lime_900"/>
+                        <ImageButton
+                            android:id="@+id/expand_collapse"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="16dp"
+                            android:layout_gravity="center|bottom"
+                            android:src="@drawable/ic_favorite_black_24dp"
+                            android:background="@android:color/transparent"/>
 
-                            <utils.RobotoTextView
-                                android:id="@+id/showMap"
-                                style="@style/ButtonStyle.RaisedEmpty"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="0dp"
-                                android:background="@color/white"
-                                android:minWidth="112dp"
-                                android:text="Карта"
-                                android:textColor="@color/material_lime_900" />
-                        </LinearLayout>
+                    </com.ms.square.android.expandabletextview.ExpandableTextView>
 
-                    </utils.MaterialRippleLayout>
-                </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/separator2"
+                        android:layout_below="@+id/moreInfoLabelExpand"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/material_grey_300" />
 
-                <LinearLayout
-                    android:id="@+id/separator0"
-                    android:layout_below="@+id/mapOptionsBar"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                        <utils.RobotoTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="10dp"
+                            android:text="Тази обява се предлага от:"
+                            android:textColor="@color/main_color_500"
+                            android:textSize="16sp"
+                            app:typeface="robotoLight" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/agencyField"
+                        android:layout_below="@+id/separator2"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <utils.RobotoTextView
+                            android:id="@+id/brokerName"
+                            android:visibility="gone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/main_color_grey_900"
+                            android:background="@android:color/white"
+                            android:textSize="16sp"
+                            android:paddingBottom="@dimen/activity_vertical_margin"
+                            android:paddingLeft="@dimen/activity_horizontal_margin"
+                            android:paddingRight="@dimen/activity_horizontal_margin"
+                            android:paddingTop="@dimen/activity_vertical_margin"
+                            app:typeface="robotoRegular" />
+
+                        <utils.RobotoTextView
+                            android:id="@+id/agencyName"
+                            android:visibility="gone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/main_color_grey_900"
+                            android:background="@android:color/white"
+                            android:textSize="16sp"
+                            android:paddingBottom="@dimen/activity_vertical_margin_small"
+                            android:paddingLeft="@dimen/activity_horizontal_margin"
+                            android:paddingRight="@dimen/activity_horizontal_margin"
+                            android:paddingTop="@dimen/activity_vertical_margin"
+                            app:typeface="robotoRegular" />
+
+                        <utils.RobotoTextView
+                            android:id="@+id/agencyAddress"
+                            android:visibility="gone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/material_grey_700"
+                            android:background="@android:color/white"
+                            android:textSize="12sp"
+                            android:paddingBottom="@dimen/activity_vertical_margin"
+                            android:paddingLeft="@dimen/activity_horizontal_margin"
+                            android:paddingRight="@dimen/activity_horizontal_margin"
+                            android:paddingTop="0dp"
+                            app:typeface="robotoRegular" />
+                    </LinearLayout>
+                    
                     <View
+                        android:id="@+id/lastrow"
+                        android:background="@android:color/transparent"
+                        android:layout_below="@+id/agencyField"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/material_grey_300" />
+                        android:layout_height="45dp"/>
 
-                    <utils.RobotoTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:text="Основна информация:"
-                        android:textColor="@color/main_color_500"
-                        android:textSize="16sp"
-                        app:typeface="robotoLight" />
-                </LinearLayout>
-                
-                <utils.ExpandableHeightGridView
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/features"
-                    android:layout_below="@id/separator0"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:horizontalSpacing="10dp"
-                    android:numColumns="1"
-                    android:background="@color/white"
-                    android:verticalSpacing="10dp" />
+                </RelativeLayout>
 
-                <LinearLayout
-                    android:id="@+id/separator1"
-                    android:layout_below="@+id/features"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/material_grey_300" />
+            </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
 
-                    <utils.RobotoTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:text="Допълнителна информация:"
-                        android:textColor="@color/main_color_500"
-                        android:textSize="16sp"
-                        app:typeface="robotoLight" />
-                </LinearLayout>
+            <include layout="@layout/gradient_header" />
 
-                <com.ms.square.android.expandabletextview.ExpandableTextView
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/moreInfoLabelExpand"
-                    android:layout_below="@id/separator1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    expandableTextView:maxCollapsedLines="4"
-                    expandableTextView:animDuration="200">
-                    <utils.RobotoTextView
-                        android:id="@+id/expandable_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/main_color_grey_900"
-                        android:background="@android:color/white"
-                        android:textSize="16sp"
-                        android:paddingBottom="@dimen/activity_vertical_margin"
-                        android:paddingLeft="@dimen/activity_horizontal_margin"
-                        android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:paddingTop="@dimen/activity_vertical_margin"
-                        app:typeface="robotoRegular" />
-
-                    <ImageButton
-                        android:id="@+id/expand_collapse"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:layout_gravity="center|bottom"
-                        android:src="@drawable/ic_favorite_black_24dp"
-                        android:background="@android:color/transparent"/>
-
-                </com.ms.square.android.expandabletextview.ExpandableTextView>
-
-                <LinearLayout
-                    android:id="@+id/separator2"
-                    android:layout_below="@+id/moreInfoLabelExpand"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/material_grey_300" />
-
-                    <utils.RobotoTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:text="Тази обява се предлага от:"
-                        android:textColor="@color/main_color_500"
-                        android:textSize="16sp"
-                        app:typeface="robotoLight" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/agencyField"
-                    android:layout_below="@+id/separator2"
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
-                    <utils.RobotoTextView
-                        android:id="@+id/brokerName"
-                        android:visibility="gone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/main_color_grey_900"
-                        android:background="@android:color/white"
-                        android:textSize="16sp"
-                        android:paddingBottom="@dimen/activity_vertical_margin"
-                        android:paddingLeft="@dimen/activity_horizontal_margin"
-                        android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:paddingTop="@dimen/activity_vertical_margin"
-                        app:typeface="robotoRegular" />
-
-                    <utils.RobotoTextView
-                        android:id="@+id/agencyName"
-                        android:visibility="gone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/main_color_grey_900"
-                        android:background="@android:color/white"
-                        android:textSize="16sp"
-                        android:paddingBottom="@dimen/activity_vertical_margin_small"
-                        android:paddingLeft="@dimen/activity_horizontal_margin"
-                        android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:paddingTop="@dimen/activity_vertical_margin"
-                        app:typeface="robotoRegular" />
-
-                    <utils.RobotoTextView
-                        android:id="@+id/agencyAddress"
-                        android:visibility="gone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/material_grey_700"
-                        android:background="@android:color/white"
-                        android:textSize="12sp"
-                        android:paddingBottom="@dimen/activity_vertical_margin"
-                        android:paddingLeft="@dimen/activity_horizontal_margin"
-                        android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:paddingTop="0dp"
-                        app:typeface="robotoRegular" />
-                </LinearLayout>
-
-            </RelativeLayout>
-
-        </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
-
-        <include layout="@layout/gradient_header" />
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:theme="@style/my_toolbar"
-            android:background="@drawable/toolbar_background"
-            android:elevation="5dp"
-            android:gravity="top"
-            app:titleMarginTop="13dp"
-            android:layout_gravity="top"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"/>
-
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:theme="@style/my_toolbar"
+                android:background="@drawable/toolbar_background"
+                android:elevation="5dp"
+                android:gravity="top"
+                app:titleMarginTop="13dp"
+                android:layout_gravity="top"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"/>
         </FrameLayout>
 
+        <com.mikhaellopez.circularprogressbar.CircularProgressBar
+            android:id="@+id/progressBar"
+            android:layout_centerInParent="true"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:background_progressbar_color="@color/main_color_grey_400"
+            app:background_progressbar_width="5dp"
+            app:progressbar_color="@color/main_color_500"
+            app:progressbar_width="10dp" />
+
         <LinearLayout
+            android:id="@+id/callBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_alignBaseline="@id/scroll2"
+            android:layout_alignParentBottom="true"
+            android:layout_alignBottom="@id/scroll2"
             android:background="@color/white"
             android:gravity="center"
             android:paddingBottom="4dp">
@@ -341,7 +441,7 @@
             </utils.MaterialRippleLayout>
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
 <!--</LinearLayout>-->

@@ -3,6 +3,9 @@ package localEstatesHttpRequests;
 import android.os.AsyncTask;
 import android.support.v4.util.SimpleArrayMap;
 import android.util.Log;
+import android.widget.ProgressBar;
+
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -20,10 +23,16 @@ import utils.HelpFunctions;
 /**
  * Created by Ado on 11/30/2015.
  */
-public class HTTPGetProperties extends AsyncTask<String, Void, String> {
+public class HTTPGetProperties extends AsyncTask<String, Integer, String> {
     private Exception exception;
     private SimpleArrayMap<String, String> mHeaders = new SimpleArrayMap<String,String>();
     private String responseBody;
+    private CircularProgressBar progressBar;
+
+    public HTTPGetProperties(CircularProgressBar progressBar) {
+        this.progressBar=progressBar;
+
+    }
 
     public String readIt(InputStream stream) throws IOException, UnsupportedEncodingException {
 
@@ -62,6 +71,14 @@ public class HTTPGetProperties extends AsyncTask<String, Void, String> {
             Log.e("HEREHERE", "ne");
             return null;
         }
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        if (progressBar!=null) {
+            progressBar.setProgress(values[0]);
+        }
+//        super.onProgressUpdate(values);
     }
 
 //    @Override

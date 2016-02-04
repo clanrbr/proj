@@ -8,26 +8,26 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
+import com.google.android.gms.maps.StreetViewPanorama;
+import com.google.android.gms.maps.StreetViewPanoramaFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import interfaces.AsyncResponseLoadAdvert;
-
 /**
- * Created by macbook on 1/28/16.
+ * Created by macbook on 2/4/16.
  */
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class StreetViewActivity extends AppCompatActivity implements OnStreetViewPanoramaReadyCallback {
     private String points=null;
     private String coordinates=null;
     private Toolbar mToolbarView;
-    private MapFragment mapFragment;
+    private StreetViewPanoramaFragment streetViewPanoramaFragment;
 
     protected void onCreate(Bundle savedInstanceState) {
         if (android.os.Build.VERSION.SDK_INT >= 21) {
@@ -38,7 +38,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        setContentView(R.layout.activity_streetview);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         mToolbarView = (Toolbar) findViewById(R.id.toolbar);
@@ -75,8 +75,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         }
 
-        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        streetViewPanoramaFragment = (StreetViewPanoramaFragment) getFragmentManager().findFragmentById(R.id.map);
+        streetViewPanoramaFragment.getStreetViewPanoramaAsync(StreetViewActivity.this);
     }
 
     @Override
@@ -84,19 +84,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         finish();
     }
 
+
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
         if ( (coordinates!=null) && coordinates.contains(",") ) {
             String[] coordsArray = coordinates.split(",");
-            googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(Double.parseDouble(coordsArray[0]), Double.parseDouble(coordsArray[1])) )
-                    .title("Marker"));
-
-            LatLng cur_Latlng=new LatLng(Double.parseDouble(coordsArray[0]), Double.parseDouble(coordsArray[1])); // giving your marker to zoom to your location area.
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(cur_Latlng));
-            googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+            streetViewPanorama.setPosition(new LatLng(Double.parseDouble(coordsArray[0]), Double.parseDouble(coordsArray[1])));
         }
     }
 }
-
-

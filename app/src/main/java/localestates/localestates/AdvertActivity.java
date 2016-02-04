@@ -1,8 +1,14 @@
 package localestates.localestates;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -31,6 +37,7 @@ import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.nineoldandroids.view.ViewHelper;
 import com.raizlabs.android.dbflow.runtime.TransactionManager;
@@ -51,6 +58,7 @@ import adapters.GridViewPropertyFeaturesAdapter;
 import constants.LocalEstateConstants;
 import db.AdvertNotepad;
 import db.AdvertNotepad_Table;
+import imagemanipulation.path.parser.PathInfo;
 import interfaces.AsyncResponseLoadAdvert;
 import localEstatesHttpRequests.HTTPGETAdvert;
 import utils.ExpandableHeightGridView;
@@ -63,6 +71,7 @@ import utils.MaterialRippleLayout;
 public class AdvertActivity extends AppCompatActivity implements ObservableScrollViewCallbacks,
         AsyncResponseLoadAdvert {
 
+    private AdvertNotepad existsAdvertNotepad;
     private int startScroll;
     private String advertID;
     private String advertOutput;
@@ -81,14 +90,19 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
     private MaterialRippleLayout callAction;
     private ExpandableTextView moreInfoLabelExpand;
     private FrameLayout mapBar;
+    private FrameLayout mapNavBar;
+    private FrameLayout mapStreetViewBar;
     private ExpandableHeightGridView feturesGridView;
     private ObservableScrollView mScrollView;
     private int mParallaxImageHeight;
     private JSONObject advertInto;
-    private HTTPGETAdvert asyncLoadAdvert = new HTTPGETAdvert();
+    private HTTPGETAdvert asyncLoadAdvert;
+    private Menu mMenu;
+    private CircularProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         if (android.os.Build.VERSION.SDK_INT >= 21) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -99,17 +113,29 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
         setContentView(R.layout.activity_advert);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
+        progressBar = (CircularProgressBar)findViewById(R.id.progressBar);
+        progressBar.setColor(ContextCompat.getColor(this, R.color.main_color_500));
+//        circularProgressBar.setBackgroundColor(ContextCompat.getColor(this, R.color.backgroundProgressBarColor));
+//        circularProgressBar.setProgressBarWidth(getResources().getDimension(R.dimen.progressBarWidth));
+//        circularProgressBar.setBackgroundProgressBarWidth(getResources().getDimension(R.dimen.backgroundProgressBarWidth));
+        int animationDuration = 2500; // 2500ms = 2,5s
+        progressBar.setProgressWithAnimation(65, animationDuration);
+
+        asyncLoadAdvert = new HTTPGETAdvert(progressBar);
         asyncLoadAdvert.delegate = this;
 
         priceLabel = (TextView) findViewById(R.id.priceLabel);
         placeLabel = (TextView) findViewById(R.id.placeLabel);
         feturesGridView = (ExpandableHeightGridView) findViewById(R.id.features);
         mapBar = (FrameLayout) findViewById(R.id.mapBar);
+        mapNavBar = (FrameLayout) findViewById(R.id.mapNavBar);
+        mapStreetViewBar = (FrameLayout) findViewById(R.id.mapStreetViewBar);
         moreInfoLabelExpand = (ExpandableTextView) findViewById(R.id.moreInfoLabelExpand);
         brokerName = (TextView) findViewById(R.id.brokerName);
         agencyName = (TextView) findViewById(R.id.agencyName);
         agencyAddress = (TextView) findViewById(R.id.agencyAddress);
         callAction = (MaterialRippleLayout) findViewById(R.id.callAction);
+
 
         callAction.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,31 +156,31 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
         mapBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mapIntent = new Intent(AdvertActivity.this,MapActivity.class);
-                if ( advertInto.has("points") ) {
+                Intent mapIntent = new Intent(AdvertActivity.this, MapActivity.class);
+                if (advertInto.has("points")) {
                     try {
-                        mapIntent.putExtra("points",advertInto.getString("points"));
+                        mapIntent.putExtra("points", advertInto.getString("points"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
 
-                if ( advertInto.has("coordinates") ) {
+                if (advertInto.has("coordinates")) {
                     try {
-                        mapIntent.putExtra("coordinates",advertInto.getString("coordinates"));
+                        mapIntent.putExtra("coordinates", advertInto.getString("coordinates"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
 
-                if ( advertInto.has("rub") ) {
-                    String value= null;
+                if (advertInto.has("rub")) {
+                    String value = null;
                     try {
                         value = advertInto.getString("rub");
-                        if ( advertInto.has("type_home") ) {
-                            value=value + " " + advertInto.getString("type_home");
+                        if (advertInto.has("type_home")) {
+                            value = value + " " + advertInto.getString("type_home");
                         }
-                        mapIntent.putExtra("title",value);
+                        mapIntent.putExtra("title", value);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -164,6 +190,67 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
             }
         });
 
+        ImageView navigationImageView = (ImageView) findViewById(R.id.mapNavImageView);
+        navigationImageView.setColorFilter(ContextCompat.getColor(AdvertActivity.this, R.color.material_lime_900));
+
+        mapNavBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (advertInto.has("coordinates")) {
+                    try {
+                        if (ActivityCompat.checkSelfPermission(AdvertActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ) {
+                            if ( ActivityCompat.checkSelfPermission(AdvertActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                                getLocation(advertInto.getString("coordinates"));
+                            } else {
+                                ActivityCompat.requestPermissions(AdvertActivity.this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, LocalEstateConstants.MY_PEMISSION_ACCESS_COARSE_LOCATION);
+                            }
+                        } else {
+                            ActivityCompat.requestPermissions(AdvertActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, LocalEstateConstants.MY_PEMISSION_ACCESS_FINE_LOCATION);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(AdvertActivity.this,"Този обект не е оказан на картата",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        ImageView mapStrettViewImageView = (ImageView) findViewById(R.id.mapStreetViewImageView);
+        mapStrettViewImageView.setColorFilter(ContextCompat.getColor(AdvertActivity.this, R.color.material_lime_900));
+
+        mapStreetViewBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mapIntent = new Intent(AdvertActivity.this, StreetViewActivity.class);
+                if (advertInto.has("coordinates")) {
+                    try {
+                        mapIntent.putExtra("coordinates", advertInto.getString("coordinates"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (advertInto.has("rub")) {
+                    String value = null;
+                    try {
+                        value = advertInto.getString("rub");
+                        if (advertInto.has("type_home")) {
+                            value = value + " " + advertInto.getString("type_home");
+                        }
+                        mapIntent.putExtra("title", value);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                startActivity(mapIntent);
+            }
+        });
+
+
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
             String advertID = extras.getString("advertID");
@@ -172,7 +259,6 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
                 asyncLoadAdvert.execute(urlGetAdvert);
             }
         }
-
 
         mImageView = (ImageView) findViewById(R.id.bigImage);
         mImageView.setOnClickListener(new View.OnClickListener() {
@@ -200,29 +286,12 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
 
         mScrollView = (ObservableScrollView) findViewById(R.id.scroll);
         mScrollView.setScrollViewCallbacks(this);
-//        mScrollView.setOnTouchListener(new OnSwipeTouchListener(AdvertActivity.this) {
-//            public void onSwipeTop() {
-//                Toast.makeText(AdvertActivity.this, "top", Toast.LENGTH_SHORT).show();
-//            }
-//            public void onSwipeRight() {
-//                Toast.makeText(AdvertActivity.this, "right", Toast.LENGTH_SHORT).show();
-//            }
-//            public void onSwipeLeft() {
-//                Toast.makeText(AdvertActivity.this, "left", Toast.LENGTH_SHORT).show();
-//            }
-//            public void onSwipeBottom() {
-//                Toast.makeText(AdvertActivity.this, "bottom", Toast.LENGTH_SHORT).show();
-//            }
-//
-//        });
-
 
         mParallaxImageHeight = getResources().getDimensionPixelSize(R.dimen.parallax_image_height);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case LocalEstateConstants.MY_PEMISSION_PHONE_CODE: {
                 // If request is cancelled, the result arrays are empty.
@@ -233,9 +302,37 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
                 }
                 return;
             }
+            case LocalEstateConstants.MY_PEMISSION_ACCESS_COARSE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0  && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    try {
+                        getLocation(advertInto.getString("coordinates"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(AdvertActivity.this, "Навигацията изисква разрешение", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
 
-            // other 'case' lines to check for other
-            // permissions this app might request
+            case LocalEstateConstants.MY_PEMISSION_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0  && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if ( ActivityCompat.checkSelfPermission(AdvertActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        try {
+                            getLocation(advertInto.getString("coordinates"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        ActivityCompat.requestPermissions(AdvertActivity.this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, LocalEstateConstants.MY_PEMISSION_ACCESS_COARSE_LOCATION);
+                    }
+                } else {
+                    Toast.makeText(AdvertActivity.this, "Навигацията изисква разрешение", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
         }
     }
 
@@ -256,6 +353,17 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
     @Override
     public void onDownMotionEvent() {
         startScroll = mScrollView.getScrollY();
+    }
+
+    public void getLocation(String coordinates) {
+        if (ContextCompat.checkSelfPermission(AdvertActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(AdvertActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                String[] coordArray = coordinates.split(",");
+                final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?" +  "&daddr=" + coordArray[0] + "," + coordArray[1]));
+                intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                startActivity(intent);
+            }
+        }
     }
 
     public void callActionFunction() {
@@ -305,6 +413,8 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_start, menu);
+        mMenu=menu;
+
         return true;
     }
 
@@ -317,23 +427,52 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
         if (id == R.id.addFavouritesBar) {
             int orderAdvert=1;
 
+            AdvertNotepad existsAdvert = SQLite.select()
+                    .from(AdvertNotepad.class)
+                    .where(AdvertNotepad_Table.advert_id.is(advertID))
+                    .querySingle();
+            if ( existsAdvert!=null ) {
+                SQLite.delete()
+                        .from(AdvertNotepad.class)
+                        .where(AdvertNotepad_Table.advert_id.is(advertID))
+                        .query();
 
-            AdvertNotepad lastAdvertNotepad = SQLite.select()
-                .from(AdvertNotepad.class)
-                .where()
-                .orderBy(AdvertNotepad_Table.order,true)
-                .querySingle();
+                MenuItem itemFavourite = mMenu.findItem(R.id.addFavouritesBar);
+                if ( itemFavourite!=null ) {
+                    itemFavourite.setIcon(R.drawable.ic_favorite_black_24dp);
+                }
+                Toast.makeText(AdvertActivity.this,"Обявата беше успешно изтрита от бележника!",Toast.LENGTH_LONG).show();
+            } else {
+                AdvertNotepad lastAdvertNotepad = SQLite.select()
+                        .from(AdvertNotepad.class)
+                        .where()
+                        .orderBy(AdvertNotepad_Table.order,true)
+                        .querySingle();
 
-            if (lastAdvertNotepad!=null) {
-                orderAdvert=lastAdvertNotepad.order+1;
+                if (lastAdvertNotepad!=null) {
+                    Log.e("HEREHERE","PRI INSERT ORDER :");
+                    Log.e("HEREHERE",String.valueOf(lastAdvertNotepad.order));
+                    orderAdvert=lastAdvertNotepad.order+1;
+                }
+
+                if ( (advertOutput!=null) && (advertID!=null) ) {
+                    long unixTime = System.currentTimeMillis() / 1000L;
+
+                    AdvertNotepad advnote = new AdvertNotepad();
+                    advnote.advert_id=advertID;
+                    advnote.advert_note="";
+                    advnote.advert_list=advertOutput;
+                    advnote.advert_time=unixTime;
+                    advnote.order=orderAdvert;
+                    advnote.save();
+
+                    MenuItem itemFavourite = mMenu.findItem(R.id.addFavouritesBar);
+                    if ( itemFavourite!=null ) {
+                        itemFavourite.setIcon(R.drawable.ic_favorite_white_24dp);
+                    }
+                    Toast.makeText(AdvertActivity.this,"Обявата беше успешно добавена в бележника!",Toast.LENGTH_LONG).show();
+                }
             }
-
-            AdvertNotepad advnote = new AdvertNotepad();
-                advnote.advert_id=advertID;
-                advnote.advert_note="";
-                advnote.advert_list=advertOutput;
-                advnote.order=orderAdvert;
-            advnote.save();
 
             return true;
         }
@@ -347,6 +486,7 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
 
     @Override
     public void processFinishLoadAdvert(JSONObject output) throws JSONException {
+        progressBar.setVisibility(View.GONE);
         advertInto=new JSONObject();
         if (output!=null) {
             advertOutput=output.toString();
@@ -478,6 +618,26 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
                 GridViewPropertyFeaturesAdapter adapter = new GridViewPropertyFeaturesAdapter(AdvertActivity.this,gridValueTitle,gridValue);
                 feturesGridView.setAdapter(adapter);
             }
+
+
+            existsAdvertNotepad = SQLite.select().from(AdvertNotepad.class)
+                    .where(AdvertNotepad_Table.advert_id.is(advertID))
+                    .querySingle();
+
+            MenuItem itemFavourite = mMenu.findItem(R.id.addFavouritesBar);
+            if ( itemFavourite!=null ) {
+                if (existsAdvertNotepad!=null) {
+                    itemFavourite.setIcon(R.drawable.ic_favorite_white_24dp);
+                } else {
+                    itemFavourite.setIcon(R.drawable.ic_favorite_black_24dp);
+                }
+            }
         }
     }
+
+//    @Override
+//    public void onLocationChanged(Location location) {
+//        latitude=String.valueOf(location.getLatitude());
+//        longitude=String.valueOf(location.getLongitude());
+//    }
 }

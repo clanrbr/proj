@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarActivity;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,10 +21,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,18 +83,18 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
     private RadioGroup radioGroup;
     private int typeAdvert=1;
     private ArrayList<JSONObject> advertsJsonArray = new ArrayList<JSONObject>();
-    private MakeASearchHttpRequest asyncTask = new MakeASearchHttpRequest();
-    private HTTPGETExtri asyncTaskGetExtri = new HTTPGETExtri();
-    private HTTPGETFloor asyncTaskGetFloor = new HTTPGETFloor();
-    private HTTPGETBuildType asyncTaskGetBuildType = new HTTPGETBuildType();
-    private HTTPGETTec asyncTaskGetTec = new HTTPGETTec();
-    private HTTPGETPhone asyncTaskGetPhone = new HTTPGETPhone();
-    private HTTPGETElectricity asyncTaskGetElectricity = new HTTPGETElectricity();
-    private HTTPGETWater asyncTaskGetWater = new HTTPGETWater();
-    private HTTPGETRegulation asyncTaskGetRegulation = new HTTPGETRegulation();
-    private HTTPGETLandPermanentUsage asyncTaskGetlandPermanentUsage = new HTTPGETLandPermanentUsage();
-    private HTTPGETLandCategory asyncTaskGetLandCategory = new HTTPGETLandCategory();
-    private HTTPGETLandLeaseContract asyncTaskGetLandLeaseContract = new HTTPGETLandLeaseContract();
+    private MakeASearchHttpRequest asyncTask;
+    private HTTPGETExtri asyncTaskGetExtri;
+    private HTTPGETFloor asyncTaskGetFloor;
+    private HTTPGETBuildType asyncTaskGetBuildType;
+    private HTTPGETTec asyncTaskGetTec;
+    private HTTPGETPhone asyncTaskGetPhone;
+    private HTTPGETElectricity asyncTaskGetElectricity;
+    private HTTPGETWater asyncTaskGetWater;
+    private HTTPGETRegulation asyncTaskGetRegulation;
+    private HTTPGETLandPermanentUsage asyncTaskGetlandPermanentUsage;
+    private HTTPGETLandCategory asyncTaskGetLandCategory;
+    private HTTPGETLandLeaseContract asyncTaskGetLandLeaseContract;
     private ArrayList<HashMap<String,String>> searchValues;
     private ArrayList<HashMap<String, String>> searchValuesEdit;
 
@@ -169,6 +174,10 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
     private TextView searchAdvancedButton;
     private TextView clearButton;
+    private CircularProgressBar progressBar;
+
+    private int asyncStarted=0;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         if (android.os.Build.VERSION.SDK_INT >= 21) {
@@ -190,13 +199,18 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         menuItemHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent favouriteIntent = new Intent(getBaseContext(),StartActivity.class);
                 finish();
+                startActivity(favouriteIntent);
             }
         });
 
         menuItemFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent favouriteIntent = new Intent(getBaseContext(),AdvertNotepadActivity.class);
+                finish();
+                startActivity(favouriteIntent);
 
             }
         });
@@ -215,6 +229,21 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
             }
         });
 
+        progressBar = (CircularProgressBar) findViewById(R.id.progressBar);
+
+//        asyncTaskGetExtri = new HTTPGETExtri(progressBar,asyncStarted);
+//        asyncTaskGetFloor = new HTTPGETFloor(progressBar,asyncStarted);
+//        asyncTaskGetBuildType = new HTTPGETBuildType(progressBar,asyncStarted);
+//        asyncTaskGetTec = new HTTPGETTec(progressBar,asyncStarted);
+//        asyncTaskGetPhone = new HTTPGETPhone(progressBar,asyncStarted);
+//        asyncTaskGetElectricity = new HTTPGETElectricity(progressBar,asyncStarted);
+//        asyncTaskGetWater = new HTTPGETWater(progressBar,asyncStarted);
+//        asyncTaskGetRegulation = new HTTPGETRegulation(progressBar,asyncStarted);
+//        asyncTaskGetlandPermanentUsage = new HTTPGETLandPermanentUsage(progressBar,asyncStarted);
+//        asyncTaskGetLandCategory = new HTTPGETLandCategory(progressBar,asyncStarted);
+//        asyncTaskGetLandLeaseContract = new HTTPGETLandLeaseContract(progressBar,asyncStarted);
+//        asyncTask = new MakeASearchHttpRequest(progressBar,0);
+
         Bundle extras = getIntent().getExtras();
         if(extras == null) {
             searchValuesEdit=null;
@@ -223,18 +252,18 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         }
 
         checkboxSelectedValue=new ArrayList<>();
-        asyncTask.delegate = this;
-        asyncTaskGetExtri.delegate=this;
-        asyncTaskGetFloor.delegate=this;
-        asyncTaskGetBuildType.delegate=this;
-        asyncTaskGetTec.delegate=this;
-        asyncTaskGetPhone.delegate=this;
-        asyncTaskGetElectricity.delegate=this;
-        asyncTaskGetWater.delegate=this;
-        asyncTaskGetRegulation.delegate=this;
-        asyncTaskGetlandPermanentUsage.delegate=this;
-        asyncTaskGetLandCategory.delegate=this;
-        asyncTaskGetLandLeaseContract.delegate=this;
+//        asyncTask.delegate = AdvanceSearchActivity.this;
+//        asyncTaskGetExtri.delegate=this;
+//        asyncTaskGetFloor.delegate=this;
+//        asyncTaskGetBuildType.delegate=this;
+//        asyncTaskGetTec.delegate=this;
+//        asyncTaskGetPhone.delegate=this;
+//        asyncTaskGetElectricity.delegate=this;
+//        asyncTaskGetWater.delegate=this;
+//        asyncTaskGetRegulation.delegate=this;
+//        asyncTaskGetlandPermanentUsage.delegate=this;
+//        asyncTaskGetLandCategory.delegate=this;
+//        asyncTaskGetLandLeaseContract.delegate=this;
 
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         if ( searchValuesEdit!=null ) {
@@ -279,7 +308,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                 if ( position==0 ) {
                     secondTownSpinnerLayout.setVisibility(View.GONE);
                 } else {
-                    getProperty = new HTTPGetProperties() {
+                    getProperty = new HTTPGetProperties(progressBar) {
                         @Override
                         protected void onPostExecute(String result) {
                             if (result != null) {
@@ -398,6 +427,9 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                         extriProperty = (TextView) optionView.findViewById(R.id.extriProperty);
                         int extriGroup=HelpFunctions.returnExtriGroup(typeAdvert,groupNumber);
                         String urlBuildExtri="http://api.imot.bg/mobile_api/dictionary/extri?type_extri="+String.valueOf(extriGroup);
+                        asyncStarted++;
+                        asyncTaskGetExtri = new HTTPGETExtri(progressBar,asyncStarted);
+                        asyncTaskGetExtri.delegate=AdvanceSearchActivity.this;
                         asyncTaskGetExtri.execute(urlBuildExtri);
 
                         if (groupNumber==1) {
@@ -412,11 +444,12 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                             loadGroup5(optionView);
                         } else if (groupNumber==6) {
                             loadGroup6(optionView);
-                        } else {}
+                        } else {
+                            loadGroup1(optionView);
+                        }
                     } else {
                         moreSearchOptions.removeAllViews();
                     }
-
                 }
             }
         }
@@ -509,6 +542,9 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                             extriProperty = (TextView) optionView.findViewById(R.id.extriProperty);
                             int extriGroup=HelpFunctions.returnExtriGroup(typeAdvert,groupNumber);
                             String urlBuildExtri="http://api.imot.bg/mobile_api/dictionary/extri?type_extri="+String.valueOf(extriGroup);
+                            asyncStarted++;
+                            asyncTaskGetExtri= new HTTPGETExtri(progressBar,asyncStarted);
+                            asyncTaskGetExtri.delegate=AdvanceSearchActivity.this;
                             asyncTaskGetExtri.execute(urlBuildExtri);
 
                             Log.e("HEREHERE","GROUP NUMBER");
@@ -644,6 +680,9 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
                 String searchUrl = HelpFunctions.convertToUrl(searchValues);
                 Log.e("HEREHERE",searchUrl);
+                asyncStarted++;
+                asyncTask = new MakeASearchHttpRequest(progressBar,0);
+                asyncTask.delegate=AdvanceSearchActivity.this;
                 asyncTask.execute(searchUrl);
             }
         });
@@ -666,11 +705,17 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         floorFromSpinner = (Spinner) optionView.findViewById(R.id.floor_from);
         floorToSpinner = (Spinner) optionView.findViewById(R.id.floor_to);
         String urlBuildFloor="http://api.imot.bg/mobile_api/dictionary/floor";
+        asyncStarted++;
+        asyncTaskGetFloor = new HTTPGETFloor(progressBar,asyncStarted);
+        asyncTaskGetFloor.delegate=AdvanceSearchActivity.this;
         asyncTaskGetFloor.execute(urlBuildFloor);
 
         // get build type
         buildTypeProperty = (TextView) optionView.findViewById(R.id.buildTypeProperty);
         String urlBuildType="http://api.imot.bg/mobile_api/dictionary/type_build";
+        asyncStarted++;
+        asyncTaskGetBuildType = new HTTPGETBuildType(progressBar,asyncStarted);
+        asyncTaskGetBuildType.delegate=AdvanceSearchActivity.this;
         asyncTaskGetBuildType.execute(urlBuildType);
 
         // get year of build
@@ -692,11 +737,17 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         // get tec
         tecSpinner = (Spinner) optionView.findViewById(R.id.tec);
         String urlBuildTec="http://api.imot.bg/mobile_api/dictionary/tec";
+        asyncStarted++;
+        asyncTaskGetTec = new HTTPGETTec(progressBar,asyncStarted);
+        asyncTaskGetTec.delegate=AdvanceSearchActivity.this;
         asyncTaskGetTec.execute(urlBuildTec);
 
         // get phone
         phoneSpinner = (Spinner) optionView.findViewById(R.id.phone);
         String urlBuildPhone="http://api.imot.bg/mobile_api/dictionary/phone";
+        asyncStarted++;
+        asyncTaskGetPhone = new HTTPGETPhone(progressBar,asyncStarted);
+        asyncTaskGetPhone.delegate=AdvanceSearchActivity.this;
         asyncTaskGetPhone.execute(urlBuildPhone);
     }
 
@@ -704,6 +755,9 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         // get build type
         buildTypeProperty = (TextView) optionView.findViewById(R.id.buildTypeProperty);
         String urlBuildType="http://api.imot.bg/mobile_api/dictionary/type_build";
+        asyncStarted++;
+        asyncTaskGetBuildType = new HTTPGETBuildType(progressBar,asyncStarted);
+        asyncTaskGetBuildType.delegate=AdvanceSearchActivity.this;
         asyncTaskGetBuildType.execute(urlBuildType);
 
         // get year of build
@@ -725,11 +779,17 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         // get tec
         tecSpinner = (Spinner) optionView.findViewById(R.id.tec);
         String urlBuildTec="http://api.imot.bg/mobile_api/dictionary/tec";
+        asyncStarted++;
+        asyncTaskGetTec = new HTTPGETTec(progressBar,asyncStarted);
+        asyncTaskGetTec.delegate=AdvanceSearchActivity.this;
         asyncTaskGetTec.execute(urlBuildTec);
 
         // get phone
         phoneSpinner = (Spinner) optionView.findViewById(R.id.phone);
         String urlBuildPhone="http://api.imot.bg/mobile_api/dictionary/phone";
+        asyncStarted++;
+        asyncTaskGetPhone = new HTTPGETPhone(progressBar,asyncStarted);
+        asyncTaskGetPhone.delegate=AdvanceSearchActivity.this;
         asyncTaskGetPhone.execute(urlBuildPhone);
     }
 
@@ -739,16 +799,25 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         // get electricity
         electricitySpinner = (Spinner) optionView.findViewById(R.id.electricity);
         String urlElectricity="http://api.imot.bg/mobile_api/dictionary/electricity";
+        asyncStarted++;
+        asyncTaskGetElectricity = new HTTPGETElectricity(progressBar,asyncStarted);
+        asyncTaskGetElectricity.delegate=AdvanceSearchActivity.this;
         asyncTaskGetElectricity.execute(urlElectricity);
 
         // get water
         waterSpinner = (Spinner) optionView.findViewById(R.id.water);
         String urlWater="http://api.imot.bg/mobile_api/dictionary/watter";
+        asyncStarted++;
+        asyncTaskGetWater = new HTTPGETWater(progressBar,asyncStarted);
+        asyncTaskGetWater.delegate=AdvanceSearchActivity.this;
         asyncTaskGetWater.execute(urlWater);
 
         // get Regulation
         regulationSpinner = (Spinner) optionView.findViewById(R.id.regulation);
         String urlRegulation="http://api.imot.bg/mobile_api/dictionary/regulation";
+        asyncStarted++;
+        asyncTaskGetRegulation = new HTTPGETRegulation(progressBar,asyncStarted);
+        asyncTaskGetRegulation.delegate=AdvanceSearchActivity.this;
         asyncTaskGetRegulation.execute(urlRegulation);
     }
 
@@ -756,6 +825,9 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         // get build type
         buildTypeProperty = (TextView) optionView.findViewById(R.id.buildTypeProperty);
         String urlBuildType="http://api.imot.bg/mobile_api/dictionary/type_build";
+        asyncStarted++;
+        asyncTaskGetBuildType = new HTTPGETBuildType(progressBar,asyncStarted);
+        asyncTaskGetBuildType.delegate=AdvanceSearchActivity.this;
         asyncTaskGetBuildType.execute(urlBuildType);
 
         // get year of build
@@ -777,11 +849,17 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         // get tec
         tecSpinner = (Spinner) optionView.findViewById(R.id.tec);
         String urlBuildTec="http://api.imot.bg/mobile_api/dictionary/tec";
+        asyncStarted++;
+        asyncTaskGetTec = new HTTPGETTec(progressBar,asyncStarted);
+        asyncTaskGetTec.delegate=AdvanceSearchActivity.this;
         asyncTaskGetTec.execute(urlBuildTec);
 
         // get phone
         phoneSpinner = (Spinner) optionView.findViewById(R.id.phone);
         String urlBuildPhone="http://api.imot.bg/mobile_api/dictionary/phone";
+        asyncStarted++;
+        asyncTaskGetPhone = new HTTPGETPhone(progressBar,asyncStarted);
+        asyncTaskGetPhone.delegate=AdvanceSearchActivity.this;
         asyncTaskGetPhone.execute(urlBuildPhone);
     }
 
@@ -789,16 +867,25 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         // get Land Permanent Usage
         landPermanentUsageProperty = (TextView) optionView.findViewById(R.id.land_permanent_usage);
         String urlLandPermanentUsage="http://api.imot.bg/mobile_api/dictionary/land_permanent_usage";
+        asyncStarted++;
+        asyncTaskGetlandPermanentUsage = new HTTPGETLandPermanentUsage(progressBar,asyncStarted);
+        asyncTaskGetlandPermanentUsage.delegate=AdvanceSearchActivity.this;
         asyncTaskGetlandPermanentUsage.execute(urlLandPermanentUsage);
 
         // get Land Category
         landCategoryProperty = (TextView) optionView.findViewById(R.id.land_category);
         String urlLandCategory="http://api.imot.bg/mobile_api/dictionary/land_category";
+        asyncStarted++;
+        asyncTaskGetLandCategory= new HTTPGETLandCategory(progressBar,asyncStarted);
+        asyncTaskGetLandCategory.delegate=AdvanceSearchActivity.this;
         asyncTaskGetLandCategory.execute(urlLandCategory);
 
         //get Land Lease Contract
         landLeaseContractSpinner = (Spinner) optionView.findViewById(R.id.landLeaseContractSpinner);
         String urlBuildPhone="http://api.imot.bg/mobile_api/dictionary/land_lease_contract";
+        asyncStarted++;
+        asyncTaskGetLandLeaseContract = new HTTPGETLandLeaseContract(progressBar,asyncStarted);
+        asyncTaskGetLandLeaseContract.delegate=AdvanceSearchActivity.this;
         asyncTaskGetLandLeaseContract.execute(urlBuildPhone);
     }
 
@@ -820,9 +907,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
     @Override
     public void processGetExtriFinish(ArrayList<String> extriArrayResult) {
-        asyncTaskGetExtri = new HTTPGETExtri();
-        asyncTaskGetExtri.delegate=AdvanceSearchActivity.this;
-
+        handleBar();
         extriArray=extriArrayResult;
         if (extriArray!=null) {
             extriProperty.setOnClickListener(new View.OnClickListener() {
@@ -901,10 +986,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
     @Override
     public void processGetFloorFinish(ArrayList<CharSequence> floorArrayResult) {
-
-        asyncTaskGetFloor = new HTTPGETFloor();
-        asyncTaskGetFloor.delegate=AdvanceSearchActivity.this;
-
+        handleBar();
         floorArray=floorArrayResult;
         if (floorArray!=null) {
             floorFromAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, floorArray);
@@ -945,9 +1027,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
     @Override
     public void processGetBuildTypeFinish(ArrayList<String> buildTypeArrayResult) {
-        asyncTaskGetBuildType = new HTTPGETBuildType();
-        asyncTaskGetBuildType.delegate=AdvanceSearchActivity.this;
-
+        handleBar();
         buildTypeArray = buildTypeArrayResult;
         if ( buildTypeArray!=null ) {
             if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>11) && (searchValuesEdit.get(11)!=null) ) {
@@ -1023,14 +1103,11 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                 }
             });
         }
-
-
     }
 
     @Override
     public void processGetTecFinish(ArrayList<CharSequence> tecArrayResult) {
-        asyncTaskGetTec = new HTTPGETTec();
-        asyncTaskGetTec.delegate=AdvanceSearchActivity.this;
+        handleBar();
         tecArray = tecArrayResult;
         if ( tecArray!=null ) {
             tecAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, tecArray);
@@ -1055,8 +1132,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
     @Override
     public void processGetPhoneFinish(ArrayList<CharSequence> phoneArrayResult) {
-        asyncTaskGetPhone = new HTTPGETPhone();
-        asyncTaskGetPhone.delegate=AdvanceSearchActivity.this;
+        handleBar();
         phoneArray = phoneArrayResult;
         if ( phoneArray!=null ) {
             phoneAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, phoneArray);
@@ -1080,8 +1156,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
     @Override
     public void processGetElectricityFinish(ArrayList<CharSequence> electricityArrayResult) {
-        asyncTaskGetElectricity = new HTTPGETElectricity();
-        asyncTaskGetElectricity.delegate=AdvanceSearchActivity.this;
+        handleBar();
         electricityArray = electricityArrayResult;
         if ( electricityArray!=null ) {
             electricityAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, electricityArray);
@@ -1105,9 +1180,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
     @Override
     public void processGetWaterFinish(ArrayList<CharSequence> waterArrayResult) {
-        asyncTaskGetWater = new HTTPGETWater();
-        asyncTaskGetWater.delegate=AdvanceSearchActivity.this;
-
+        handleBar();
         waterArray = waterArrayResult;
         if ( waterArray!=null ) {
             waterAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, waterArray);
@@ -1131,9 +1204,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
     @Override
     public void processGetRegulationFinish(ArrayList<CharSequence> regulationArrayResult) {
-        asyncTaskGetRegulation = new HTTPGETRegulation();
-        asyncTaskGetRegulation.delegate=AdvanceSearchActivity.this;
-
+        handleBar();
         regulationArray = regulationArrayResult;
         if ( regulationArray!=null ) {
             regulationAdapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, regulationArray);
@@ -1157,9 +1228,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
     @Override
     public void processGetLandPermanentUsagePropertyFinish(ArrayList<String> landPermanentUsagePropertyTypeArrayResult) {
-        asyncTaskGetlandPermanentUsage = new HTTPGETLandPermanentUsage();
-        asyncTaskGetlandPermanentUsage.delegate=AdvanceSearchActivity.this;
-
+        handleBar();
         landPermanentUsageArray = landPermanentUsagePropertyTypeArrayResult;
         if ( landPermanentUsageArray!=null ) {
             if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>12) && (searchValuesEdit.get(12)!=null) ) {
@@ -1242,9 +1311,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
     @Override
     public void processGetLandCategoryFinish(ArrayList<String> landCategoryArrayResult) {
-        asyncTaskGetLandCategory= new HTTPGETLandCategory();
-        asyncTaskGetLandCategory.delegate=AdvanceSearchActivity.this;
-
+        handleBar();
         landCategoryArray=landCategoryArrayResult;
         if (landCategoryArray!=null)  {
             if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>11) && (searchValuesEdit.get(11)!=null) ) {
@@ -1327,8 +1394,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
     @Override
     public void processGetLandLeaseContractFinish(ArrayList<CharSequence> landLeaseContractArrayResult) {
-        asyncTaskGetLandLeaseContract = new HTTPGETLandLeaseContract();
-        asyncTaskGetLandLeaseContract.delegate=AdvanceSearchActivity.this;
+        handleBar();
         landLeaseContractArray = landLeaseContractArrayResult;
         if ( landLeaseContractArrayResult!=null ) {
             landLeaseContractAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, landLeaseContractArray);
@@ -1343,6 +1409,13 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                 landLeaseContractSpinner.setSelection(0);
             }
 
+        }
+    }
+
+    public void handleBar() {
+        asyncStarted--;
+        if (asyncStarted==0) {
+            progressBar.setVisibility(View.GONE);
         }
     }
 }

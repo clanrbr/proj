@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import fragments.CheckAndRadioBoxesFragment;
-import localestates.localestates.AdvanceSearchActivity;
 import localestates.localestates.R;
 import utils.HelpFunctions;
 

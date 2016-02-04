@@ -1,26 +1,24 @@
 package localestates.localestates;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import adapters.PropertiesArrayAdapter;
-import fragments.CheckAndRadioBoxesFragment;
-import fragments.MainPageFragment;
 import localEstatesHttpRequests.HTTPGetProperties;
 
 public class StartActivity extends AppCompatActivity {
@@ -28,6 +26,7 @@ public class StartActivity extends AppCompatActivity {
     private ArrayList<JSONObject> advertsJsonArray = new ArrayList<JSONObject>();
     private PropertiesArrayAdapter adapterProperties;
     private ListView listView;
+    private CircularProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +56,7 @@ public class StartActivity extends AppCompatActivity {
         menuItemFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent favouriteIntent = new Intent(StartActivity.this,AdvertNotepadActivity.class);
+                Intent favouriteIntent = new Intent(getBaseContext(),AdvertNotepadActivity.class);
                 finish();
                 startActivity(favouriteIntent);
 
@@ -75,16 +74,28 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent searchIntent = new Intent(getBaseContext(),AdvanceSearchActivity.class);
+                finish();
                 startActivity(searchIntent);
             }
         });
 
 
+        progressBar = (CircularProgressBar)findViewById(R.id.progressBar);
+        progressBar.setColor(ContextCompat.getColor(this, R.color.main_color_500));
+//        circularProgressBar.setBackgroundColor(ContextCompat.getColor(this, R.color.backgroundProgressBarColor));
+//        circularProgressBar.setProgressBarWidth(getResources().getDimension(R.dimen.progressBarWidth));
+//        circularProgressBar.setBackgroundProgressBarWidth(getResources().getDimension(R.dimen.backgroundProgressBarWidth));
+        int animationDuration = 2500; // 2500ms = 2,5s
+        progressBar.setProgressWithAnimation(65, animationDuration);
+
+
         listView = (ListView) findViewById(R.id.listView);
 
-        HTTPGetProperties getProperty = new HTTPGetProperties() {
+        progressBar.setVisibility(View.VISIBLE);
+        HTTPGetProperties getProperty = new HTTPGetProperties(progressBar) {
             @Override
             protected void onPostExecute(String result) {
+                progressBar.setVisibility(View.GONE);
                 if (result != null) {
                     try {
                         JSONObject json = new JSONObject(result);
@@ -114,6 +125,11 @@ public class StartActivity extends AppCompatActivity {
                 } else {
                     Log.e("HEREHERE", "EMPTY");
                 }
+            }
+
+            @Override
+            protected void onProgressUpdate(Integer... values) {
+                progressBar.setProgress(values[0]);
             }
         };
 

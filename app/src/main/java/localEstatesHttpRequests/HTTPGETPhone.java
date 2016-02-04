@@ -2,6 +2,9 @@ package localEstatesHttpRequests;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +29,15 @@ public class HTTPGETPhone extends AsyncTask<String, Void, String> {
     private Exception exception;
     private ArrayList<CharSequence> phoneArray;
     public AsyncResponsePhone delegate = null;
+
+    private CircularProgressBar progressBar;
+    private int asyncStarted;
+
+    public HTTPGETPhone(CircularProgressBar progressBar, int asyncStarted) {
+
+        this.progressBar=progressBar;
+        this.asyncStarted=asyncStarted;
+    }
 
     public String readIt(InputStream stream) throws IOException, UnsupportedEncodingException {
 
@@ -64,8 +76,17 @@ public class HTTPGETPhone extends AsyncTask<String, Void, String> {
             return null;
         }
     }
+    @Override
+    protected void onPreExecute() {
+        if (progressBar!=null) {
+            if ( asyncStarted==0 ) {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        }
+        super.onPreExecute();
+    }
 
-    //    @Override
+    @Override
     protected void onPostExecute(String result) {
         if (result!=null) {
             phoneArray=new ArrayList<>();

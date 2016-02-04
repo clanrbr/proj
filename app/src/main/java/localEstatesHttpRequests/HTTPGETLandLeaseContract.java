@@ -2,6 +2,9 @@ package localEstatesHttpRequests;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +29,15 @@ public class HTTPGETLandLeaseContract extends AsyncTask<String, Void, String> {
     private Exception exception;
     private ArrayList<CharSequence> landLeaseContractArray;
     public AsyncResponseLandLeaseContract delegate = null;
+
+    private CircularProgressBar progressBar;
+    private int asyncStarted;
+
+    public HTTPGETLandLeaseContract(CircularProgressBar progressBar, int asyncStarted) {
+
+        this.progressBar=progressBar;
+        this.asyncStarted=asyncStarted;
+    }
 
     public String readIt(InputStream stream) throws IOException, UnsupportedEncodingException {
 
@@ -65,7 +77,17 @@ public class HTTPGETLandLeaseContract extends AsyncTask<String, Void, String> {
         }
     }
 
-    //    @Override
+    @Override
+    protected void onPreExecute() {
+        if (progressBar!=null) {
+            if ( asyncStarted==0 ) {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        }
+        super.onPreExecute();
+    }
+
+    @Override
     protected void onPostExecute(String result) {
         if (result!=null) {
             landLeaseContractArray=new ArrayList<>();

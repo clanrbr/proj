@@ -3,6 +3,9 @@ package localEstatesHttpRequests;
 import android.os.AsyncTask;
 import android.support.v4.util.SimpleArrayMap;
 import android.util.Log;
+import android.view.View;
+
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +30,15 @@ public class HTTPGETFloor extends AsyncTask<String, Void, String> {
     private Exception exception;
     private ArrayList<CharSequence> floorArray;
     public AsyncResponseFloor delegate = null;
+
+    private CircularProgressBar progressBar;
+    private int asyncStarted;
+
+    public HTTPGETFloor(CircularProgressBar progressBar, int asyncStarted) {
+
+        this.progressBar=progressBar;
+        this.asyncStarted=asyncStarted;
+    }
 
     public String readIt(InputStream stream) throws IOException, UnsupportedEncodingException {
 
@@ -66,7 +78,17 @@ public class HTTPGETFloor extends AsyncTask<String, Void, String> {
         }
     }
 
-    //    @Override
+    @Override
+    protected void onPreExecute() {
+        if (progressBar!=null) {
+            if ( asyncStarted==0 ) {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        }
+        super.onPreExecute();
+    }
+
+    @Override
     protected void onPostExecute(String result) {
         if (result!=null) {
             floorArray=new ArrayList<>();

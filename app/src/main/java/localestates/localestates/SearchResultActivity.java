@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.mugen.Mugen;
 import com.mugen.MugenCallbacks;
 import com.mugen.attachers.BaseAttacher;
@@ -44,6 +45,8 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
     private TextView editSearchButton;
     private ArrayList<HashMap<String,String>> searchValues;
     private MakeASearchHttpRequest asyncTask;
+
+    private CircularProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +136,7 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
             }
         }
 
-        asyncTask = new MakeASearchHttpRequest();
+        asyncTask = new MakeASearchHttpRequest(progressBar,0);
         asyncTask.delegate = this;
 
         listView = (ListView) findViewById(R.id.listView);
@@ -196,7 +199,7 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
 
                 adapterProperties.notifyDataSetChanged();
 
-                asyncTask = new MakeASearchHttpRequest();
+                asyncTask = new MakeASearchHttpRequest(progressBar,0);
                 asyncTask.delegate = this;
             }
         }

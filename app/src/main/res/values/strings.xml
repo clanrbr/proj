@@ -12,7 +12,8 @@
     <string name="material_icon_note">&#xea23;</string>
     <string name="material_icon_headphones">&#xe9b1;</string>
     <string name="material_icon_human">&#xe9c5;</string>
-
+    <string name="material_icon_unfold_more">&#xeb2f;</string>
+    <string name="material_icon_undo">&#xeb2c;</string>
     <string name="fontello_heart_empty">&#xe9b5;</string>
     <string name="fontello_heart_full">&#xe9b6;</string>
 

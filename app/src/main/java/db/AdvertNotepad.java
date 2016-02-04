@@ -26,6 +26,9 @@ public class AdvertNotepad extends BaseModel {
     @Column(name = "advert_note")
     public String advert_note;
 
+    @Column(name = "added_time")
+    public long advert_time;
+
     @Column(name = "order")
     public int order;
 }

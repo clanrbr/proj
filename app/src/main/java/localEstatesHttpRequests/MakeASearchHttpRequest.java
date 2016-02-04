@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.support.v4.util.SimpleArrayMap;
 import android.util.Log;
 
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,6 +33,15 @@ public class MakeASearchHttpRequest extends AsyncTask<String, Void, String> {
     private SimpleArrayMap<String, String> mHeaders = new SimpleArrayMap<String,String>();
     private String responseBody;
     public AsyncResponse delegate = null;
+
+    private CircularProgressBar progressBar;
+    private int asyncStarted;
+
+    public MakeASearchHttpRequest(CircularProgressBar progressBar, int asyncStarted) {
+
+        this.progressBar=progressBar;
+        this.asyncStarted=asyncStarted;
+    }
 
     public String readIt(InputStream stream) throws IOException, UnsupportedEncodingException {
 
@@ -70,7 +81,7 @@ public class MakeASearchHttpRequest extends AsyncTask<String, Void, String> {
         }
     }
 
-//    @Override
+    @Override
     protected void onPostExecute(String result) {
         if (result!=null) {
             advertsJsonArray = new ArrayList<JSONObject>();
