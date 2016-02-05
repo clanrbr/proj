@@ -115,9 +115,6 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
 
         progressBar = (CircularProgressBar)findViewById(R.id.progressBar);
         progressBar.setColor(ContextCompat.getColor(this, R.color.main_color_500));
-//        circularProgressBar.setBackgroundColor(ContextCompat.getColor(this, R.color.backgroundProgressBarColor));
-//        circularProgressBar.setProgressBarWidth(getResources().getDimension(R.dimen.progressBarWidth));
-//        circularProgressBar.setBackgroundProgressBarWidth(getResources().getDimension(R.dimen.backgroundProgressBarWidth));
         int animationDuration = 2500; // 2500ms = 2,5s
         progressBar.setProgressWithAnimation(65, animationDuration);
 

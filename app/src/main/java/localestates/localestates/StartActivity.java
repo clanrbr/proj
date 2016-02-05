@@ -19,7 +19,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import adapters.PropertiesArrayAdapter;
+import localEstatesHttpRequests.HTTPGETCheckForLogIn;
 import localEstatesHttpRequests.HTTPGetProperties;
+import localEstatesHttpRequests.HTTPPostLogin;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -134,6 +136,46 @@ public class StartActivity extends AppCompatActivity {
         };
 
         getProperty.execute("http://api.imot.bg/mobile_api/search");
+
+
+
+        HTTPPostLogin getLogin = new HTTPPostLogin(progressBar) {
+            @Override
+            protected void onPostExecute(String result) {
+                progressBar.setVisibility(View.GONE);
+                if (result != null) {
+                    Log.e("HEREHERE",result);
+                } else {
+                    Log.e("HEREHERE", "EMPTY");
+                }
+            }
+
+            @Override
+            protected void onProgressUpdate(Integer... values) {
+                progressBar.setProgress(values[0]);
+            }
+        };
+        getLogin.execute("http://api.imot.bg/mobile_api/users/login");
+
+
+        HTTPGETCheckForLogIn checkLogin = new HTTPGETCheckForLogIn(progressBar) {
+            @Override
+            protected void onPostExecute(String result) {
+                progressBar.setVisibility(View.GONE);
+                if (result != null) {
+                    Log.e("HEREHERE",result);
+                } else {
+                    Log.e("HEREHERE", "EMPTY");
+                }
+            }
+
+            @Override
+            protected void onProgressUpdate(Integer... values) {
+                progressBar.setProgress(values[0]);
+            }
+        };
+        checkLogin.execute("http://api.imot.bg/mobile_api/users");
+
 
 //        Fragment fragment = new MainPageFragment();
 //        if (savedInstanceState == null) {

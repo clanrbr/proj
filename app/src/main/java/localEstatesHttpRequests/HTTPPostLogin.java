@@ -1,9 +1,12 @@
 package localEstatesHttpRequests;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.support.v4.util.SimpleArrayMap;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
@@ -11,30 +14,40 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.CookieHandler;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-import interfaces.AsyncResponseLoadAdvert;
+import interfaces.AsyncResponseTec;
 
 /**
- * Created by macbook on 1/26/16.
+ * Created by macbook on 2/5/16.
  */
-public class HTTPGETAdvert extends AsyncTask<String, Integer, String> {
+public class HTTPPostLogin extends AsyncTask<String, Integer, String> {
     private Exception exception;
     private JSONObject advertInfo;
     private JSONArray advertsJsonArray;
-    public AsyncResponseLoadAdvert delegate = null;
+//    public AsyncResponseLoadAdvert delegate = null;
 
     private CircularProgressBar progressBar;
     private int asyncStarted;
 
-    public HTTPGETAdvert(CircularProgressBar progressBar) {
+    public HTTPPostLogin(CircularProgressBar progressBar) {
 
         this.progressBar=progressBar;
     }
@@ -54,14 +67,29 @@ public class HTTPGETAdvert extends AsyncTask<String, Integer, String> {
     @Override
     protected String doInBackground(String... urls) {
         InputStream is = null;
+//        CookieManager cookieManager = CookieManager.getInstance();
+//        CookieHandler.setDefault(cookieManager);
+
         try {
             URL url= new URL(urls[0]);
+//            String params=urls[1];
+            String params="username=clan_rbr@yahoo.com&password=rbrrbr&remember_login=1";
+
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(10000); /* milliseconds */
             conn.setConnectTimeout(15000); /* milliseconds */
-            conn.setRequestMethod("GET");
+            conn.setRequestMethod("POST");
             conn.setDoInput(true);
+
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(params);
+            writer.flush();
+            writer.close();
+            os.close();
             conn.connect();
+
             int response = conn.getResponseCode();
             if ( response==200 ) {
 //                conn.
@@ -94,33 +122,18 @@ public class HTTPGETAdvert extends AsyncTask<String, Integer, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        advertInfo=null;
-        if (result!=null) {
-            advertsJsonArray = new JSONArray();
-            Log.e("HEREHERE","ADVERTINFO");
+        if ( result!=null ) {
             Log.e("HEREHERE",result);
-            try {
-                JSONObject json = new JSONObject(result);
-                if (json.has("adverts") ) {
-                    advertsJsonArray=json.getJSONArray("adverts");
-                    if (advertsJsonArray.length()>0) {
-                        advertInfo=advertsJsonArray.getJSONObject(0);
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         } else {
             Log.e("HEREHERE","vryshta null tuk");
         }
 
 
-        try {
-            delegate.processFinishLoadAdvert(advertInfo);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            delegate.processFinishLoadAdvert(advertInfo);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
 
     }
 }
-

@@ -1,7 +1,6 @@
 package localEstatesHttpRequests;
 
 import android.os.AsyncTask;
-import android.support.v4.util.SimpleArrayMap;
 import android.util.Log;
 import android.view.View;
 
@@ -20,21 +19,19 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import interfaces.AsyncResponseLoadAdvert;
+import interfaces.AsyncResponseTec;
 
 /**
- * Created by macbook on 1/26/16.
+ * Created by macbook on 2/5/16.
  */
-public class HTTPGETAdvert extends AsyncTask<String, Integer, String> {
+public class HTTPGETCheckForLogIn extends AsyncTask<String, Integer, String> {
     private Exception exception;
-    private JSONObject advertInfo;
-    private JSONArray advertsJsonArray;
-    public AsyncResponseLoadAdvert delegate = null;
+    private ArrayList<CharSequence> tecArray;
+    public AsyncResponseTec delegate = null;
 
     private CircularProgressBar progressBar;
-    private int asyncStarted;
 
-    public HTTPGETAdvert(CircularProgressBar progressBar) {
+    public HTTPGETCheckForLogIn(CircularProgressBar progressBar) {
 
         this.progressBar=progressBar;
     }
@@ -52,6 +49,11 @@ public class HTTPGETAdvert extends AsyncTask<String, Integer, String> {
     }
 
     @Override
+    protected void onProgressUpdate(Integer... values) {
+        progressBar.setProgress(values[0]);
+    }
+
+    @Override
     protected String doInBackground(String... urls) {
         InputStream is = null;
         try {
@@ -64,7 +66,6 @@ public class HTTPGETAdvert extends AsyncTask<String, Integer, String> {
             conn.connect();
             int response = conn.getResponseCode();
             if ( response==200 ) {
-//                conn.
                 is = conn.getInputStream();
                 String contentAsString = readIt(is);
                 Log.e("HEREHERE",contentAsString);
@@ -80,47 +81,20 @@ public class HTTPGETAdvert extends AsyncTask<String, Integer, String> {
 
     @Override
     protected void onPreExecute() {
-        super.onPreExecute();
-        if ( progressBar!=null ) {
-            progressBar.setVisibility(View.VISIBLE);
+        if (progressBar!=null) {
+                progressBar.setVisibility(View.VISIBLE);
         }
-    }
-
-
-    @Override
-    protected void onProgressUpdate(Integer... values) {
-        progressBar.setProgress(values[0]);
+        super.onPreExecute();
     }
 
     @Override
     protected void onPostExecute(String result) {
-        advertInfo=null;
         if (result!=null) {
-            advertsJsonArray = new JSONArray();
-            Log.e("HEREHERE","ADVERTINFO");
+            Log.e("HEREHERE","login");
             Log.e("HEREHERE",result);
-            try {
-                JSONObject json = new JSONObject(result);
-                if (json.has("adverts") ) {
-                    advertsJsonArray=json.getJSONArray("adverts");
-                    if (advertsJsonArray.length()>0) {
-                        advertInfo=advertsJsonArray.getJSONObject(0);
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Log.e("HEREHERE","vryshta null tuk");
         }
-
-
-        try {
-            delegate.processFinishLoadAdvert(advertInfo);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
     }
 }
-
