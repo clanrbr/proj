@@ -211,7 +211,6 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                 Intent favouriteIntent = new Intent(getBaseContext(),AdvertNotepadActivity.class);
                 finish();
                 startActivity(favouriteIntent);
-
             }
         });
 
@@ -1360,7 +1359,6 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                         public void onClick(View v) {
                             landCategorySelectedValue=adapterlandCategoryProperties.returnSelectedFields();
                             if (landCategorySelectedValue!=null) {
-                                Log.e("HEREHERE","Click Event "+landCategorySelectedValue.toString());
                                 String valueCheckBox="";
                                 for (int i=0;i<landCategorySelectedValue.size();i++) {
                                     valueCheckBox+=landCategorySelectedValue.get(i)+",";

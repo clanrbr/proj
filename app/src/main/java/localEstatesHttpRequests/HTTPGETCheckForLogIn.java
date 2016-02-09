@@ -68,6 +68,7 @@ public class HTTPGETCheckForLogIn extends AsyncTask<String, Integer, String> {
             if ( response==200 ) {
                 is = conn.getInputStream();
                 String contentAsString = readIt(is);
+                Log.e("HEREHERE","Something");
                 Log.e("HEREHERE",contentAsString);
                 return contentAsString;
             } else {

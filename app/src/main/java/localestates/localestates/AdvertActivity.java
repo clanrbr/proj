@@ -137,11 +137,11 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
         callAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(AdvertActivity.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(AdvertActivity.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, LocalEstateConstants.MY_PEMISSION_PHONE_CODE);
-                } else {
-                    callActionFunction();
-                }
+            if (ContextCompat.checkSelfPermission(AdvertActivity.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(AdvertActivity.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, LocalEstateConstants.MY_PEMISSION_PHONE_CODE);
+            } else {
+                callActionFunction();
+            }
 
             }
         });
@@ -153,37 +153,37 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
         mapBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mapIntent = new Intent(AdvertActivity.this, MapActivity.class);
-                if (advertInto.has("points")) {
-                    try {
-                        mapIntent.putExtra("points", advertInto.getString("points"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+            Intent mapIntent = new Intent(AdvertActivity.this, MapActivity.class);
+            if (advertInto.has("points")) {
+                try {
+                    mapIntent.putExtra("points", advertInto.getString("points"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+            }
 
-                if (advertInto.has("coordinates")) {
-                    try {
-                        mapIntent.putExtra("coordinates", advertInto.getString("coordinates"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+            if (advertInto.has("coordinates")) {
+                try {
+                    mapIntent.putExtra("coordinates", advertInto.getString("coordinates"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+            }
 
-                if (advertInto.has("rub")) {
-                    String value = null;
-                    try {
-                        value = advertInto.getString("rub");
-                        if (advertInto.has("type_home")) {
-                            value = value + " " + advertInto.getString("type_home");
-                        }
-                        mapIntent.putExtra("title", value);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+            if (advertInto.has("rub")) {
+                String value = null;
+                try {
+                    value = advertInto.getString("rub");
+                    if (advertInto.has("type_home")) {
+                        value = value + " " + advertInto.getString("type_home");
                     }
+                    mapIntent.putExtra("title", value);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+            }
 
-                startActivity(mapIntent);
+            startActivity(mapIntent);
             }
         });
 
@@ -446,9 +446,7 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
                         .orderBy(AdvertNotepad_Table.order,true)
                         .querySingle();
 
-                if (lastAdvertNotepad!=null) {
-                    Log.e("HEREHERE","PRI INSERT ORDER :");
-                    Log.e("HEREHERE",String.valueOf(lastAdvertNotepad.order));
+                if ( lastAdvertNotepad!=null ) {
                     orderAdvert=lastAdvertNotepad.order+1;
                 }
 
@@ -460,6 +458,7 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
                     advnote.advert_note="";
                     advnote.advert_list=advertOutput;
                     advnote.advert_time=unixTime;
+                    advnote.advert_version_time=unixTime;
                     advnote.order=orderAdvert;
                     advnote.save();
 
@@ -472,6 +471,15 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
             }
 
             return true;
+        } else if (id == R.id.shareActionButton) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, advertTitle);
+            String advertLink="http://www.imot.bg/pcgi/imot.cgi?act=5&adv="+advertID;
+            sendIntent.putExtra(Intent.EXTRA_TEXT, advertLink);
+            sendIntent.putExtra("com.facebook.platform.extra.APPLICATION_ID","78949132252");
+            sendIntent.setType("text/plain");
+            AdvertActivity.this.startActivity(sendIntent);
         }
         return super.onOptionsItemSelected(item);
     }

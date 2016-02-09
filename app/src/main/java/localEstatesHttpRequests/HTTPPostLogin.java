@@ -1,23 +1,16 @@
 package localEstatesHttpRequests;
 
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,15 +18,13 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+import java.net.CookieStore;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
-import interfaces.AsyncResponseTec;
+import utils.SiCookieStore2;
 
 /**
  * Created by macbook on 2/5/16.
@@ -51,6 +42,8 @@ public class HTTPPostLogin extends AsyncTask<String, Integer, String> {
 
         this.progressBar=progressBar;
     }
+
+//    PersistentCookieStore cookie = new PersistentCookieStore();
 
     public String readIt(InputStream stream) throws IOException, UnsupportedEncodingException {
 

@@ -66,17 +66,18 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
         ImageView menuItemNotification = (ImageView) findViewById(R.id.notificationActionBar);
         ImageView menuItemHome = (ImageView) findViewById(R.id.homeActionBar);
 
-
         menuItemHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
             }
         });
 
         menuItemFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent favouriteIntent = new Intent(getBaseContext(),AdvertNotepadActivity.class);
+                finish();
+                startActivity(favouriteIntent);
 
             }
         });
@@ -91,7 +92,8 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
         menuItemSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent searchIntent = new Intent(getBaseContext(), AdvanceSearchActivity.class);
+                Intent searchIntent = new Intent(getBaseContext(),AdvanceSearchActivity.class);
+                finish();
                 startActivity(searchIntent);
             }
         });

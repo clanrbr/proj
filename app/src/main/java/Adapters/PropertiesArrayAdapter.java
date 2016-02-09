@@ -42,7 +42,6 @@ public class PropertiesArrayAdapter extends ArrayAdapter<JSONObject> {
 
     public View getView(int position, View convertView, ViewGroup parent) {
         final JSONObject property = getItem(position);
-        Log.e("HEREHERE",property.toString());
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
@@ -104,7 +103,13 @@ public class PropertiesArrayAdapter extends ArrayAdapter<JSONObject> {
             if (property.has("type_home")) {
                 String type_home=property.getString("type_home");
                 if ( type_home!=null ) {
-                    propertyTitle.setText("Продава "+type_home);
+                    if ( property.has("id") ) {
+                        String propertyType="Продава ";
+                        if (property.getString("id").startsWith("2")) {
+                            propertyType="Дава под наем ";
+                        }
+                        propertyTitle.setText(propertyType+type_home);
+                    }
                 }
             }
         } catch (JSONException e) {

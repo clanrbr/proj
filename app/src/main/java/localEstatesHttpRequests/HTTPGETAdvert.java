@@ -35,7 +35,6 @@ public class HTTPGETAdvert extends AsyncTask<String, Integer, String> {
     private int asyncStarted;
 
     public HTTPGETAdvert(CircularProgressBar progressBar) {
-
         this.progressBar=progressBar;
     }
 

@@ -17,11 +17,17 @@ import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+import java.net.CookieStore;
 import java.util.ArrayList;
 import adapters.PropertiesArrayAdapter;
 import localEstatesHttpRequests.HTTPGETCheckForLogIn;
 import localEstatesHttpRequests.HTTPGetProperties;
 import localEstatesHttpRequests.HTTPPostLogin;
+import utils.SiCookieStore2;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -94,6 +100,12 @@ public class StartActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listView);
 
         progressBar.setVisibility(View.VISIBLE);
+
+
+        SiCookieStore2 siCookieStore = new SiCookieStore2(StartActivity.this);
+        CookieManager cookieManager = new CookieManager((CookieStore) siCookieStore, CookiePolicy.ACCEPT_ALL);
+        CookieHandler.setDefault(cookieManager);
+
         HTTPGetProperties getProperty = new HTTPGetProperties(progressBar) {
             @Override
             protected void onPostExecute(String result) {
@@ -103,7 +115,6 @@ public class StartActivity extends AppCompatActivity {
                         JSONObject json = new JSONObject(result);
 
                         JSONArray jsonArray = json.getJSONArray("adverts");
-                        ;
                         if (jsonArray != null) {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 if (jsonArray.getJSONObject(i) != null) {
