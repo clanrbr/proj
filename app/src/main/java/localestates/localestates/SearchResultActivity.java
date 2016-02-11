@@ -69,6 +69,9 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
         menuItemHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent homeIntent = new Intent(getBaseContext(),StartActivity.class);
+                finish();
+                startActivity(homeIntent);
             }
         });
 

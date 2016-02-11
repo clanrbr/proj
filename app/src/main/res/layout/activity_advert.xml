@@ -15,11 +15,12 @@
 
 
         <FrameLayout
+            android:id="@+id/scroll2"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:id="@+id/scroll2">
+            android:layout_alignParentTop="true">
 
 
             <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
@@ -53,26 +54,52 @@
                         android:textColor="@color/material_lime_700"
                         android:background="@android:color/white"
                         android:textSize="20sp"
-                        android:paddingBottom="@dimen/activity_vertical_margin"
+                        android:paddingBottom="4dp"
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingRight="@dimen/activity_horizontal_margin"
                         android:paddingTop="@dimen/activity_vertical_margin"
                         app:typeface="robotoBlack" />
 
                     <utils.RobotoTextView
-                        android:id="@+id/placeLabel"
+                        android:id="@+id/roundNumber"
                         android:layout_below="@id/priceLabel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
-                        android:text=""
+                        android:textColor="@color/material_lime_500"
+                        android:background="@android:color/white"
+                        android:textSize="12sp"
+                        android:paddingBottom="4dp"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        app:typeface="robotoBlack" />
+                    <utils.RobotoTextView
+                        android:id="@+id/titleField"
+                        android:layout_below="@id/roundNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:textColor="@color/main_color_grey_900"
+                        android:background="@android:color/white"
+                        android:textSize="14sp"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin"
+                        app:typeface="robotoRegular" />
+
+                    <utils.RobotoTextView
+                        android:id="@+id/placeLabel"
+                        android:layout_below="@id/titleField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
                         android:textColor="@color/main_color_grey_900"
                         android:background="@android:color/white"
                         android:textSize="16sp"
                         android:paddingBottom="@dimen/activity_vertical_margin"
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:paddingTop="@dimen/activity_vertical_margin"
                         app:typeface="robotoRegular" />
 
                     <LinearLayout
@@ -238,8 +265,29 @@
                         android:verticalSpacing="10dp" />
 
                     <LinearLayout
-                        android:id="@+id/separator1"
+                        android:id="@+id/extriTitle"
                         android:layout_below="@+id/features"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <utils.RobotoTextView
+                            android:id="@+id/extriContent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/main_color_grey_900"
+                            android:background="@android:color/white"
+                            android:textSize="16sp"
+                            android:paddingBottom="@dimen/activity_vertical_margin"
+                            android:paddingLeft="@dimen/activity_horizontal_margin"
+                            android:paddingRight="@dimen/activity_horizontal_margin"
+                            android:paddingTop="@dimen/activity_vertical_margin"
+                            app:typeface="robotoRegular" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/separator1"
+                        android:layout_below="@+id/extriTitle"
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -319,6 +367,7 @@
 
                     <LinearLayout
                         android:id="@+id/agencyField"
+                        android:visibility="gone"
                         android:layout_below="@+id/separator2"
                         android:layout_width="match_parent"
                         android:orientation="vertical"
@@ -365,11 +414,33 @@
                             android:paddingTop="0dp"
                             app:typeface="robotoRegular" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/personField"
+                        android:visibility="gone"
+                        android:layout_below="@+id/agencyField"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <utils.RobotoTextView
+                            android:id="@+id/personName"
+                            android:text="Частно лице"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/main_color_grey_900"
+                            android:background="@android:color/white"
+                            android:textSize="16sp"
+                            android:paddingBottom="@dimen/activity_vertical_margin"
+                            android:paddingLeft="@dimen/activity_horizontal_margin"
+                            android:paddingRight="@dimen/activity_horizontal_margin"
+                            android:paddingTop="@dimen/activity_vertical_margin"
+                            app:typeface="robotoRegular" />
+                    </LinearLayout>
                     
                     <View
                         android:id="@+id/lastrow"
                         android:background="@android:color/transparent"
-                        android:layout_below="@+id/agencyField"
+                        android:layout_below="@+id/personField"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"/>
                 </RelativeLayout>
@@ -402,6 +473,7 @@
 
         <LinearLayout
             android:id="@+id/callBar"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -435,7 +507,8 @@
                         android:drawableLeft="@drawable/ic_call_white_24dp"
                         android:textColor="@color/white"
                         android:textSize="20sp"
-                        android:text="Обади се"/>
+                        android:text="Обади се"
+                        style="?android:attr/borderlessButtonStyle"/>
                 </LinearLayout>
             </utils.MaterialRippleLayout>
         </LinearLayout>

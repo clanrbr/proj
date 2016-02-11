@@ -11,20 +11,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7eaf7942-95df-44f2-8eb1-8cfc2ce548da" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/google_cards_background_bottom.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/google_cards_background_top.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/Adapters/PropertiesArrayAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/Adapters/PropertiesArrayAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/db/AdvertNotepad.java" afterPath="$PROJECT_DIR$/app/src/main/java/db/AdvertNotepad.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/localEstatesHttpRequests/HTTPGETAdvert.java" afterPath="$PROJECT_DIR$/app/src/main/java/localEstatesHttpRequests/HTTPGETAdvert.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/localEstatesHttpRequests/HTTPGETCheckForLogIn.java" afterPath="$PROJECT_DIR$/app/src/main/java/localEstatesHttpRequests/HTTPGETCheckForLogIn.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/localEstatesHttpRequests/HTTPPostLogin.java" afterPath="$PROJECT_DIR$/app/src/main/java/localEstatesHttpRequests/HTTPPostLogin.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvanceSearchActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvanceSearchActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvertActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvertActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvertNotepadActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvertNotepadActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/localestates/localestates/SearchResultActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/localestates/localestates/SearchResultActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/localestates/localestates/StartActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/localestates/localestates/StartActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_notepad.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_notepad.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_advert.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_advert.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/menu/menu_start.xml" afterPath="$PROJECT_DIR$/app/src/main/res/menu/menu_start.xml" />
     </list>
     <ignored path="localEstateNew.iws" />
@@ -56,46 +46,52 @@
       <file leaf-file-name="AdvertActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvertActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.541779">
-              <caret line="483" column="49" selection-start-line="483" selection-start-column="49" selection-end-line="483" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.703504">
+              <caret line="514" column="12" selection-start-line="514" selection-start-column="12" selection-end-line="514" selection-end-column="12" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#13070#13137#0" expanded="true" />
+                <element signature="e#23363#24548#0" expanded="true" />
+                <element signature="e#23566#24124#0" expanded="true" />
+                <element signature="e#24123#24124#0" expanded="true" />
+                <element signature="e#24547#24548#0" expanded="true" />
+                <element signature="e#24603#25861#0" expanded="true" />
+                <element signature="e#24806#25428#0" expanded="true" />
+                <element signature="e#25427#25428#0" expanded="true" />
+                <element signature="e#25860#25861#0" expanded="true" />
+                <element signature="e#28271#28963#0" expanded="true" />
+                <element signature="e#28962#28963#0" expanded="true" />
+                <element signature="e#29021#29191#0" expanded="true" />
+                <element signature="e#29190#29191#0" expanded="true" />
+                <element signature="e#29251#29421#0" expanded="true" />
+                <element signature="e#29420#29421#0" expanded="true" />
+                <element signature="e#31569#31570#0" expanded="true" />
+                <element signature="e#31606#31607#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AdvanceSearchActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvanceSearchActivity.java">
+      <file leaf-file-name="AdvertNotepad.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/db/AdvertNotepad.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="212" column="47" selection-start-line="212" selection-start-column="47" selection-end-line="212" selection-end-column="47" />
-              <folding>
-                <marker date="1455016014000" expanded="true" signature="10383:10406" placeholder="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SearchResultActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/localestates/localestates/SearchResultActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="54" column="20" selection-start-line="54" selection-start-column="19" selection-end-line="54" selection-end-column="20" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PropertiesArrayAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/adapters/PropertiesArrayAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="109" column="25" selection-start-line="109" selection-start-column="25" selection-end-line="109" selection-end-column="25" />
+              <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
               <folding />
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="notepad_appointment_add_pop_up.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/notepad_appointment_add_pop_up.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.28301886">
+              <caret line="1" column="15" selection-start-line="1" selection-start-column="15" selection-end-line="1" selection-end-column="15" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
           </provider>
         </entry>
       </file>
@@ -105,8 +101,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="resourceFile" />
-        <option value="Class" />
         <option value="layoutResourceFile_vertical" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -1925,9 +1921,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/list_item_undo_shop.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/list_item_drag_and_drop_shop.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/db/SomeMoreUsedQuerries.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/adapters/DragAndDropAdvertNotepadAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/fragments/CheckAndRadioBoxesFragment.java" />
@@ -1955,7 +1948,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/localestates/localestates/MapActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/localestates/localestates/StreetViewActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_advert.xml" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
@@ -1972,9 +1964,13 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/notepad_pop_up.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvertNotepadActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/adapters/PropertiesArrayAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/localestates/localestates/SearchResultActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_start.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvanceSearchActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/localestates/localestates/SearchResultActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_advert.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_start.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/notepad_appointment.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/db/PropertyVisits.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/notepad_appointment_add_pop_up.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvertActivity.java" />
       </list>
     </option>
@@ -2174,42 +2170,6 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="menu" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="localEstateNew" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="layout" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="localEstateNew" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
             </PATH_ELEMENT>
@@ -2228,7 +2188,7 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="localestates" />
+              <option name="myItemId" value="db" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2287,7 +2247,7 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="device.picker.selection" value="4df123e023629f35" />
+    <property name="device.picker.selection" value="410069cfc8d1a1c1" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/java" />
     <property name="android.project.structure.last.selected" value="app" />
     <property name="android.project.structure.proportion" value="0.15" />
@@ -2307,10 +2267,10 @@
       <recent name="interfaces" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/res/layout" />
       <recent name="$PROJECT_DIR$/app/src/main/res/drawable-hdpi" />
       <recent name="$PROJECT_DIR$/app/src/main/res/drawable-land-nodpi" />
       <recent name="$PROJECT_DIR$/app/src/main/res/values-w820dp" />
-      <recent name="$PROJECT_DIR$/app/src/main/res/layout" />
       <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
     </key>
   </component>
@@ -2636,48 +2596,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/localEstatesHttpRequests/HTTPGETExtri.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="95" column="4" selection-start-line="95" selection-start-column="4" selection-end-line="95" selection-end-column="4" />
-          <folding>
-            <element signature="e#998#1013#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/localEstatesHttpRequests/HTTPGETFloor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="89" column="0" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/localEstatesHttpRequests/HTTPGETLandCategory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="89" column="4" selection-start-line="89" selection-start-column="4" selection-end-line="89" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/localEstatesHttpRequests/HTTPGETLandLeaseContract.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="89" column="4" selection-start-line="89" selection-start-column="4" selection-end-line="89" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/localEstatesHttpRequests/HTTPGETLandPermanentUsage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="88" column="4" selection-start-line="88" selection-start-column="4" selection-end-line="88" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/localEstatesHttpRequests/HTTPGETPhone.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2799,6 +2717,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2947,14 +2866,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/db/AdvertNotepad.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7154471">
-          <caret line="32" column="35" selection-start-line="32" selection-start-column="16" selection-end-line="32" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/adapters/DragAndDropAdvertNotepadAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.50406504">
@@ -2996,47 +2907,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvertNotepadActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38069704">
-          <caret line="286" column="41" selection-start-line="286" selection-start-column="24" selection-end-line="286" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#8404#8717#0" expanded="true" />
-            <element signature="e#8716#8717#0" expanded="true" />
-            <element signature="e#9492#22314#0" expanded="true" />
-            <element signature="e#12110#12829#0" expanded="true" />
-            <element signature="e#12828#12829#0" expanded="true" />
-            <element signature="e#12884#13069#0" expanded="true" />
-            <element signature="e#13068#13069#0" expanded="true" />
-            <element signature="e#18580#19087#0" expanded="true" />
-            <element signature="e#19086#19087#0" expanded="true" />
-            <element signature="e#19249#22169#0" expanded="true" />
-            <element signature="e#22168#22169#0" expanded="true" />
-            <element signature="e#22313#22314#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/localEstatesHttpRequests/HTTPGETAdvert.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38337803">
-          <caret line="90" column="12" selection-start-line="90" selection-start-column="12" selection-end-line="90" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/notepad_pop_up.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.434375">
-          <caret line="109" column="41" selection-start-line="109" selection-start-column="33" selection-end-line="109" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/localEstatesHttpRequests/MakeASearchHttpRequest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3053,25 +2923,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/menu_start.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.518732">
-          <caret line="12" column="59" selection-start-line="12" selection-start-column="59" selection-end-line="12" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_advert.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="18.867924">
-          <caret line="400" column="43" selection-start-line="392" selection-start-column="8" selection-end-line="400" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/adapters/PropertiesArrayAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3080,32 +2931,197 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/localestates/localestates/SearchResultActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="54" column="20" selection-start-line="54" selection-start-column="19" selection-end-line="54" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvanceSearchActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="212" column="47" selection-start-line="212" selection-start-column="47" selection-end-line="212" selection-end-column="47" />
+        <state vertical-scroll-proportion="0.3800539">
+          <caret line="518" column="32" selection-start-line="518" selection-start-column="32" selection-end-line="518" selection-end-column="101" />
           <folding>
             <marker date="1455016014000" expanded="true" signature="10383:10406" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvertActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/localestates/localestates/SearchResultActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.541779">
-          <caret line="483" column="49" selection-start-line="483" selection-start-column="49" selection-end-line="483" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.52560645">
+          <caret line="72" column="25" selection-start-line="72" selection-start-column="25" selection-end-line="72" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#2757#2758#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/localEstatesHttpRequests/HTTPGETAdvert.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.28301886">
+          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/menu_start.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.69164264">
+          <caret line="16" column="51" selection-start-line="16" selection-start-column="51" selection-end-line="16" selection-end-column="51" />
+          <folding>
+            <element signature="e#496#521#0" expanded="true" />
+            <element signature="e#689#714#0" expanded="true" />
+            <element signature="e#872#897#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/notepad_pop_up.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.8207548">
+          <caret line="109" column="41" selection-start-line="109" selection-start-column="33" selection-end-line="109" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/db/PropertyVisits.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6361186">
+          <caret line="20" column="28" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/db/SomeMoreUsedQuerries.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20215634">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/db/LocalEstatePropertiesDB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.32345015">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_advert.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22955975">
+          <caret line="500" column="27" selection-start-line="500" selection-start-column="27" selection-end-line="500" selection-end-column="27" />
+          <folding>
+            <element signature="e#1568#1598#0" expanded="true" />
+            <element signature="e#1839#1869#0" expanded="true" />
+            <element signature="e#1912#1942#0" expanded="true" />
+            <element signature="e#2545#2580#0" expanded="true" />
+            <element signature="e#2626#2661#0" expanded="true" />
+            <element signature="e#2705#2738#0" expanded="true" />
+            <element signature="e#3397#3432#0" expanded="true" />
+            <element signature="e#3478#3513#0" expanded="true" />
+            <element signature="e#4174#4209#0" expanded="true" />
+            <element signature="e#4255#4290#0" expanded="true" />
+            <element signature="e#4334#4367#0" expanded="true" />
+            <element signature="e#4979#5012#0" expanded="true" />
+            <element signature="e#5057#5092#0" expanded="true" />
+            <element signature="e#5138#5173#0" expanded="true" />
+            <element signature="e#14992#15025#0" expanded="true" />
+            <element signature="e#15074#15109#0" expanded="true" />
+            <element signature="e#15159#15194#0" expanded="true" />
+            <element signature="e#15242#15275#0" expanded="true" />
+            <element signature="e#17741#17774#0" expanded="true" />
+            <element signature="e#17823#17858#0" expanded="true" />
+            <element signature="e#17908#17943#0" expanded="true" />
+            <element signature="e#17991#18024#0" expanded="true" />
+            <element signature="e#20796#20829#0" expanded="true" />
+            <element signature="e#20878#20913#0" expanded="true" />
+            <element signature="e#20963#20998#0" expanded="true" />
+            <element signature="e#21046#21079#0" expanded="true" />
+            <element signature="e#21674#21713#0" expanded="true" />
+            <element signature="e#21762#21797#0" expanded="true" />
+            <element signature="e#21847#21882#0" expanded="true" />
+            <element signature="e#21930#21963#0" expanded="true" />
+            <element signature="e#22559#22592#0" expanded="true" />
+            <element signature="e#22641#22676#0" expanded="true" />
+            <element signature="e#22726#22761#0" expanded="true" />
+            <element signature="e#23825#23858#0" expanded="true" />
+            <element signature="e#23907#23942#0" expanded="true" />
+            <element signature="e#23992#24027#0" expanded="true" />
+            <element signature="e#24075#24108#0" expanded="true" />
+            <element signature="e#26562#26595#0" expanded="true" />
+            <element signature="e#26639#26672#0" expanded="true" />
+            <element signature="e#27226#27265#0" expanded="true" />
+            <element signature="e#27309#27348#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-23/android/app/DatePickerDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35309973">
+          <caret line="206" column="0" selection-start-line="206" selection-start-column="0" selection-end-line="206" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvertNotepadActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7277628">
+          <caret line="231" column="45" selection-start-line="231" selection-start-column="45" selection-end-line="231" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/db/AdvertNotepad.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/notepad_appointment_add_pop_up.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.28301886">
+          <caret line="1" column="15" selection-start-line="1" selection-start-column="15" selection-end-line="1" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/localestates/localestates/AdvertActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.703504">
+          <caret line="514" column="12" selection-start-line="514" selection-start-column="12" selection-end-line="514" selection-end-column="12" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#13070#13137#0" expanded="true" />
+            <element signature="e#23363#24548#0" expanded="true" />
+            <element signature="e#23566#24124#0" expanded="true" />
+            <element signature="e#24123#24124#0" expanded="true" />
+            <element signature="e#24547#24548#0" expanded="true" />
+            <element signature="e#24603#25861#0" expanded="true" />
+            <element signature="e#24806#25428#0" expanded="true" />
+            <element signature="e#25427#25428#0" expanded="true" />
+            <element signature="e#25860#25861#0" expanded="true" />
+            <element signature="e#28271#28963#0" expanded="true" />
+            <element signature="e#28962#28963#0" expanded="true" />
+            <element signature="e#29021#29191#0" expanded="true" />
+            <element signature="e#29190#29191#0" expanded="true" />
+            <element signature="e#29251#29421#0" expanded="true" />
+            <element signature="e#29420#29421#0" expanded="true" />
+            <element signature="e#31569#31570#0" expanded="true" />
+            <element signature="e#31606#31607#0" expanded="true" />
           </folding>
         </state>
       </provider>
