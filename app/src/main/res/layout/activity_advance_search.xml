@@ -32,7 +32,7 @@
         app:progressbar_width="10dp" />
 
     <ScrollView
-        android:id="@+id/scrollView"
+        android:id="@+id/scrollViewParent"
         android:layout_below="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -407,6 +407,7 @@
 
                     <utils.RobotoTextView
                         android:id="@+id/clearButton"
+                        android:visibility="gone"
                         style="@style/ButtonStyle.RaisedEmpty"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

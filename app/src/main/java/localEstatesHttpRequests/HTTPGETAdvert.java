@@ -88,7 +88,9 @@ public class HTTPGETAdvert extends AsyncTask<String, Integer, String> {
 
     @Override
     protected void onProgressUpdate(Integer... values) {
-        progressBar.setProgress(values[0]);
+        if (progressBar!=null) {
+            progressBar.setProgress(values[0]);
+        }
     }
 
     @Override

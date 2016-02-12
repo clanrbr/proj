@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -80,6 +81,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
     public static final String ARG_SECTION_NUMBER = "section_number";
 
     private LinearLayout secondTownSpinnerLayout;
+    private ScrollView scrollView;
     private RadioGroup radioGroup;
     private int typeAdvert=1;
     private ArrayList<JSONObject> advertsJsonArray = new ArrayList<JSONObject>();
@@ -190,6 +192,8 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setContentView(R.layout.activity_advance_search);
 
+
+        scrollView = (ScrollView) findViewById(R.id.scrollViewParent);
         ImageView menuItemSearch = (ImageView) findViewById(R.id.searchActionBar);
         menuItemSearch.setImageResource(R.drawable.ic_search_white_24dp);
         ImageView menuItemFavourite = (ImageView) findViewById(R.id.favouriteActionBar);
@@ -629,6 +633,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         searchAdvancedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                scrollView.setVisibility(View.GONE);
                 searchValues= new ArrayList<HashMap<String, String>>();
                 searchValues.add(HelpFunctions.generateHashForSearch("rub",typeAdvert));
                 searchValues.add(HelpFunctions.generateHashForSearch("page",1));
@@ -680,6 +685,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                 String searchUrl = HelpFunctions.convertToUrl(searchValues);
                 Log.e("HEREHERE",searchUrl);
                 asyncStarted++;
+//                progressBar.setVisibility(View.VISIBLE);
                 asyncTask = new MakeASearchHttpRequest(progressBar,0);
                 asyncTask.delegate=AdvanceSearchActivity.this;
                 asyncTask.execute(searchUrl);
@@ -890,6 +896,8 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
 
     @Override
     public void processFinish(String output, String numberOfAdverts, String searchText) {
+        progressBar.setVisibility(View.GONE);
+//        scrollView.setVisibility(View.VISIBLE);
         Intent searchResultIntent = new Intent(AdvanceSearchActivity.this,SearchResultActivity.class);
         searchResultIntent.putExtra("results",output);
         searchResultIntent.putExtra("results_text",searchText);

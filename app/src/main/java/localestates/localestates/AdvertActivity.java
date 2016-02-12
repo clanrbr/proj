@@ -76,6 +76,7 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
         AsyncResponseLoadAdvert {
 
     private AdvertNotepad existsAdvertNotepad;
+    private PropertyVisits existsAdvertAppointment;
     private int startScroll;
     private String advertID;
     private String advertOutput;
@@ -506,13 +507,13 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
             TextView saveAppDialog = (TextView) dialog.findViewById(R.id.saveAppointmentDialog);
             TextView closeAppointmentDialog = (TextView) dialog.findViewById(R.id.closeAppointmentDialog);
             TextView deleteAppointmentDialog = (TextView) dialog.findViewById(R.id.deleteAppointmentDialog);
-            EditText additionalPhone = (EditText) dialog.findViewById(R.id.additionalPhone);
+            final EditText additionalPhone = (EditText) dialog.findViewById(R.id.additionalPhone);
+
             // Check if no view has focus:
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-
             titleAdvert.setText(advertTitle);
-            
+
             final Calendar newCalendar = Calendar.getInstance();
             appointmentDatePick.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -553,36 +554,19 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
                 }
             });
 
-            PropertyVisits existsAdvert = SQLite.select()
+            final PropertyVisits existsAdvert = SQLite.select()
                     .from(PropertyVisits.class)
                     .where(PropertyVisits_Table.advert_id.is(advertID))
                     .querySingle();
 
             if (existsAdvert!=null) {
-
+                deleteAppointmentDialog.setVisibility(View.VISIBLE);
+                appointmentDatePick.setText(existsAdvert.advert_appointment_time_date);
+                appointmentHourPick.setText(existsAdvert.advert_appointment_time_hour);
+                additionalPhone.setText(existsAdvert.advert_phone_number);
+                noteText.setText(existsAdvert.advert_note);
             } else {
-
-//                if ( (advertOutput!=null) && (advertID!=null) ) {
-//                    long unixTime = System.currentTimeMillis() / 1000L;
-//
-//                    PropertyVisits advAppointment = new PropertyVisits();
-//                    advAppointment.advert_id=advertID;
-//                    advAppointment.advert_list=advertOutput;
-//                    advAppointment.advert_note=noteText.getText().toString();
-//                    advAppointment.advert_time=unixTime;
-//                    advAppointment.advert_appointment_time_date=appointmentDatePick.getText().toString();
-//                    advAppointment.advert_appointment_time_hour=appointmentHourPick.getText().toString();
-//                    advAppointment.advert_phone_number=additionalPhone.getText().toString();
-//                    advAppointment.advert_additional_address=additionalPhone.getText().toString();
-//                    advAppointment.save();
-//
-//                    MenuItem itemFavourite = mMenu.findItem(R.id.addFavouritesBar);
-//                    if ( itemFavourite!=null ) {
-//                        itemFavourite.setIcon(R.drawable.ic_favorite_white_24dp);
-//                    }
-//                    Toast.makeText(AdvertActivity.this,"Обявата беше успешно добавена в бележника!",Toast.LENGTH_LONG).show();
-//                }
-
+                additionalPhone.setText(advertPhone);
             }
 
 
@@ -610,12 +594,40 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
             saveAppDialog.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    SQLite.update(AdvertNotepad.class)
-//                            .set(AdvertNotepad_Table.advert_note.eq(noteText.getText().toString()))
-//                            .where(AdvertNotepad_Table.advert_id.is(selectedAdvert.advert_id))
-//                            .query();
-//                    Toast.makeText(AdvertNotepadActivity.this,"Бележката беше успешно записана.",Toast.LENGTH_LONG).show();
-//                    allNotepadAdvertsObj.get(position).advert_note=noteText.getText().toString();
+                    if (existsAdvert==null) {
+                        if ( (advertOutput!=null) && (advertID!=null) ) {
+                            long unixTime = System.currentTimeMillis() / 1000L;
+
+                            PropertyVisits advAppointment = new PropertyVisits();
+                            advAppointment.advert_id=advertID;
+                            advAppointment.advert_list=advertOutput;
+                            advAppointment.advert_note=noteText.getText().toString();
+                            advAppointment.advert_time=unixTime;
+                            advAppointment.advert_appointment_time_date=appointmentDatePick.getText().toString();
+                            advAppointment.advert_appointment_time_hour=appointmentHourPick.getText().toString();
+                            advAppointment.advert_phone_number=additionalPhone.getText().toString();
+                            advAppointment.advert_additional_address="";
+                            advAppointment.save();
+
+                            MenuItem itemAppointmentActionButton = mMenu.findItem(R.id.appintmentActionButton);
+                            if ( itemAppointmentActionButton!=null ) {
+                                itemAppointmentActionButton.setIcon(R.drawable.ic_date_range_white_24dp);
+                            }
+                            Toast.makeText(AdvertActivity.this,"Обявата беше успешно добавена в огледи!",Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        SQLite.update(PropertyVisits.class)
+                                .set(PropertyVisits_Table.advert_list.eq(advertOutput),
+                                        PropertyVisits_Table.advert_note.eq(noteText.getText().toString()),
+                                        PropertyVisits_Table.advert_appointment_time_date.eq(appointmentDatePick.getText().toString()),
+                                        PropertyVisits_Table.advert_appointment_time_hour.eq(appointmentHourPick.getText().toString()),
+                                        PropertyVisits_Table.advert_phone_number.eq(additionalPhone.getText().toString()),
+                                        PropertyVisits_Table.advert_additional_address.eq(appointmentHourPick.getText().toString()))
+                                .where(PropertyVisits_Table.advert_id.is(advertID))
+                                .query();
+                        Toast.makeText(AdvertActivity.this,"Обявата беше успешно запазена в огледи!",Toast.LENGTH_LONG).show();
+                    }
+
                     dialog.dismiss();
                 }
             });
@@ -627,11 +639,39 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
                 }
             });
 
-
             deleteAppointmentDialog.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dialog.dismiss();
+                    LayoutInflater inflater = AdvertActivity.this.getLayoutInflater();
+                    View dialoglayout = inflater.inflate(R.layout.dialog_delete_appointment, null);
+                    final AlertDialog.Builder builderDialog = new AlertDialog.Builder(AdvertActivity.this);
+                    builderDialog.setView(dialoglayout);
+                    final AlertDialog show = builderDialog.show();
+                    Button closeButton = (Button) dialoglayout.findViewById(R.id.closeAppointmentButton);
+                    closeButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            show.dismiss();
+                        }
+                    });
+                    Button callButton= (Button) dialoglayout.findViewById(R.id.deleteAppointmentButton);
+                    callButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            show.dismiss();
+                            SQLite.delete()
+                                    .from(PropertyVisits.class)
+                                    .where(PropertyVisits_Table.advert_id.is(advertID))
+                                    .query();
+
+                            Toast.makeText(AdvertActivity.this,"Обявата беше успешно изтрита от огледи!",Toast.LENGTH_LONG).show();
+                            MenuItem itemFavourite = mMenu.findItem(R.id.addFavouritesBar);
+                            if ( itemFavourite!=null ) {
+                                itemFavourite.setIcon(R.drawable.ic_favorite_black_24dp);
+                            }
+                            dialog.dismiss();
+                        }
+                    });
                 }
             });
 
@@ -869,6 +909,21 @@ public class AdvertActivity extends AppCompatActivity implements ObservableScrol
                         itemFavourite.setIcon(R.drawable.ic_favorite_white_24dp);
                     } else {
                         itemFavourite.setIcon(R.drawable.ic_favorite_black_24dp);
+                    }
+                }
+            }
+
+            existsAdvertAppointment = SQLite.select().from(PropertyVisits.class)
+                    .where(PropertyVisits_Table.advert_id.is(advertID))
+                    .querySingle();
+
+            if (mMenu!=null) {
+                MenuItem itemAppointmentActionButton = mMenu.findItem(R.id.appintmentActionButton);
+                if ( itemAppointmentActionButton!=null ) {
+                    if (existsAdvertAppointment!=null) {
+                        itemAppointmentActionButton.setIcon(R.drawable.ic_date_range_white_24dp);
+                    } else {
+                        itemAppointmentActionButton.setIcon(R.drawable.ic_date_range_black_24dp);
                     }
                 }
             }

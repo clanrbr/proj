@@ -1,8 +1,10 @@
 package localEstatesHttpRequests;
 
 import android.os.AsyncTask;
+import android.support.annotation.IntegerRes;
 import android.support.v4.util.SimpleArrayMap;
 import android.util.Log;
+import android.view.View;
 
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
@@ -24,7 +26,7 @@ import interfaces.AsyncResponse;
 /**
  * Created by macbook on 1/19/16.
  */
-public class MakeASearchHttpRequest extends AsyncTask<String, Void, String> {
+public class MakeASearchHttpRequest extends AsyncTask<String, Integer, String> {
     private Exception exception;
     private ArrayList<JSONObject> advertsJsonArray;
     private String advertsNumber;
@@ -78,6 +80,21 @@ public class MakeASearchHttpRequest extends AsyncTask<String, Void, String> {
         } catch (Exception e) {
             this.exception = e;
             return null;
+        }
+    }
+
+    @Override
+    protected void onPreExecute() {
+        if (progressBar!=null) {
+                progressBar.setVisibility(View.VISIBLE);
+        }
+        super.onPreExecute();
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        if (progressBar!=null) {
+            progressBar.setProgress(values[0]);
         }
     }
 
