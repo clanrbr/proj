@@ -144,6 +144,7 @@ public class NotepadFragment extends Fragment {
                 FrameLayout mapStreetViewBar = (FrameLayout) dialog.findViewById(R.id.mapStreetViewBar);
                 TextView saveNoteDialog = (TextView) dialog.findViewById(R.id.saveNoteDialog);
                 TextView closeNoteDialog = (TextView) dialog.findViewById(R.id.closeNoteDialog);
+                TextView dialPhoneNoteDialog = (TextView) dialog.findViewById(R.id.dialPhoneNoteDialog);
                 FrameLayout openAdvert = (FrameLayout) dialog.findViewById(R.id.openAdvert);
 
                 // Check if no view has focus:
@@ -191,6 +192,17 @@ public class NotepadFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
+                    }
+                });
+
+                dialPhoneNoteDialog.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, LocalEstateConstants.MY_PEMISSION_PHONE_CODE);
+                        } else {
+                            callActionFunction();
+                        }
                     }
                 });
 

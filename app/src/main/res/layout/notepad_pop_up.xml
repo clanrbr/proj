@@ -386,6 +386,18 @@
                     android:gravity="right" >
 
                     <utils.RobotoTextView
+                        android:id="@+id/dialPhoneNoteDialog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:background="@drawable/transparent_button_selector"
+                        android:padding="8dp"
+                        android:text="Позвъни"
+                        android:textColor="@color/material_red_700"
+                        android:textSize="14sp"
+                        app:typeface="robotoMedium" />
+
+                    <utils.RobotoTextView
                         android:id="@+id/saveNoteDialog"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
