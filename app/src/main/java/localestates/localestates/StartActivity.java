@@ -8,9 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
@@ -35,6 +37,7 @@ public class StartActivity extends AppCompatActivity {
     private PropertiesArrayAdapter adapterProperties;
     private ListView listView;
     private CircularProgressBar progressBar;
+    private TextView searchStartActivityButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,7 @@ public class StartActivity extends AppCompatActivity {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(getResources().getColor(R.color.main_color_700));
+            window.setStatusBarColor(ContextCompat.getColor(StartActivity.this, R.color.main_color_700));
         }
 
         super.onCreate(savedInstanceState);
@@ -54,7 +57,6 @@ public class StartActivity extends AppCompatActivity {
         ImageView menuItemHome = (ImageView) findViewById(R.id.homeActionBar);
         menuItemHome.setImageResource(R.drawable.ic_home_white_24dp);
 
-
         menuItemHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,16 +66,18 @@ public class StartActivity extends AppCompatActivity {
         menuItemFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent favouriteIntent = new Intent(getBaseContext(),AdvertNotepadActivity.class);
+                Intent favouriteIntent = new Intent(getBaseContext(),FavouriteActivity.class);
                 finish();
                 startActivity(favouriteIntent);
-
             }
         });
 
         menuItemNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent favouriteIntent = new Intent(getBaseContext(),FavouriteActivity.class);
+                finish();
+                startActivity(favouriteIntent);
 
             }
         });
@@ -95,9 +99,35 @@ public class StartActivity extends AppCompatActivity {
 //        circularProgressBar.setBackgroundProgressBarWidth(getResources().getDimension(R.dimen.backgroundProgressBarWidth));
         int animationDuration = 2500; // 2500ms = 2,5s
         progressBar.setProgressWithAnimation(65, animationDuration);
+        searchStartActivityButton= (TextView) findViewById(R.id.searchStartActivityButton);
+        searchStartActivityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent searchIntent = new Intent(getBaseContext(),AdvanceSearchActivity.class);
+                finish();
+                startActivity(searchIntent);
+            }
+        });
+
 
 
         listView = (ListView) findViewById(R.id.listView);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent searchIntent = new Intent(StartActivity.this,AdvertActivity.class);
+                searchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                JSONObject property = advertsJsonArray.get(position);
+                if ( property.has("id") ) {
+                    try {
+                        searchIntent.putExtra("advertID",property.getString("id"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                startActivity(searchIntent);
+            }
+        });
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -186,19 +216,6 @@ public class StartActivity extends AppCompatActivity {
             }
         };
         checkLogin.execute("http://api.imot.bg/mobile_api/users");
-
-
-//        Fragment fragment = new MainPageFragment();
-//        if (savedInstanceState == null) {
-//            Log.e("HEREHERE","SEE MANY TIMES");
-//            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//            if (ft.isEmpty()) {
-//                getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).addToBackStack("mainPage").commit();
-//            } else {
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack("mainPage").commit();
-//            }
-////            ft.replace(R.id.fragment_container,fragment).commit();
-//        }
     }
 
 //    @Override

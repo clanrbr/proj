@@ -1,14 +1,10 @@
 package adapters;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v4.os.ResultReceiver;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,15 +16,7 @@ import android.widget.TextView;
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.OnDismissCallback;
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.UndoAdapter;
 import com.nhaarman.listviewanimations.util.Swappable;
-import com.raizlabs.android.dbflow.runtime.DBTransactionInfo;
-import com.raizlabs.android.dbflow.runtime.TransactionManager;
-import com.raizlabs.android.dbflow.runtime.transaction.BaseTransaction;
-import com.raizlabs.android.dbflow.runtime.transaction.QueryTransaction;
-import com.raizlabs.android.dbflow.runtime.transaction.process.ProcessModelInfo;
-import com.raizlabs.android.dbflow.runtime.transaction.process.SaveModelTransaction;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
-import com.raizlabs.android.dbflow.sql.language.Where;
-import com.raizlabs.android.dbflow.structure.Model;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -36,8 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import db.AdvertNotepad;
-import db.AdvertNotepad_Adapter;
-import db.AdvertNotepad_Container;
 import db.AdvertNotepad_Table;
 import localestates.localestates.R;
 /**
@@ -129,13 +115,13 @@ public class DragAndDropAdvertNotepadAdapter extends BaseAdapter implements Swap
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.list_item_drag_and_drop_shop, parent, false);
+            convertView = mInflater.inflate(R.layout.list_item_notepad_list, parent, false);
             holder = new ViewHolder();
-            holder.image = (ImageView) convertView.findViewById(R.id.list_item_drag_and_drop_shop_image);
-            holder.productName = (TextView) convertView.findViewById(R.id.list_item_drag_and_drop_shop_product_name);
-            holder.oldPrice = (TextView) convertView.findViewById(R.id.list_item_drag_and_drop_shop_old_price);
+            holder.image = (ImageView) convertView.findViewById(R.id.list_item_drag_and_drop_property_image);
+            holder.productName = (TextView) convertView.findViewById(R.id.list_item_drag_and_drop_property_title);
+            holder.oldPrice = (TextView) convertView.findViewById(R.id.list_item_drag_and_drop_region_name);
             holder.price = (TextView) convertView.findViewById(R.id.list_item_drag_and_drop_shop_price);
-            holder.icon = (TextView) convertView.findViewById(R.id.list_item_drag_and_drop_shop_icon);
+            holder.icon = (TextView) convertView.findViewById(R.id.list_item_drag_and_drop_icon);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -216,7 +202,7 @@ public class DragAndDropAdvertNotepadAdapter extends BaseAdapter implements Swap
     @Override
     @NonNull
     public View getUndoClickView(@NonNull View view) {
-        return view.findViewById(R.id.undo_button_shop);
+        return view.findViewById(R.id.undo_button);
     }
 
     @Override
@@ -224,7 +210,7 @@ public class DragAndDropAdvertNotepadAdapter extends BaseAdapter implements Swap
     public View getUndoView(final int position, final View convertView, @NonNull final ViewGroup parent) {
         View view = convertView;
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.list_item_undo_shop, parent, false);
+            view = LayoutInflater.from(mContext).inflate(R.layout.list_item_undo, parent, false);
         }
         return view;
     }

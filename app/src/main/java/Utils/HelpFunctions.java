@@ -234,7 +234,11 @@ public class HelpFunctions {
         if (field!=null) {
             int position = field.getSelectedItemPosition();
             result = new HashMap<String,String>();
-            result.put(searchName,String.valueOf(position));
+            if ( searchName.equals("floor_from") || searchName.equals("floor_to") ) {;
+                result.put(searchName,String.valueOf(field.getItemAtPosition(position).toString()));
+            } else {
+                result.put(searchName,String.valueOf(position));
+            }
         }
         return result;
     }

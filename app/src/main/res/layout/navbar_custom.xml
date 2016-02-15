@@ -54,7 +54,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
-            android:src="@drawable/ic_notifications_black_24dp" />
+            android:src="@drawable/ic_date_range_black_24dp" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"

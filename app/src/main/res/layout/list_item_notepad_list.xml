@@ -20,7 +20,7 @@
             android:orientation="vertical" >
 
             <ImageView
-                android:id="@+id/list_item_drag_and_drop_shop_image"
+                android:id="@+id/list_item_drag_and_drop_property_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/material_grey_300"
@@ -38,7 +38,7 @@
             android:orientation="vertical" >
 
             <utils.RobotoTextView
-                android:id="@+id/list_item_drag_and_drop_shop_product_name"
+                android:id="@+id/list_item_drag_and_drop_property_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content" >
 
                 <utils.RobotoTextView
-                    android:id="@+id/list_item_drag_and_drop_shop_old_price"
+                    android:id="@+id/list_item_drag_and_drop_region_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
@@ -92,7 +92,7 @@
                 android:background="@color/main_color_grey_100" />
 
             <utils.MaterialDesignIconsTextView
-                android:id="@+id/list_item_drag_and_drop_shop_icon"
+                android:id="@+id/list_item_drag_and_drop_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"

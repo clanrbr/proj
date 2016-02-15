@@ -212,7 +212,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         menuItemFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent favouriteIntent = new Intent(getBaseContext(),AdvertNotepadActivity.class);
+                Intent favouriteIntent = new Intent(getBaseContext(),FavouriteActivity.class);
                 finish();
                 startActivity(favouriteIntent);
             }
@@ -221,6 +221,9 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         menuItemNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent favouriteIntent = new Intent(getBaseContext(),FavouriteActivity.class);
+                finish();
+                startActivity(favouriteIntent);
 
             }
         });
@@ -621,7 +624,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
         if ( (searchValuesEdit!=null) && (searchValuesEdit.size()>10) && (searchValuesEdit.get(10)!=null) ) {
             String rubValue = searchValuesEdit.get(10).get("sort");
             if (rubValue!=null) {
-                ArrayList<String> arrayValue = new ArrayList<String>();
+                ArrayList<String> arrayValue = new ArrayList<>();
                 Collections.addAll(arrayValue, getResources().getStringArray(R.array.sortValues));
                 sortResult.setSelection(Integer.parseInt(rubValue)-1);
             }
@@ -1011,6 +1014,7 @@ public class AdvanceSearchActivity extends ActionBarActivity implements
                 }
             } else {
                 floorFromSpinner.setSelection(0);
+                Log.e("HEREHERE","||"+floorFromSpinner.getSelectedItem().toString()+"||");
             }
 
             floorToAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, floorArray);

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -78,16 +79,18 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
         menuItemFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent favouriteIntent = new Intent(getBaseContext(),AdvertNotepadActivity.class);
+                Intent favouriteIntent = new Intent(getBaseContext(),FavouriteActivity.class);
                 finish();
                 startActivity(favouriteIntent);
-
             }
         });
 
         menuItemNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent favouriteIntent = new Intent(getBaseContext(),FavouriteActivity.class);
+                finish();
+                startActivity(favouriteIntent);
 
             }
         });
@@ -175,6 +178,23 @@ public class SearchResultActivity extends ActionBarActivity implements AsyncResp
                 }
             });
         }
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent searchIntent = new Intent(SearchResultActivity.this,AdvertActivity.class);
+                searchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                JSONObject property = results.get(position);
+                if ( property.has("id") ) {
+                    try {
+                        searchIntent.putExtra("advertID",property.getString("id"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                startActivity(searchIntent);
+            }
+        });
 
         if ( (searchText!=null) && (searchText!="") ) {
             resultTextView= (TextView) findViewById(R.id.resultTextView);
